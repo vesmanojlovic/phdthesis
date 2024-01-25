@@ -1,0 +1,60 @@
+%This is the part of the preface in which the used packages are defined.
+
+% *** LINE SPACING
+\usepackage{setspace}
+%\spacing{1.5}
+
+% *** CAPTION
+\usepackage{caption}
+\captionsetup{margin=10pt,font={footnotesize, singlespacing},labelfont=bf,justification=justified}
+
+% *** CITATION PACKAGES ***
+
+%\usepackage{natbib}
+\usepackage{natbib,har2nat} %har2nat to use the harvard bibliography style
+
+%%% Multiple Bibliographies: To introduce the Contribution chapter
+\usepackage{multibib}
+\newcites{ctb}{Contributions}
+%When using multibib package on Windows it may fail to produce the extra bibliographies. The solution is to run manually the following compilations:
+%pdflatex thesis.tex
+%bibtex thesis.tex
+%bibtex ctb.aux			-> This file is created after running the previous compilation in the thesis.tex folder
+%pdflatex thesis.tex
+%pdflatex thesis.tex
+%Check multibib documentation for more options. - https://www.ctan.org/pkg/multibib
+
+% *** HIPERLINKS
+\usepackage[hidelinks]{hyperref}
+% *** URL
+\usepackage{url}
+\urlstyle{same}  % tt,rm,sf,same
+
+% *** GRAPHICS PACKAGES ***
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.png}
+
+% *** SUBFIGURE PACKAGES ***
+\usepackage[caption=false,font=scriptsize,position=t,singlelinecheck=off]{subfig}
+ 
+% *** ALIGNMENT PACKAGES ***
+\usepackage{array}
+\usepackage{multirow}
+  
+% *** MATH PACKAGES ***
+\usepackage[cmex10]{amsmath}
+
+%% *** MISC ***
+\usepackage{makeidx} %If you want to generate an index, automatically
+\usepackage{lipsum} % To generate the Loren Ipsum random text.
+\usepackage{color} %To modify the color.
+\usepackage{enumerate} %To modify the counter style in the enumerate environment.
+\usepackage{amssymb} %Some extra symbols.
+%\usepackage{listings} %To include the source code of any programming language within your document.
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+

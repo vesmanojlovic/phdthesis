@@ -1,0 +1,132 @@
+%This is the part of the preface in which the user can define his/her functions.
+
+%% Custom enumerate environment:
+\newenvironment{packed_enum}{
+\begin{enumerate}[a)]
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+
+%%Imagen 2 x root locus:
+\newcommand{\tablefigs}[8]{
+\begin{figure}[#8]
+\centering
+\begin{tabular}{cc}
+\hspace{-4mm}
+\subfloat[#3]{\includegraphics[width=0.5\linewidth]{#1/#2}\label{#2}}\hspace{0mm}
+\subfloat[#5]{\includegraphics[width=0.5\linewidth]{#1/#4}\label{#3}}\hspace{0mm}
+\end{tabular}
+\caption{#6}
+\label{#7}
+\end{figure}}
+
+
+%%%%%%%% ----------- ROTATION MATRICES ----------- %%%%%%%%
+
+%%%%----------------- MATRIZ ROT Z -----------------%%%%
+\newcommand{\zrot}[1]{
+%\begin{displaymath}
+\left(
+\begin{array}{ccc}
+\cos#1 & -\sin#1 & 0 \\
+\sin#1 &  \cos#1 & 0 \\
+	0 	& 	  0    & 1 \\
+\end{array}
+\right)
+%\end{displaymath}
+}
+%%%%------------------------------------------------%%%%
+
+%%%%----------------- INVERS ROT Z -----------------%%%%
+\newcommand{\zroti}[1]{
+%\begin{displaymath}
+\left(
+\begin{array}{ccc}
+ \cos#1 & \sin#1 & 0 \\
+-\sin#1 & \cos#1 & 0 \\
+	0 	 & 	  0    & 1 \\
+\end{array}
+\right)
+%\end{displaymath}
+}
+%%%%------------------------------------------------%%%%
+
+
+
+
+%%%%----------------- MATRIZ ROT Y -----------------%%%%
+\newcommand{\yrot}[1]{
+%\begin{displaymath}
+\left(
+\begin{array}{ccc}
+ \cos#1 & 0 & \sin#1	\\
+	0	 & 1 &	0 		\\
+-\sin#1 & 0 & \cos#1	\\
+\end{array}
+\right)
+%\end{displaymath}
+}
+%%%%------------------------------------------------%%%%
+
+%%%%----------------- INVERS ROT Y -----------------%%%%
+\newcommand{\yroti}[1]{
+%\begin{displaymath}
+\left(
+\begin{array}{ccc}
+\cos#1 & 0 & -\sin#1	\\
+	0	& 1 &	0 		\\
+\sin#1 & 0 &  \cos#1	\\
+\end{array}
+\right)
+%\end{displaymath}
+}
+%%%%------------------------------------------------%%%%
+
+
+
+
+%%%%----------------- MATRIZ ROT X -----------------%%%%
+\newcommand{\xrot}[1]{
+%\begin{displaymath}
+\left(
+\begin{array}{ccc}
+1 &	   0	&	  0 	\\
+0 &	\cos#1 & -\sin#1	\\
+0 &	\sin#1 &  \cos#1	\\
+\end{array}
+\right)
+%\end{displaymath}
+}
+%%%%------------------------------------------------%%%%
+
+%%%%----------------- INVERS ROT X -----------------%%%%
+\newcommand{\xroti}[1]{
+%\begin{displaymath}
+\left(
+\begin{array}{ccc}
+1 &	    0	 &	  0 	\\
+0 &	 \cos#1 & \sin#1	\\
+0 &	-\sin#1 & \cos#1	\\
+\end{array}
+\right)
+%\end{displaymath}
+}
+%%%%------------------------------------------------%%%%
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand\underrel[2]{\mathrel{\mathop{#2}\limits_{#1}}}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{corollary}{Corollary}[section]
+

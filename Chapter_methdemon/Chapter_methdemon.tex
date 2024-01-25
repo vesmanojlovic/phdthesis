@@ -1,0 +1,44 @@
+\chapter{Agent-based workflow for inferring evolutionary parameters from molecular data using approximate Bayesian computation}\label{demonchap}
+In this chapter, I will go over the methods I have used and developed for work on data in chapter \ref{methchap}. 
+
+\section{Introduction}
+\subsection{Spatial agent-based modelling}
+\begin{itemize}
+    \item go over a few relevant models in the field and how they compare to demon
+    \item discuss the general assumptions and limitations of ABM
+\end{itemize}
+
+
+\subsection{Approximate Bayesian computation (ABC)}
+\begin{itemize}
+    \item high-level introduction of ABC
+    \item papers in the field which have used some form of ABC
+\end{itemize}
+
+\section{Initial simulation workflows}
+\begin{itemize}
+    \item go over the old \texttt{demon} simulations with \texttt{demonmeth} R package analysis
+    \item discuss why the approach worked
+    \item point out the ways in which it didn't exactly work (i.e. impossible to get independent methylation and demethylation rates; output files sometimes too large to import into R and analyse efficiently; sometimes large files may not contain all the required data)
+\end{itemize}
+
+\section{Simulating fluctuating methylation arrays with \texttt{methdemon}}
+\subsection{Overview}
+\begin{itemize}
+    \item go over the simulation's inner workings
+    \item provide estimates of running efficiency and memory requirements
+    \item discuss possible upgrades and their potential computational costs
+\end{itemize}
+\subsection{Examples}
+Provide example outputs (and their visualisations), parameter tables and a citation/link to the github repo.
+
+\section{Fluctuating methylation arrays through the lens of ABC}
+\subsection{Overview}
+\begin{itemize}
+    \item go over the \texttt{pyabc} package briefly (cite)
+    \item explain the ABC workflow
+    \item discuss computational costs and efficiency
+    \item discuss whether this is the best approach (can we write down a likelihood for the problem?)
+\end{itemize}
+\subsection{Examples}
+Provide example applications of the workflow to \texttt{methdemon} outputs - fit smaller simulations to a big one for example.

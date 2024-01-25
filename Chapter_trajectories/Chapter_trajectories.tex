@@ -1,0 +1,72 @@
+\chapter{Tracking cancer evolution \textit{in silico} via evolutionary indices}
+\textit{Part of the results from this chapter were presented in poster form at MMEE 2022 in Reading and at ECMTB 2022 in Heidelberg.}
+
+\begin{itemize}
+    \item \textit{summarising the properties of trees is very useful}
+    \item \textit{how many indices are enough to distinguish them?}
+    \item \textit{check figure 8 in Rob's new preprint}
+\end{itemize}
+
+\section{Introduction}
+A trajectory is a path described by any object (or indeed point) in some space according to some parameter, usually time.  Intuitively then, an evolutionary trajectory refers to the path or sequence of changes and adaptations that a lineage or population undergoes over time. It describes the series of genetic, morphological, and behavioral transformations that occur as organisms evolve and diversify. We are interested in the evolutionary trajectory of cancers but obtaining reliable data over time is not feasible in reality. This stems from multiple issues. Firstly, at time of diagnosis, solid tumours have likely already been growing for long enough to reach a size visible in standard medical imaging (citation needed). This means that even initial data obtained in the clinic represents a relatively late stage in the cancer's evolutionary history. Secondly, solid tumours are clumps of cells organised in some way in space, meaning that taking a sample from one point in the tumour is not necessarily representative of the rest of the cell population. Finally, a biopsy is an invasive procedure which can cause considerable discomfort to patients, depending on where the tumour is situated. Therefore, having a reasonable estimate of a tumours evolutionary trajectory based on the data that is available at time of sequencing would be extremely useful.
+
+\subsection{Why even bother with indices?}
+Before we begin, let us consider the simplest question - can we map the set of all possible trees to the set of real numbers? For this purpose we should decide how to define the set of trees. The number of nodes in a tree is a natural number, $n\in\mathbb{N}$, as is the number of possible tree topologies for a given $n$. We denote with $T(n)$ the set of enumerated tree topologies (cite Nakano). Each node then has a corresponding size, giving as an $n$-tuple of real numbers $(\alpha_1, \dots, \alpha_n)\in\mathbb{R}^n$, and each edge (branch) has a corresponding length or $(l_i, \dots, l_{(n-1)})\in\mathbb{R}^{(n-1)}$. This means we would need a family of maps 
+\begin{equation}
+    f_n: A(n) \times \mathbb{R}^n \times \mathbb{R}^{n-1} \rightarrow R.
+\end{equation}
+We can thus easily assign real values to distinct trees. The only problem with this approach is that it is not at all useful, not least due to its lack of any interpretability. This chapter outlines an approach which uses real-valued summaries of trees' properties in a way that is both intuitive and mathematically robust. 
+
+\section{Picking a tree out of a line-up}
+\begin{itemize}
+    \item using numerical summaries may sound reasonable, but does it produce distinct enough results?
+    \item what is the minimal number of indices we need to consider to tell apart two trees in general
+    \item how about in the context of realistic data (e.g. driver trees)?
+\end{itemize}
+To show that there is merit to the idea of constructing evolutionary trajectories in an index space, let us consider the case where distinct trees have equal values of all indices in our desired set. 
+\subsection{Examples of distinct trees with identical index values}
+\begin{itemize}
+    \item we begin by examining the simplest case - leafy trees with equal leaf sizes
+    \item consider first the smaller set of indices ($J^1$, $D_{Shannon}$, $N_{drivers}$)
+    \item in this case we can construct a family of trees based on the canonical factorisation of $n$, the number of leaves
+    \item then show what this looks like on the expanded set of indices (Rob \& Kim)
+    \item all of these trees are perfectly balanced and symmetric, making them an unlikely appearance in real data (cite data papers to show what real data looks like, e.g. TracerX)
+    \item loosening up our criteria for what a tree looks like we consider leafy trees with arbitrary node sizes
+    \item can again construct artificial examples for the smaller set of indices
+    \item more difficult for the expanded set
+\end{itemize}
+
+\section{Computational methods}
+\subsection{Agent-based modelling framework - \textit{warlock/demon}}
+There is no shortage of agent-based models of tumour evolution (cite Blair's review), and the can range from purpose-built complex frameworks to more stripped-down and abstract ones. Since each model should be ``as simple as possible but no simpler", the appropriate framework for our purposes must satisfy certain requirements --- flexibility, efficiency, and reproducibility. The first requirement is deceptively specific. As the main inspiration behind this work stems from cancer evolution, we want our simulations to have parameters for controlling aspects of the cell population's physical properties which would in turn imply a different way in which it evolves. This would, for example, include spatial arrangement of cells, mutation rates, migration rates, and selective advantage. Furthermore, while the goal is to simulate large populations of cells, we also need a large number of simulations over which we can infer more general deterministic properties. Stochastic effects could make vastly different evolutionary modes look more similar than expected in theory. Finally, reproducibility allows us to share parameters of our models for verification by peers, and possible further investigation.\\
+The agent-based modelling framework we decided to use is \texttt{warlock} (cite warlock preprint), a \texttt{snakemake} (cite snakemake paper) wrapper written for \texttt{demon} (cite demon repo). It satisfies the requirements above, with a few associated comments. Firstly, it is a flexible agent-based model of tumour evolution as it does have parameters which control for spatial arrangement, mutation rates and selective advantage, as well as migration. While it is able to simulate spatial structure, \texttt{demon} covers at most two spatial dimensions. This is not an issue since we approximate the cell population to undergo stochastic isotropic growth, that is the tumour has equal probability of expanding in all directions in space. This implies approximate spherical symmetry of simulated solid tumours, which allows us to effectively consider the two-dimensional simulation as a cross-section of a tumour spheroid. In terms of efficiency, \texttt{demon} was written mainly in C++, and conceptualised so that instead of tracking individual cells, it simulates unique cell genotypes on a two-dimensional grid comprised of demes, or well-mixed patches of cells. The procedure for simulation cell events is based on the Gillespie algorithm (cite Gillespie), and follows the steps of selecting a deme, then cell type, event type, and finally cell genotype. This approach sacrifices micro-scale interactions between cells to benefit efficiency and the feasibility of mathematical analysis of the model using, for example, diffusion approximations. Finally, all associated code is free and open source (cite github repos), which allows reproducibility using identical parameters and random seeds. Parameter values for different batches can be found in the appendix (ref).
+
+\subsection{Smaller set of tree indices}
+\begin{itemize}
+    \item $J^1$ balance index
+    \item mean number of drivers per cell
+    \item Shannon diversity
+    \item mean node out-degree
+\end{itemize}
+
+\subsection{Expanded set of tree indices}
+\begin{itemize}
+    \item explain the work behind Rob and Kim's paper
+    \item reference the paper and repo with the code for calculating the indices
+\end{itemize}
+
+\section{Results}
+\subsection{Spatial constraints influence index space trajectories}
+\begin{itemize}
+    \item figure of trajectories and the average trajectory for each spatial mode (both smaller and expanded index set)
+    \item figures should be arranged on a grid dependant on parameter values
+    \item compare to Rob's modes of evolution paper in both instances (base index set and expanded) and discuss
+\end{itemize}
+\subsection{Late-stage index-space location implies mode of evolution (?)}
+\begin{itemize}
+    \item focus on the overlaps between (average and overall) trajectories of different processes at later stages of tumour growth
+    \item consider differences between the base and expanded set of tree indices
+    \item based on outputs, come up with a summary statistic which could sort a tumour into different based on the end-of-growth state of the tree
+\end{itemize}
+
+\section{Discussion}
