@@ -1,4 +1,4 @@
-\chapter{Extreme and expected values of universal tree balance index $J^1$}\label{ch_trees}
+\chapter{Extreme and expected values of universal tree balance index $J^1$}\label{chapter:indices}
 \textbf{TO DO: } Finish introductions
 \section{Introduction}
 	%\begin{itemize}
@@ -11,12 +11,12 @@
 - however, it is an important concept \textbf{*explain what it means for data structures and phylogenetics*}\\
 - explain how evolutionary process differences can affect tree balance and mention the problem of phylogenetic trees in cancer\\
 The balance of a tree can imply properties other than the symmetry in the tree's topology. Depending on the choice of index from at least $19$ available in literature \cite{fischer_tree_2021}, the intuition and results may vary drastically or not at all between them. A common issue among them, however, is universality --- some indices are only defined under certain topological restrictions (such as bifurcating trees), while others may not account for trees containing internal nodes with only one descendant or nodes with non-zero node sizes. As a consequence, it is difficult to use one index across different areas of research or even compare trees on different numbers of leaves from the same data source. Having a universal measure of balance applicable in this way would enable sensical comparison between any two trees. \par
-In phylogenetics, balanced trees 
+In phylogenetics, balanced trees
 In a previous paper \cite{lemant_robust_2021}, we introduced a new robust, universal balance index $J^1$. This index can be used on any tree topology and can account for trees whose nodes have non-zero size. The basic properties of the index are covered in the original paper, and in this follow-up we explore additional questions one might have when choosing a balance index.
 
 
 \section{Definitions}\label{defsec}
-Before getting into the properties of $J^1$ and related indices, we will briefly introduce these indices, tree naming suggestions and conventions, and notation used throughout the paper. 
+Before getting into the properties of $J^1$ and related indices, we will briefly introduce these indices, tree naming suggestions and conventions, and notation used throughout the paper.
 \begin{definition}[Rooted tree]
     A \textbf{rooted tree} $T$ is a connected acyclic graph with node set $V(T)$, edge (branch) set $E(T)$, and node magnitudes assigned from $\mathbb{R}^+_0$, with an internal node designated as the root of $T$. We denote with $\tilde{V}(T)$ the set of nodes with descendants of non-zero magnitude of tree $T$ and with $L(T)$ the set of its leaves, that is nodes with no descendants.\\
     A \textbf{leafy tree} is a tree whose leaves are of equal non-zero size, and all internal nodes have size zero.
@@ -25,27 +25,27 @@ Before getting into the properties of $J^1$ and related indices, we will briefly
 	In general, a tree can have associated edge (or branch) lengths. We do not discuss such trees in this paper but focus on trees with equally sized branches.
 \end{remark}
 \begin{definition}[The Sackin index]
-    Let $T$ be a rooted bifurcating tree on $n$ leaves. We define the \textbf{Sackin index} of tree $T$ as the sum of distances of the tree's leaves from its root i.e., 
+    Let $T$ be a rooted bifurcating tree on $n$ leaves. We define the \textbf{Sackin index} of tree $T$ as the sum of distances of the tree's leaves from its root i.e.,
     \begin{equation}\label{sackindef}
         I_S = \sum_{l\in L(T)} \nu(l),
     \end{equation}
     where $\nu(l)$ is the depth of leaf $l$.
 \end{definition}
 \begin{remark}
-    The Sackin index can be generalised for trees with arbitrary node degree distributions. In this case, it is calculated as 
+    The Sackin index can be generalised for trees with arbitrary node degree distributions. In this case, it is calculated as
     \begin{equation}\label{gensackindef}
         I_{S,\text{gen}} = \sum_{i\in V(T)} S_i^*,
     \end{equation}
-    where $S_i^*$ is the size of the subtree rooted in internal node $i$, excluding node $i$. 
+    where $S_i^*$ is the size of the subtree rooted in internal node $i$, excluding node $i$.
 \end{remark}
 \begin{definition}[Robust balance index]
             The robust balance index $J^1$ of tree $T$ is calculated as
             \begin{equation}\label{J1def}
                 J^1(T) = \frac{1}{\sum_{l\in\tilde{V}}S_l^*} \sum_{i\in\tilde{V}} S_i^{*}\sum_{j\in C(i)}W_{ij}^{1},
             \end{equation}
-            where $S_i^*$ is the magnitude of the subtree rooted in node $i$, $C(i)$ is the set of direct descendant nodes of node $i$, and $W_{ij}^1$ is the node balance function defined as 
+            where $S_i^*$ is the magnitude of the subtree rooted in node $i$, $C(i)$ is the set of direct descendant nodes of node $i$, and $W_{ij}^1$ is the node balance function defined as
             \begin{equation}\label{Wij1}
-                W_{ij}^1 = 
+                W_{ij}^1 =
                 \begin{cases}
                     -\frac{S_j}{S_i^*}\log_{d^+(i)}\frac{S_j}{S_i^*},& \text{ for } d^+(i);\\
                     0, & \text{ otherwise,}
@@ -107,7 +107,7 @@ Intuitively, one could imagine the root balance score as evaluating how well the
     \begin{equation*}
         |T| = \sum_{v_i \in V(T)} \alpha_i \nu(v_i) = \sum_{i \in V(T)} p_i \nu(i) = \sum_{i\in V(T)} S^*_i,
     \end{equation*}
-    which is just the generalised Sackin index for tree $T$. 
+    which is just the generalised Sackin index for tree $T$.
 \end{remark}
 Consider then the following proposition.
 \begin{proposition}[Lemant et al. \cite{lemant_robust_2021}]
@@ -119,11 +119,11 @@ Consider then the following proposition.
 \end{proposition}
 %state as a proposition and write down a brief proof properly - need to introduce proposition 6 before this happens also, could be a corollary
 \begin{corollary}
-    We can rewrite equation \eqref{prop6} for binary trees as 
+    We can rewrite equation \eqref{prop6} for binary trees as
     \begin{equation}
         J^1(T) = \frac{n\log_2n}{|\bar{T}|}. \label{corr6}
     \end{equation}
-    This means that, for a fixed number of leaves $n$, minimising the weighted path length $|\bar T|$ is equivalent to maximising $J^1$. 
+    This means that, for a fixed number of leaves $n$, minimising the weighted path length $|\bar T|$ is equivalent to maximising $J^1$.
 \end{corollary}
 
 \begin{theorem}[Nievergelt and Wong \cite{wong_upper_1973}]
@@ -166,7 +166,7 @@ The balance of binary search trees is usually measured by comparing the numbers 
     \end{itemize}
 \end{definition}
 \begin{definition}[Node balance]
-    A node $i$, with children $i_l$ and $i_r$ and corresponding weights $w[i], w[i_l], w[i_r]$, is $\alpha$-weight-balanced if 
+    A node $i$, with children $i_l$ and $i_r$ and corresponding weights $w[i], w[i_l], w[i_r]$, is $\alpha$-weight-balanced if
     \begin{align}
         w[i_l] \geq & \alpha w[i], \label{weight-balance-left} \\
         w[i_r] \geq & \alpha w[i], \label{weight-balance-right}
@@ -190,7 +190,7 @@ Since the index $J^1$ is related to Sackin's balance index and the Shannon entro
     J^1(T) = \frac{^1H(T)}{\sum_{i\in\mathcal{L}(T)}p_i\nu(i)\log m}, \label{prop6}
 \end{equation}
 where $\mathcal{L}(T)$ is the set of leaves of tree $T$, $^1H(T)$ is the tree's Shannon entropy, $m$ is the internal node degree, $\nu(i)$ is the node depth of leaf $i$, and $p_i$ is the weight of leaf $i$. This implies that, for a given set of node sizes and topology restricted to the set of bifurcating trees, $J^1$ is minimised using Huffman coding \cite{huffman_method_nodate}, i.e. clustering the heaviest nodes closest to the root, and letting the lightest ones populate the higher depth places (figure \ref{balcat}). While a straightforward result, it is an important demonstration of the universality of $J^1$. This implies that constructing an optimal search tree for a given set of frequencies will minimise $J^1$. Furthermore, consider the weighted path length of a weighted binary tree $T$, as defined in computer science literature \cite{nievergelt_binary_nodate}. One immediately sees that minimising the weighted path length is equivalent to maximising $J^1$ on leafy trees. These results enable us to compare the balance of completely different trees, as the behaviour of $J^1$ is consistent across the board. \\
-If we consider a general weight-balance tree, the discussion is only slightly more complicated. In this context, a measure of balance one would commonly encounter in computer science literature is the weighted path length, calculated as 
+If we consider a general weight-balance tree, the discussion is only slightly more complicated. In this context, a measure of balance one would commonly encounter in computer science literature is the weighted path length, calculated as
 \begin{equation}\label{weightedPL}
     |T| = \sum_{i\in V} \nu(i) p_i = \sum_{i\in\tilde{V}}S_i^*.
 \end{equation}
@@ -201,12 +201,12 @@ The only difference between this metric and the Sackin index is the addition of 
 which is the ratio between the number of nodes in the subtree rooted in the left descendant of node $n$ and the number of nodes in the tree rooted in $n$. Furthermore, one could choose a node balance function based on the root balance but as shown in our previous paper, choosing $W^1$ related to the Shannon entropy gives $J^1$ certain desirable properties, a consequence of which is its relationship with Sackin's index. \par
 \fi
 
-        
+
 \section{Expected value of $J^1$ under simple evolutionary processes}\label{expsection}
 % proposition: E(J^1) approaches nlog_2n/E(I_S) as n goes to infinity under Yule and/or uniform and then prove, make it more like a mathematical paper with a sequence of propositions and proofs
 % key things to add: looking at what happens to the upper bound, specifically in the uniform model case
 % calculate limits for the edges of the Jensen gap as n goes to infty
-For applications in evolutionary theory, an important property of balance indices is their expected value under an evolutionary process, as it tells us which process drove the tree into its current state. Equivalently to standard calculations in probability, one can obtain the expected value of a balance index by calculating the sum of the products of balance index values with the corresponding probability of the tree shape. 
+For applications in evolutionary theory, an important property of balance indices is their expected value under an evolutionary process, as it tells us which process drove the tree into its current state. Equivalently to standard calculations in probability, one can obtain the expected value of a balance index by calculating the sum of the products of balance index values with the corresponding probability of the tree shape.
 \begin{definition}
 Let process $P$ generate tree $T_i$ with probability $p(T_i)$ for $T_i\in\mathcal{T}_n$. The expected value of index $I_B$ on $n$ leaves under process $P$ is defined as
     \begin{equation}\label{expvaldef}
@@ -293,7 +293,7 @@ for the upper bound on the gap. The upper bound reaches a maximum at $n=13$ and 
     \includegraphics[width=\textwidth]{Chapter_trees/figures/jensenGapFigure.pdf}
     \caption{\textbf{Top row}: True values of $\mathbb E(J^1)$ for up to $10$ leaves were calculated manually, and the approximations up to $128$ leaves were calculated as $n\log_2n/\mathbb E(I_S)$. \textbf{A} --- uniform model, \textbf{B} --- Yule model.\\
     \textbf{Bottom row}: The Jensen gap of $\mathbb{E}(J^1)$ calculated for trees up to $128$ leaves under the uniform model (\textbf{C}), and the Yule model (\textbf{D}). The size of the gap is calculated as the difference between the true and approximate expected value, with the gaps for $2$ and $3$ leaves equal to zero as there is only one possible bifurcating tree shape for each of those values. Refer to tables \ref{table_yule} and \ref{table_unif} for numerical values of the gap size for the first several values of $n$.}
-    \label{jensenfig} 
+    \label{jensenfig}
 \end{figure}
 In figure \ref{jensenfig}, we show behaviour of the Jensen gap and its bounds for $J^1$ under the Yule and uniform models.
 
@@ -310,10 +310,10 @@ A balance index is typically normalised by considering its extremal values for a
 	%    \item \textbf{subsection} tree ties - equivalence classes in index space, present, discuss
 	%    \item \textbf{subsection} TBD
 	%\end{itemize}
-	
+
 \subsection{Properties of $J^1$ on different tree families}
-One may not encounter trees which yield extreme values of the balance index in practice often, if at all. However, it is still important to investigate the kinds of trees that maximise or minimise the index for the purposes of a complete mathematical discussion. 
-	
+One may not encounter trees which yield extreme values of the balance index in practice often, if at all. However, it is still important to investigate the kinds of trees that maximise or minimise the index for the purposes of a complete mathematical discussion.
+
 \subsubsection{Some special tree topologies}
 For most balance indices in use in evolutionary biology, the least balanced tree for a given number of leaves $n$ is the binary caterpillar tree. We have previously derived a general expression for leafy trees of this topology \cite{lemant_robust_2021}
 \begin{equation}
@@ -352,7 +352,7 @@ For a broom tree $T_{Bq}$ on $n$ leaves, of which $k$ in the broom head, such th
         where $l_1,\dots,l_k$ are the leaf sizes which add up to $q$.
 \end{proposition}
 
-In figure \ref{example_figure_1} we show that the caterpillar is not the minimally balanced leafy tree for a few tree sizes. To take it a step further, consider the following proposition. 
+In figure \ref{example_figure_1} we show that the caterpillar is not the minimally balanced leafy tree for a few tree sizes. To take it a step further, consider the following proposition.
 
 \begin{proposition}\label{cat_prop}
     For leafy trees on $n$ leaves and no linear parts, the caterpillar minimises $J^1$ iff $n<5$.
@@ -367,7 +367,7 @@ In figure \ref{example_figure_1} we show that the caterpillar is not the minimal
     \begin{equation}
         8n\log_2n - 6(n^2+n-2)\log_2 3 + 6(n^2+n-2) > 0,
     \end{equation}
-    which changes sign at $0, 0.667, 1$ and $4.168$. Setting the first derivative of this expression to zero 
+    which changes sign at $0, 0.667, 1$ and $4.168$. Setting the first derivative of this expression to zero
     \begin{equation*}
         8\log_2n+\frac{8}{\log 2}-(12n+6)\log_2 3 + 12n + 6 = 0
     \end{equation*}
@@ -381,7 +381,7 @@ This proposition gives us a threshold for the number of leaves at which the cate
 \end{conjecture}
 
 \subsubsection{Behaviour as $n\to\infty$}
-    
+
     \begin{figure}[h!]
         \begin{center}
         \includegraphics[width = \textwidth]{Chapter_trees/figures/figures_updated.pdf}
@@ -414,12 +414,12 @@ For broom trees, the behaviour is a little more complicated and, perhaps, counte
 \begin{proposition}\label{ropt_prop}
     Let $\mathcal{T}_B(n)$ be the set of all broom trees on $n$ leaves, $r = \frac{k}{n}$ where $k$ is the number of leaves in the broom head for a given tree, and $r_\text{opt}$ the value of $r$ which minimises $J^1$ for a given $n$. Then $r_\text{opt}\to 1$ as $n\to\infty$.
 \end{proposition}
-The proposition says that most leaves on a minimally balanced broom tree will be concentrated in the head, with comparatively few on the handle, resembling a start tree more closely than a caterpillar tree. However, one must take into account how imbalanced the nodes above the broom head are, since one of their subtrees contains most of the tree's leaves, whereas the other is a single leaf. 
+The proposition says that most leaves on a minimally balanced broom tree will be concentrated in the head, with comparatively few on the handle, resembling a start tree more closely than a caterpillar tree. However, one must take into account how imbalanced the nodes above the broom head are, since one of their subtrees contains most of the tree's leaves, whereas the other is a single leaf.
 
-\par 
+\par
 
 Finding the true value of $k$ which minimises $J^1(T_B)$ analytically is difficult. The derivative with respect to $k$ of equation \eqref{J1Tb} yields a transcendental equation which is not analytically solvable.
-    
+
 \section{Discussion}
         %\begin{itemize}
          %   \item $J^1$ is not a traditional balance index, contains more information, more widely applicable

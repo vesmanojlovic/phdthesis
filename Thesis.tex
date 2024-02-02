@@ -10,10 +10,10 @@
 %%Font size: 	11p	(minimun allowed: 8p)
 %%
 %%Line spacing:	1.5x	(1.5x or 2x allowed)
-%% 	
+%%
 %%Page margins:	inner  =   4cm, (minimum allowed: 4cm)
-%%				outer  =   3cm,	(minimum allowed: 2cm) 
-%%				top    = 2.5cm,	(minimum allowed: 2cm) 
+%%				outer  =   3cm,	(minimum allowed: 2cm)
+%%				top    = 2.5cm,	(minimum allowed: 2cm)
 %%				bottom =   3cm	(minimum allowed: 2cm)
 
 
@@ -30,7 +30,7 @@
 \setlength{\footskip}{1.5cm}
 
 %Line spacing:
-\renewcommand{\baselinestretch}{2}
+\renewcommand{\baselinestretch}{1.5}
 
 
 %User's packages
@@ -57,7 +57,7 @@
 
 %Title page
 \include{Frontmatter/Titlepage}
- 
+
 %Table of contents
 \cleardoublepage
 \phantomsection
@@ -68,7 +68,7 @@
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{\listfigurename}
-\listoffigures 
+\listoffigures
 
 %List of tables
 \cleardoublepage
@@ -126,12 +126,11 @@
 
 
 %Bibliography
-\nocite{*}
-\renewcommand{\bibpreamble}{ } %No coments after bibliography title. It had been changed in Contributions. 
+\renewcommand{\bibpreamble}{ } %No coments after bibliography title. It had been changed in Contributions.
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{agsm}
-\bibliography{Bibliography/bbl_general,Bibliography/bbl_usr}
+\bibliography{Bibliography/zotero.bib}
 
 \end{document}
