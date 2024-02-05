@@ -90,11 +90,11 @@ The agent-based modelling framework we decided to use is \texttt{warlock} \cite{
 
 
 \section{Results}
-\subsection{Spatial constraints influence index space trajectories}
+\subsection{Sensitivity of evolutionary mode to parameter values}
 \begin{itemize}
-    \item figure of trajectories and the average trajectory for each spatial mode (both smaller and expanded index set)
-    \item figures should be arranged on a grid dependant on parameter values
-    \item compare to Rob's modes of evolution paper in both instances (base index set and expanded) and discuss
+    \item there is clear variance in trajectories within a spatial config but less than one might expect for parameters within an order of magnitude of each other
+    \item all things but spatial config being equal, the trajectories seem to be distinct in later stages of evolution
+    \item should formalise somehow??
 \end{itemize}
 \begin{figure}
     \centering
@@ -121,6 +121,31 @@ The agent-based modelling framework we decided to use is \texttt{warlock} \cite{
     \label{fig:inv-gland-temporal}
 \end{figure}
 TO DO: add figures for index space, add figures to appendix, add expanded index set figures (both temporal and index space)
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_trajectories/figures/indspace-boundary.pdf}
+    \caption{Average trajectories in index space for tumours progressing via boundary growth.}
+    \label{fig:boundary-indspace}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_trajectories/figures/indspace-non-spatial.pdf}
+    \caption{Average trajectories in index space for well-mixed cancer cell populations.}
+    \label{fig:non-spatial-indspace}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_trajectories/figures/indspace-gland.pdf}
+    \caption{Average trajectories in index space for tumours progressing via gland fission.}
+    \label{fig:gland-indspace}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_trajectories/figures/indspace-inv-gland.pdf}
+    \caption{Average trajectories in index space for invasive glandular tumours.}
+    \label{fig:inv-gland-indspace}
+\end{figure}
+
 % \subsection{Late-stage index-space location implies mode of evolution (?)}
 % \begin{itemize}
 %     \item focus on the overlaps between (average and overall) trajectories of different processes at later stages of tumour growth
@@ -130,7 +155,7 @@ TO DO: add figures for index space, add figures to appendix, add expanded index 
 
 \section{Discussion}
 \begin{itemize}
-    \item clear differences between different tumour trajectories, but also decent amount of variance depending on parameters --- which ones are realistic? (inferred from real data)
+    \item clear differences between different tumour trajectories, but also decent amount of variance depending on parameters --- which ones are realistic? (need to be inferred from real data)
     \item what are the limitations of the approach? --- clear starting point is data availability, but also general inter-patient variation of tumour progression
-    \item next steps --- further refining of the methods and application to more data (Kim's work)
+    \item next steps --- further refining of the methods, sourcing and applying to more data (Kim's work in progress)
 \end{itemize}
