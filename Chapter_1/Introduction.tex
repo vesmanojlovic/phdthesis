@@ -1,2 +1,64 @@
 \chapter{Introduction}\label{chapter:introduction}
-TO DO: \textit{everything}
+TO DO:
+\begin{itemize}
+    \item Introduction - general mathematical oncology overview
+    \item Intro subsection - phylogenetic trees generally and in cancer evo
+    \item Intro subsection - agent-based models in cancer evo
+    \item Intro subsection - fCpGs for lineage tracing in cancer
+    \item Intro subsection - statistical methods (ABC)
+\end{itemize}
+
+Cancer remains one of the most formidable challenges in the realm of health and medicine, causing a quarter of all deaths in the UK \cite{cruk_2022}.
+Despite advances in cancer research, the survival rates for many cancers remain low, with the disease being an increasing burden on healthcare
+systems \cite{financial_burden}. The disease's heterogeneity, both within and between patients, is a major obstacle to effective treatment. Understanding the
+underlying evolutionary processes driving this heterogeneity is crucial to developing new treatments and improving patient outcomes.
+While having a comprehensive mathematical theory of cancer evolution may not be feasible, concrete mathematical models can provide valuable insights into the
+disease's dynamics. To this end, we consider different approaches to modelling cancer evolution via driver mutations, which includes the use of phylogenetic
+trees and agent-based models. Further, we employ methylation data to verify the accuracy of our models using Approximate Bayesian Computation (ABC).\par
+Trees as a mathematical object have found use in a variety of fields, of which biology is our main focus. However, while writing this thesis, we have found
+treesinteresting links to methods in computer science via information theory. This will is discussed in more detail in section \ref{section:trees} and chapter
+\ref{chapter:trees}.
+
+\section{Trees and their applications}
+In the most general sense, a tree is a connected graph with no cycles. In this thesis, when a tree is
+mentioned, we refer to a rooted tree, as formally defined in section \ref{section:preliminary_defs}.
+Trees have found use in a variety of fields, including computer science, biology, and linguistics.
+In computer science, trees are used to represent hierarchical data structures, such as file systems and
+the structure of web pages. The concept of search trees, dating back to the mid 20th century,
+revolutionised the field of computer science with applications in information retrieval in the form of
+binary search trees and self-balancing trees (cite knuth, nievergelt, and all that good stuff). In biology,
+trees date back to the 19th century, when Charles Darwin used them to represent the evolutionary
+relationships between species. Phylogenetic trees have over time become a key tool in analysing the
+lineages of species, viral mutations, and cancer evolution. However, due to the different approach to
+trees in these two fields, the terminology diverges quickly. Furthermore, in computer science, the
+various properties of trees are quantified in certain metrics, such as the entropy and balance of a tree.
+In evolutionary biology, these tools have spent years in development hell, with proprietary approaches
+developed for different applications, rather than using a common framework. In fact, there are at least
+$19$ different metrics for quantifying the balance of a tree, with few of them being directly comparable.
+In a recent paper \cite{lemant_robust_2022}, we proposed a new robust, universal index, $J^1$, for quantifying the
+balance of rooted trees with arbitrary node degree and size distributions. This index is based on the
+Shannon entropy and favours even distributions of node sizes. We showed that $J^1$ is robust, in the sense
+that it is insensitive to small changes in node sizes and to the removal of small nodes (include figures
+you generated for the paper). We further showed that this index unites and generalises two of the most
+popular prior approaches to quantifying tree balance in biology, the Colless index and the Sackin index.
+Applied to evolutionary trees, $J^1$ outperforms conventional tree balance indices as a summary statistic
+for comparing model output to empirical data \cite{noble_spatial_2022}.\par
+Given any tree shape index, an important task is to obtain its expected and extreme values under standard
+tree-generating processes, which can then be used as null-model reference points. \cite{lemant_robust_2022}
+obtained analytical approximations to the expected values of $J^1$ under the Yule process and the uniform
+model, and tested their accuracy numerically for trees with up to $128$ leaves (include figure). In the
+same study, we proved that caterpillar trees minimise $J^1$ among bifurcating trees but not when larger
+outdegrees are permitted.\par
+In chapter \ref{chapter:trees}, we will expand upon three points. First, we further establish $J^1$ as a
+universal index of tree balance by identifying funamental connections to classical results in
+computer science, related to Huffman coding and self-balancing tree data structures. Second, we derive
+upper bounds on the error of the expected value approximations for the Yule process and the uniform models.
+For the Yule process, we prove that the approximation rapidly convergest to the true expectation in the
+large tree limit. Finally, we investigate the minimal values of $J^1$ in important special cases,
+obtaining a counter intuitive result in the large tree limit.
+
+\section{Agent-based modelling in oncology}
+
+\section{Approximate Bayesian computation}
+
+\section{Fluctuating methylation clocks}

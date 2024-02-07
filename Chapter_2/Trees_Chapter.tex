@@ -2,7 +2,7 @@
 \textbf{TO DO: } Finish introductions
 \section{Introduction}
 	%\begin{itemize}
-	%    \item literature review - tree methods through the ages and relevant questions in cancer evolution
+	%   \item literature review - tree methods through the ages and relevant questions in cancer evolution
 	%    \item discussion of the balance index paper - go through the discussion and identify points which can be expanded, use it as inspiration for the indtroduction
 	%\end{itemize}
  %TO DO: introduce weight balance trees and discuss the similarities between them and the trees we use for J^1
@@ -68,7 +68,7 @@ Before getting into the properties of $J^1$ and related indices, we will briefly
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_trees/figures/yule-unif-figure.pdf}
+    \includegraphics[width=\textwidth]{Chapter_2/figures/yule-unif-figure.pdf}
     \caption{Comparison of probabilities for generation of trees on $4$ leaves under the Yule and uniform models.}
     \label{yule-unif-figure}
 \end{figure}
@@ -179,7 +179,7 @@ The balance of weight-balanced trees is optimised dynamically through operations
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{Chapter_trees/figures/balcat.pdf}
+    \includegraphics[width=0.8\textwidth]{Chapter_2/figures/balcat.pdf}
     \caption{By including the node-balance function $W^1$ in $J^1$, we allow for the possibility of perfectly balanced caterpillars (left) and less balanced fully symmetric trees (right) based on the node size distribution in the tree.}
     \label{balcat}
 \end{figure}
@@ -290,7 +290,7 @@ for the upper bound on the gap. The upper bound reaches a maximum at $n=13$ and 
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_trees/figures/jensenGapFigure.pdf}
+    \includegraphics[width=\textwidth]{Chapter_2/figures/jensenGapFigure.pdf}
     \caption{\textbf{Top row}: True values of $\mathbb E(J^1)$ for up to $10$ leaves were calculated manually, and the approximations up to $128$ leaves were calculated as $n\log_2n/\mathbb E(I_S)$. \textbf{A} --- uniform model, \textbf{B} --- Yule model.\\
     \textbf{Bottom row}: The Jensen gap of $\mathbb{E}(J^1)$ calculated for trees up to $128$ leaves under the uniform model (\textbf{C}), and the Yule model (\textbf{D}). The size of the gap is calculated as the difference between the true and approximate expected value, with the gaps for $2$ and $3$ leaves equal to zero as there is only one possible bifurcating tree shape for each of those values. Refer to tables \ref{table_yule} and \ref{table_unif} for numerical values of the gap size for the first several values of $n$.}
     \label{jensenfig}
@@ -323,7 +323,7 @@ Most balance indices in literature define the caterpillar topology as the least 
 \par
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{Chapter_trees/figures/example_figure_1.pdf}
+    \includegraphics[width=\textwidth]{Chapter_2/figures/example_figure_1.pdf}
     \caption{If we limit our search to leafy trees, the least balanced tree on a given number of leaves is not necessarily the caterpillar. Pictured are the caterpillar trees on $4$, $6$, and $9$ leaves, as well as minimally balanced brooms for $6$ and $9$ leaves, with corresponding $J^1$ values.}
     \label{example_figure_1}
 \end{figure}
@@ -384,7 +384,7 @@ This proposition gives us a threshold for the number of leaves at which the cate
 
     \begin{figure}[h!]
         \begin{center}
-        \includegraphics[width = \textwidth]{Chapter_trees/figures/figures_updated.pdf}
+        \includegraphics[width = \textwidth]{Chapter_2/figures/figures_updated.pdf}
         \caption{The labels used in the figures are as above - $n$ for number of leaves, $k$ for number of leaves in the broom head, $r=n/k$. \textbf{A:} Value of $r$ for which the minimum value of $J^1$ is obtained on leafy trees. Trees on $n$ leaves which satisfy $r = \frac{n+a}{2n}$, for $a=0,1,2,\dots$ lie on the dashed grey lines. \textbf{B:} Behaviour of caterpillar and broom for different values of $n$. \textbf{C:} $J^1$ for different broom trees on a given number of leaves using equation \eqref{J1Tb}. The dashed lines indicate the value of $r$ for which $J^1$ is minimal.}
         \label{Rfigures}
         \end{center}
