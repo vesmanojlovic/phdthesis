@@ -1,28 +1,81 @@
-\chapter{Agent-based workflow for inferring evolutionary parameters from molecular data using approximate Bayesian computation}\label{demonchap}
-In this chapter, I will go over the methods I have used and developed for work on data in chapter \ref{methchap}.
+\chapter{Agent-based workflow for inferring evolutionary parameters from molecular data using approximate Bayesian computation}\label{chapter:methdemon}
+
 
 \section{Introduction}
-\subsection{Spatial agent-based modelling}
-\begin{itemize}
-    \item go over a few relevant models in the field and how they compare to demon
-    \item discuss the general assumptions and limitations of ABM
-\end{itemize}
+In chapter \ref{chapter:trajectories}, we used a general agent-based model to investigate broad evolutionary
+patterns as related to spatial organisation. While the model was capable of simulating the dynamics of
+tumour growth, its utility is limited by the computational cost of going beyond $10^6$ cells. This means
+that using the model's outputs in comparison to or to draw inference from real data is not feasible. \par
+There are a few ways to address this issue. For example, rather than simulating all clones in a tumour, we
+could take the approach of \cite{sottoriva_big_2015} and use demes (tumour glands) as the agent of our
+simulation. This would allow for a realistically-sized tumour to be generated as the number of glands would
+be around the right order of magnitude. A problem with this approach is that it loses resolution since a
+gland's population is assumed to have undergone a sweep the moment a mutation arises. If we wanted to
+study evolutionary dynamics on a finer scale we would need to at least simulate the dynamics of cell
+lineages, if not individual cells. \par
+In \cite{gabbutt_evolutionary_2023}, the authors employ a stochastic model for an expanding cell population
+to model the behaviour of fluctuating CpG sites in blood cancers. The model is capable of simulating the
+dynamics and the corresponding fluctuating methylation arrays of lymphoid malignancies at scale. However,
+this model does not suit our purposes either as it is not spatially explicit, and we need to be able to
+discriminate between tumour glands in colorectal cancer based on their spatial organisation.
 
 
-\subsection{Approximate Bayesian computation (ABC)}
-\begin{itemize}
-    \item high-level introduction of ABC
-    \item papers in the field which have used some form of ABC
-\end{itemize}
+\section{Colorectal adenocarcinoma}
+Colorectal adenocarcinoma is a type of cancer that arises from the epithelial cells lining the colon.
+It is a solid tumour, which means we cannot ignore the spatial organisation of the cells. The tumour's
+origin, tumorigenesis, follows an accumulation of mutations in a cell's DNA, which leads to the cell's transformation
+from a healthy to malignant cell \cite{fearon_genetic_1990}. Once the malignancy is established, the tumour
+forms hierarchical cell structures similar to those of normal tissue \cite{cernat_colorectal_2014}, organising
+into crypt-like glands. The tumour spread by the process of gland fission, which happens when a gland's
+population grows large enough to split into two glands \cite{preston_bottom-up_2003}. This process is what
+informs our apprach to simulating the tumour's growth.
 
-\section{Initial simulation workflows}
-\begin{itemize}
-    \item go over the old \texttt{demon} simulations with \texttt{demonmeth} R package analysis
-    \item discuss why the approach worked
-    \item point out the ways in which it didn't exactly work (i.e. impossible to get independent methylation and demethylation rates; output files sometimes too large to import into R and analyse efficiently; sometimes large files may not contain all the required data)
-\end{itemize}
 
-\section{Simulating fluctuating methylation arrays with \texttt{methdemon}}
+\section{Modifying existing simulation workflows}\label{section:old_famework}
+% \begin{itemize}
+%     \item go over the old \texttt{demon} simulations with \texttt{demonmeth} R package analysis
+%     \item discuss why the approach worked
+%     \item point out the ways in which it didn't exactly work (i.e. impossible to get independent methylation and demethylation rates; output files sometimes too large to import into R and analyse efficiently; sometimes large files may not contain all the required data)
+% \end{itemize}
+An analytical approach to modelling gland fission is difficult, due to the complexity of the process,
+as each gland has its own internal evolutionray dynamics in addition to spatial organisation in relation
+to other glands. Furthermore, fission splits a gland's population into two, with the daughter glands'
+spatial organisation further complicating the model. The issue arises when we consider the possibilities
+of boundary growth versus gland fissions being allowed throughout the tumour. If we limit the discussion
+to cells rather than glands, boundary growth seems to result in cell phylogenies with longer branches than
+unrestricted growth \cite{lewinsohn_state-dependent_2023}, which would make the latter more consistent with
+neutral evolution \cite{sottoriva_big_2015, williams_identification_2016}. However, as solid tumours often have spatial restrictions,
+one would not expect a purely unrestricted growth model to be realistic. To investigate how these spatial
+models affect a tumour's evolutionary dynamics and the corresponding methylation arrays, we used \texttt{demon}
+to simulate different scenarios. The output data was then assigned methylation arrays using \texttt{demonmeth},
+a proprietary R package (figures \ref{fig:old_workflow1} and \ref{fig:old_workflow2}).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapter_4/figures/old_workflow1.png}
+    \caption{The old workflow for simulating tumour growth and assigning methylation arrays.}
+    \label{fig:old_workflow1}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapter_4/figures/old_workflow2.png}
+    \caption{The old workflow for simulating tumour growth and assigning methylation arrays.}
+    \label{fig:old_workflow2}
+\end{figure}
+
+While informative on a high level, this approach had multiple issues. Firstly, the simulations were
+limited to a couple million cells which, after assigning across glands, resulted in a tumour too small
+to reasonably compare to real data. Secondly, previous work on fluctuating methylation arrays
+\cite{gabbutt_fluctuating_2022, gabbutt_evolutionary_2023} has shown that the methylation and demethylation
+rates are not necessarily equal, which is not a feature of the \texttt{demon} simulations, where we used
+passenger mutations as a proxy for epigenetic changes. However, these issues may not have been insurmountable
+with clever tweaks to code. The final nail in the coffin came with the size of output files, as they were often
+unwieldy and difficult to handle by the R compiler. This meant that we would have to alter our approach in a way
+which allows for a leaner output, while keeping the spatial aspect of the evolutionary dynamics of the tumour intact.
+For that purpose, we developed a new agent-based model, \texttt{methdemon}.
+
+
+\section{Simulating fluctuating methylation arrays}\label{section:methdemon}
 \subsection{Overview}
 \begin{itemize}
     \item go over the simulation's inner workings
@@ -32,7 +85,7 @@ In this chapter, I will go over the methods I have used and developed for work o
 \subsection{Examples}
 Provide example outputs (and their visualisations), parameter tables and a citation/link to the github repo.
 
-\section{Fluctuating methylation arrays through the lens of ABC}
+\section{Fluctuating methylation arrays through the lens of ABC}\label{section:methabc}
 \subsection{Overview}
 \begin{itemize}
     \item go over the \texttt{pyabc} package briefly (cite)

@@ -1,6 +1,6 @@
-\chapter{Extreme and expected values of universal tree balance index $J^1$}\label{chapter:indices}
+\chapter{Extreme and expected values of universal tree balance index $J^1$}\label{chapter:trees}
 \textbf{TO DO: } Finish introductions
-\section{Introduction}
+\section{Introduction}\label{sec:trees_intro}
 	%\begin{itemize}
 	%   \item literature review - tree methods through the ages and relevant questions in cancer evolution
 	%    \item discussion of the balance index paper - go through the discussion and identify points which can be expanded, use it as inspiration for the indtroduction
@@ -12,10 +12,10 @@
 - explain how evolutionary process differences can affect tree balance and mention the problem of phylogenetic trees in cancer\\
 The balance of a tree can imply properties other than the symmetry in the tree's topology. Depending on the choice of index from at least $19$ available in literature \cite{fischer_tree_2021}, the intuition and results may vary drastically or not at all between them. A common issue among them, however, is universality --- some indices are only defined under certain topological restrictions (such as bifurcating trees), while others may not account for trees containing internal nodes with only one descendant or nodes with non-zero node sizes. As a consequence, it is difficult to use one index across different areas of research or even compare trees on different numbers of leaves from the same data source. Having a universal measure of balance applicable in this way would enable sensical comparison between any two trees. \par
 In phylogenetics, balanced trees
-In a previous paper \cite{lemant_robust_2021}, we introduced a new robust, universal balance index $J^1$. This index can be used on any tree topology and can account for trees whose nodes have non-zero size. The basic properties of the index are covered in the original paper, and in this follow-up we explore additional questions one might have when choosing a balance index.
+In a previous paper \cite{lemant_robust_2022}, we introduced a new robust, universal balance index $J^1$. This index can be used on any tree topology and can account for trees whose nodes have non-zero size. The basic properties of the index are covered in the original paper, and in this follow-up we explore additional questions one might have when choosing a balance index.
 
 
-\section{Definitions}\label{defsec}
+\section{Definitions}\label{sec:preliminary_defs}
 Before getting into the properties of $J^1$ and related indices, we will briefly introduce these indices, tree naming suggestions and conventions, and notation used throughout the paper.
 \begin{definition}[Rooted tree]
     A \textbf{rooted tree} $T$ is a connected acyclic graph with node set $V(T)$, edge (branch) set $E(T)$, and node magnitudes assigned from $\mathbb{R}^+_0$, with an internal node designated as the root of $T$. We denote with $\tilde{V}(T)$ the set of nodes with descendants of non-zero magnitude of tree $T$ and with $L(T)$ the set of its leaves, that is nodes with no descendants.\\
@@ -73,13 +73,13 @@ Before getting into the properties of $J^1$ and related indices, we will briefly
     \label{yule-unif-figure}
 \end{figure}
 
-The Yule and uniform models are statistical models which find their applications in evolutionary biology. Specifically, the Yule model, also known as the pure birth and coalescent model, is used when considering speciation rates and patterns \cite{aldous_stochastic_2001, steel_properties_2001}. The uniform model is typically encountered in evolutionary process considerations \cite{mooers_inferring_1997, steel_distributions_2000}. While simple, the two are are valuable null models for studying different aspects of evolution.
+The Yule and uniform models are statistical models which find their applications in evolutionary biology. Specifically, the Yule model, also known as the pure birth and coalescent model, is used when considering speciation rates and patterns \cite{aldous_stochastic_2001, steel_properties_2001}. The uniform model is typically encountered in evolutionary process considerations \cite{mooers_inferring_1997, mckenzie_distributions_2000}. While simple, the two are are valuable null models for studying different aspects of evolution.
 
 
 \section{Balancing binary trees according to $J^1$}
-The balance index $J^1$ is defined on trees with arbitrary node out-degree distributions and node magnitudes \cite{lemant_robust_2021}. Depending on use case, this definition may be considered too broad. Specifically, in computer science the most commonly used tree is a binary tree.
+The balance index $J^1$ is defined on trees with arbitrary node out-degree distributions and node magnitudes \cite{lemant_robust_2022}. Depending on use case, this definition may be considered too broad. Specifically, in computer science the most commonly used tree is a binary tree.
 
-\begin{definition}[Binary tree \cite{nievergelt_binary_nodate}]
+\begin{definition}[Binary tree \cite{nievergelt_binary_1974}]
 	A \textbf{binary tree} is a rooted tree such that each node can have $0$, $1$, and $2$ children.
 \end{definition}
 
