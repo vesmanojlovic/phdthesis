@@ -73,12 +73,12 @@ outdegrees are permitted.\par
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{Chapter_1/figures/ruindices_paper_figures.png}
-    \caption{\textbf{a)}} $J^1$ values for $100$ random trees on $16$ leaves using the alpha-gamma model,
+    \caption{\textbf{a)} $J^1$ values for $100$ random trees on $16$ leaves using the alpha-gamma model,
     with $\alpha\sim \text{Unif}(0,1)$ and $\gamma\sim \text{Unif}(0,\alpha)$. The values were
     calculated before and after applying a $1\%$ population threshold, i.e. removing all leaves
-    with sizes smaller than $0.01$ times the total population. textbf{b)}} $J^1$ values
+    with sizes smaller than $0.01$ times the total population. textbf{b)} $J^1$ values
     for trees generated under the Yule process and the uniform model. Solid curves represent the approximate
-    expected values, and the dashed lines the $5$th and $95$th percentiles.\}
+    expected values, and the dashed lines the $5$th and $95$th percentiles.}
     \label{fig:robustness}
 \end{figure}
 
@@ -132,25 +132,149 @@ Furtermore, as the main limitation of the model's scalability is tied to the inh
 random numbers, it is not well-suited to simulating neutral stochastic markers, such as fluctuating methylation
 clocks \cite{gabbutt_fluctuating_2022}. This is further discussed in section \ref{section:old_famework}.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_1/figures/demon_events.png}
-    \caption{Event hierarchy in the \texttt{demon-warlock} framework.}
+    \includegraphics[width=0.75\textwidth]{Chapter_1/figures/demon_hierarchy.pdf}
+    \caption{Event hierarchy in the \texttt{demon-warlock} framework. Figure reproduced from \cite{bak_warlock_2023} with
+    the authors' permission.}
     \label{fig:demon_events}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_1/figures/demonanalysis_example.png}
-    \caption{Example output from \texttt{demon}, visualised using the \texttt{demonanalysis} package.}
+    \caption{Example output from \texttt{demon}, visualised using the \texttt{demonanalysis} package.
+    \textbf{a} Muller plot of clonal dynamics over time. Each colour represents a clone with a distinct
+    combination of driver mutations.
+    \textbf{b} Final proportions and spatial plot of clones.
+    \textbf{c} Fish plot of clone populations over time using the same colours as in \textbf{a}.
+    \textbf{d} Muller plot showing evolution of tumour cell division rate.
+    \textbf{e} Final spatial distribution of cell division rates.
+    \textbf{f} Final spatial distribution of the mean numbers of passender mutations per cell.
+    \textbf{g} Final spatial distribution of the number of tumour cells per gland.}
     \label{fig:demonanalysis_example}
 \end{figure}
+\clearpage
 
 \section{Likelihood-free inference}
 \subsection{Introduction}
-\textit{General introduction to Bayesian inference and the need for likelihood-free methods.}
+To verify whether a model predicts behaviour of the observed system, a common approach is comparing its
+output to measurements. The way this is done depends on the complexity of the model and the data. Here
+we discuss the general framework of likelihoo-free inference, and more specifically the use of Approximate
+Bayesian Computation (ABC). \par
+Models based on differential equations can be compared to data using likelihood-based methods. In the
+frequentist tradition, the likelihood function is used to estimate the parameters of the model under the
+assumption that there is a correct, or ``true" value of those parameters. An alternative approach is
+Bayesian statistics, which uses random variables ($\theta$) to represent the uncertainty in the parameters. The
+distribution of these random variables before observing the data is called the prior distribution ($P(\theta)$).
+After performing measurements in the system and obtaining data ($D$) which has an associated likelihood function
+($P(D|\theta)$), the prior distribution is update to the posterior distribution ($P(\theta|D$)) using Bayes' theorem
+\cite{bayes_essay_1763}:
+\begin{equation}
+    P(\theta|D) = \frac{P(D|\theta)P(\theta)}{P(D)}
+\end{equation}
+The likelihood function is thus a key component of Bayesian statistics, quantifying the probability of observing
+the data given the parameters of the model. However, its greatest asset is also its greatest weakness. Depending
+on the complexity of the model and the data, the likelihood function can be difficult or impossible to calculate
+analytically, or can be too computationally expensive to calculate numerically. This is especially true for
+stochastic models, such as agent-based models, where the likelihood function is often intractable. \par
+In the case of intractable likelihoods, a common approach is to use likelihood-free inference methods, designed
+to approximate the posterior distribution without the need to calculate the likelihood function. These methods
+rely on the generation of simulated data from the model, and the comparison of these simulations to the observed
+data. Instead of calculating the likelihood fucntion, these methods often involve a process of simulation and
+rejection. A common drawback of likelihood-free inference methods is that they can be computationally expensive,
+as they often require a large number of simulations to obtain a good approximation of the posterior distribution.
+However, as the computational power of modern computers increases, these methods are becoming more and more
+feasible for a wide range of models and data.
 
 \subsection{Approximate Bayesian Computation}
-\textit{Background on ABC and its use in cancer research.}
+Approximate Bayesian Computation (ABC) is a likelihood-free inference method that has gained popularity in the
+last three decades \cite{tavare_inferring_1997, lechevallier_integrating_2010, jagiella_parallelization_2017}.
+The basic idea behind ABC is to approximate the posterior distribution of the parameters of a model by comparing
+simulated data to observed data. \par
+In the most general form of ABC, the algorithm proceeds as follows:
+\begin{enumerate}
+    \item Sample a set of parameters from the prior distribution, $\hat\theta$.
+    \item Simulate data from the model using the parameters.
+    \item Compare the simulated data ($\hat D$) to the observed data ($D$) using a distance function, $d(\hat D, D)$.
+    \item If the distance between the simulated and observed data is less than a certain threshold $\epsilon$, accept the
+    parameters. Otherwise, reject them.
+    \item Repeat steps 1-4 until a sufficient number of accepted parameters have been obtained.
+\end{enumerate}
+The distance threshold must be strictly positive, and is often chosen to be a small value. The choice of the distance
+function is crucial, as it determines how the simulated data is compared to the observed data. Alternatively, in the
+case of high-dimensional data, the distance function can be replaced by a summary statistic, $S$, which is a function of the
+data, i.e. $d'(S(\hat D), S(D))$. The choice of summary statistics is also crucial, as it determines how the data is
+reduced before the comparison. \par
+ABC does not come without its own set of challenges. As it relies on comparing relevant features of the simulated data to
+the observed data, the choice of summary statistic or distance metric is crucial, as it determines how the data is
+reduced before the comparison. Fortunately, there are methods for reducing dimensionality of the data which
+narrows in on its informative aspects \cite{blum_comparative_2013}.
+The choice of the distance threshold is also essential, as it determines
+the acceptance rate of the algorithm. Setting the threshold too high or too low can lead to biased or inefficient
+estimates of the posterior distribution. However, this can be mitigated by using a dynamic threshold, which is
+adapted during the course of the algorithm \cite{prangle_adapting_2017}.
+Finally, the computational aspects of ABC must be mentioned, as the algorithm relies on repeated simulations of
+potentially complex models. This can require a large amount of computational resources, raising questions about
+the method's scalability and practicality. An obvious way to circumvent this is to use a model which is as
+lightweight as possible. Even in the case of infinite compute available, one must be mindful of the fact that
+the more complex the model, the more complex the inference problem, and the more complex the inference problem,
+the more complex the model. This is a feedback loop which can render both the model and subsequent analysis
+uninterpretable. Therefore, we believe that the best practice as a mathematician and applied scientist is to abstract
+the model enough to be able to draw conclusions from it, but not so much that it becomes uninformative. \par
+In chapter \ref{chapter:methdemon}, we introduce our simplified model of colorectal cancer gland fission and
+the accompanying ABC workflow. We discuss the choice of summary statistics and the performance of the ABC
+algorithm, and subsequently demonstrate the model's utility in inferring the evolutionary history of a tumour
+from methylation data in chapter \ref{chapter:methylation}.
+
 
 \section{Fluctuating methylation clocks}
+The concept of a molecular clock is a hallmark of evolutionary biology. It is based on the idea that the
+rate of evolution of a particular gene or set of genes is constant over time, and can be used to estimate
+the time of divergence between species or the time of a particular event in the evolutionary history of a
+species. The most famous example of a molecular clock is the mitochondrial DNA clock, which is used to
+estimate the time of divergence between species \cite{hasegawa_dating_1985}. The key principle behind molecular
+clocks is that closely related species or individual will have more similar sequences than distantly related
+ones. This also translates to individual cells in cancer. The issue with using molecular clocks in cancer
+is that ``slowly ticking" molecular clocks, i.e. ones with a low mutation rate, are not informative enough
+on the timescale of cancer evolution, limiting their utility to cell lineages which diverged too far in the past,
+with recent events remaining undetectable. On the other hand, ``fast ticking" molecular clocks can
+reveal recent evolutionary events but also have their own limitations, such as independent mutations in the
+same site \cite{kuipers_single-cell_2017}. \par
+\textit{TO DO:} Introduce and discuss FMCs.
+
+
+
+\section{Aims and objectives}
+
+\subsection{Hypotheses}
+\begin{enumerate}
+    \item The $J^1$ index is a universal measure of tree balance, and can be used, in conjunction with other
+        tree shape indices, to differentiate between evolutionary modes in cancer.
+    \item Spatial agent-based models are a powerful tool for simulating the evolutionary dynamics of solid tumours.
+    \item These methods are useful for inferring the evolutionary history of colorectal cancer based on multi-site
+        methylation array sequencing.
+\end{enumerate}
+
+\subsection{Aims}
+\begin{enumerate}
+    \item Calculate or approximate important properties of the $J^1$ index, such as its expected value under
+        standard tree-generating processes.
+    \item Determine the utility of sets of tree shape indices for differentiating between evolutionary modes in cancer.
+    \item Extend the fluctuating methylation clock model to multi-site sequencing of solid tumours on the
+        example of colorectal cancer.
+\end{enumerate}
+
+\subsection{Objectives}
+\begin{enumerate}
+    \item Contextualise $J^1$ within the broader field of tree shape indices in biology and computer science.
+    \item Investigate extreme and expected values of $J^1$ under standard tree-generating processes.
+    \item Recapitulate the classification of evolutionary modes in cancer using a set of three tree shape indices.
+    \item Extend the discussion to a more interpretable and general system of tree shape indices.
+    \item Develop an agent-based model for simulating the evolutionary dynamics of colorectal adenocarcinoma.
+    \item Develop an ABC workflow for inferring the evolutionary parameters of the model, specifically the
+        gland fission rate, methylation and demethylation rates, driver mutation rate, selective advantage,
+        and the effective number of lineages per tumour gland.
+    \item Apply the model to colorectal cancer data and compare the inferred phylogenies to the trees generated
+        by the model.
+\end{enumerate}
