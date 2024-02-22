@@ -58,7 +58,7 @@ and biology, with certain results being rediscovered nigh on half a century late
 In a recent paper \cite{lemant_robust_2022}, Lemant and Noble proposed a new robust, universal index, $J^1$, for quantifying the
 balance of rooted trees with arbitrary node degree and size distributions. This index is based on
 Shannon entropy and favours even distributions of node sizes. We showed that $J^1$ is robust, in the sense
-that it is insensitive to small changes in node sizes and to the removal of small nodes (figure \ref{fig:robustness}A).
+that it is insensitive to small changes in node sizes and to the removal of small nodes (figure \ref{fig:robustness}B, C).
 We further showed that this index unites and generalises two of the most
 popular prior approaches to quantifying tree balance in biology, the Colless index and the Sackin index.
 Applied to evolutionary trees, $J^1$ outperforms conventional tree balance indices as a summary statistic
@@ -66,21 +66,25 @@ for comparing model output to empirical data \cite{noble_spatial_2022}.\par
 Given any tree shape index, an important task is to obtain its expected and extreme values under standard
 tree-generating processes, which can then be used as null-model reference points. In \cite{lemant_robust_2022}, we
 obtained analytical approximations to the expected values of $J^1$ under the Yule process and the uniform
-model, and tested their accuracy numerically for trees with up to $128$ leaves (figure \ref{fig:robustness}B). In the
+model, and tested their accuracy numerically for trees with up to $128$ leaves (figure \ref{fig:robustness}A). In the
 same study, we proved that caterpillar trees minimise $J^1$ among bifurcating trees but not when larger
 outdegrees are permitted.\par
 
-\begin{figure}
+\begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_1/figures/ruindices_paper_figures.png}
-    \caption{\textbf{a)} $J^1$ values for $100$ random trees on $16$ leaves using the alpha-gamma model,
-    with $\alpha\sim \text{Unif}(0,1)$ and $\gamma\sim \text{Unif}(0,\alpha)$. The values were
+    \includegraphics[width=0.82\textwidth]{Chapter_1/figures/old_j1_paper_figure.pdf}
+    \caption{\textbf{A} $J^1$ values for trees generated under the Yule process and
+    the uniform model. Solid grey curves represent the approximate expected values, and
+    the dashed lines the $5$th and $95$th percentiles. \\
+    \textbf{B} $J^1$ values for $100$ random
+    trees on $16$ leaves using the alpha-gamma model, with $\alpha\sim \text{Unif}(0,1)$
+    and $\gamma\sim \text{Unif}(0,\alpha)$. The values were
     calculated before and after applying a $1\%$ population threshold, i.e. removing all leaves
-    with sizes smaller than $0.01$ times the total population. textbf{b)} $J^1$ values
-    for trees generated under the Yule process and the uniform model. Solid curves represent the approximate
-    expected values, and the dashed lines the $5$th and $95$th percentiles.}
+    with sizes smaller than $0.01$ times the total population.\\
+    \textbf{C} Normalised Sackin index values for the same trees as in \textbf{B}.}
     \label{fig:robustness}
 \end{figure}
+\clearpage
 
 
 \section{Agent-based modelling in oncology}
@@ -94,7 +98,7 @@ simulations. This is particularly useful for modelling solid tumours as it allow
 the spatial heterogeneity of the tumour microenvironment and the effects of spatial constraints on tumour growth.
 A strength of ABMs is that they can be as simple or as complex as the researcher needs them to be \cite{colyer_seven-step_2023}.
 However, therein lies their weakness, as oversimplification of a model can lead to rapid loss of its utility in
-modelling the behaviour of a complex system such as cancer. On the other hand, a model that is too complex, and
+capturing the behaviour of a complex system such as cancer. On the other hand, a model that is too complex, and
 attempts to include everything from epigenetic mutations to the effects of the immune system on the tumour, is likely
 too computationally expensive to be useful for modelling a tumour of reasonable size. This is an organic demonstration
 of many a researcher's favourite saying \textit{all models are wrong, but some are useful, and some are more useful
