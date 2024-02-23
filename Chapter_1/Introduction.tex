@@ -87,6 +87,25 @@ outdegrees are permitted.\par
 \clearpage
 
 
+\section{Mathematical oncology}
+\textbf{TO DO:} Better references in the introduction subsection. Write the modelling subsection
+\subsection{Introduction}
+Cancer emergence and progression is an evolutionary process \cite{nowell_clonal_1976, merlo_cancer_2006}.
+This statement is now widely accepted, and the applications of quantitative methods found in evolutionary
+biology in cancer research are numerous \cite{rockne_2019_2019, yin_review_2019, kourou_applied_2021}.
+The, now well established, area of mathematical oncology is informed by clinicians, computer scientists,
+mathematicians of all flavours, and biologists alike \cite{bull_hallmarks_2022}, which has led to a rapid
+development of more specific avenues of research spanning from the initiation of the disease
+\cite{paterson_mathematical_2020} to the optimisation of therapy protocols
+\cite{west_survey_2023}. This is a perfect reflection of the complexity
+of the disease itself, as its rapid evolution and severe constraints on information gathering necessitate
+the combined efforts of thousands of scientists. Mathematics plays its own role in this effort, providing
+a common language through rigour and methods development \cite{},
+and frameworks for the interpretation of data \cite{}.
+
+\subsection{Modelling cancer evolution}
+
+
 \section{Agent-based modelling in oncology}
 
 \subsection{Introduction}
@@ -245,8 +264,23 @@ on the timescale of cancer evolution, limiting their utility to cell lineages wh
 with recent events remaining undetectable. On the other hand, ``fast ticking" molecular clocks can
 reveal recent evolutionary events but also have their own limitations, such as independent mutations in the
 same site \cite{kuipers_single-cell_2017}. \par
-\textit{TO DO:} Introduce and discuss FMCs.
-
+Recently, a new type of molecular clock has been proposed, the fluctuating methylation clock, based on the
+observation that the methylation status of certain CpG sites in the genome is heritable but fluctuates
+stochastically over time \cite{gabbutt_fluctuating_2022, gabbutt_evolutionary_2023}. A CpG site is a
+cytosine nucleotide followed by a guanine nucleotide in the linear sequence of bases along its
+5' $\rightarrow$ 3' direction, and is a common site of methylation in the genome. As citosine and guanine
+are complementary, each CpG site in the 5' $\rightarrow$ 3' direction has a corresponding pair in the
+3' $\rightarrow$ 5' direction. This means that each CpG pair can be in one of three states: both
+methylated (homozygously methylated), both unmethylated (homozygously unmethylated), or one methylated
+and the other unmethylated (heterozygously methylated). Depending on tissue type, the fluctuating CpG
+(fCpG) sites can number somewhere between $1000$ and $2000$, which means each cell has a potentially
+unique barcode in its fCpG array. As the array is not constant, with methylations and demethylations
+of fCpG sites happening over the course of cell divisions, the authors of the two papers covering fCpGs
+so far have been able to reconstruct the evolutionary history of healthy colonic crypts and lymphoid
+malignancies with high accuracy. This is a promising development, as sequencing methylation arrays
+is a cheaper method than genome sequencing, but may offer finer temporal resolution. In chapter
+\ref{chapter:methylation}, we investigate whether multi-site methylation array sequencing can be used
+to reconstruct clonal dynamics of colorectal cancer.
 
 
 \section{Aims and objectives}
