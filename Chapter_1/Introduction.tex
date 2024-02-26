@@ -7,14 +7,14 @@ While having a comprehensive mathematical theory of cancer evolution may not be 
 disease's dynamics. To this end, we consider different approaches to modelling cancer evolution via driver mutations, which includes the use of phylogenetic
 trees and agent-based models. Further, we employ methylation data to verify the accuracy of our models using Approximate Bayesian Computation (ABC).\par
 Trees as a mathematical object have found use in a variety of fields, of which biology is our main focus. However, while writing this thesis, we have found
-treesinteresting links to methods in computer science via information theory.
+interesting links to methods in computer science via information theory.
 In chapter \ref{chapter:trees}, we expand upon three points. First, we further establish $J^1$ as a
 universal index of tree balance by identifying funamental connections to classical results in
 computer science, related to Huffman coding and self-balancing tree data structures. Second, we derive
 upper bounds on the error of the expected value approximations for the Yule process and the uniform models.
 For the Yule process, we prove that the approximation rapidly convergest to the true expectation in the
 large tree limit. Finally, we investigate the minimal values of $J^1$ in important special cases,
-obtaining a counter intuitive result in the large tree limit.\par
+obtaining a counter-intuitive result in the large tree limit.\par
 In chapter \ref{chapter:trajectories}, we employ the index $J^1$, along with two other tree shape indices, to
 test to what degree one can differentiate between different evolutionary regimes in cancer by only relying at
 tree shape indices. These results are compared to a new, more comprehensive system of tree shape indices \cite{noble_new_2023}
@@ -30,6 +30,47 @@ $10$ colorectal cancer samples. Additionally, using tree shape indices, we compa
 generated in the simulation. This provides us an additional tool for validating the model and the inference process. We also
 explore the potential of using the model for predicting the future evolution of tumours, and discuss the limitations of the
 workflow for our specific use case.\par
+
+
+\section{Mathematical oncology}
+\textbf{TO DO:} Better references in the introduction subsection. Write the modelling subsection
+\subsection{Introduction}
+Cancer emergence and progression is an evolutionary process \cite{nowell_clonal_1976, merlo_cancer_2006}.
+This statement is now widely accepted, and the applications of quantitative methods found in evolutionary
+biology in cancer research are numerous \cite{rockne_2019_2019, yin_review_2019, kourou_applied_2021}.
+The, now well established, area of mathematical oncology is informed by clinicians, computer scientists,
+mathematicians of all flavours, and biologists alike \cite{bull_hallmarks_2022}, which has led to a rapid
+development of more specific avenues of research spanning from the initiation of the disease
+\cite{paterson_mathematical_2020} to the optimisation of therapy protocols
+\cite{west_survey_2023}. This is a perfect reflection of the complexity
+of the disease itself, as its rapid evolution, heterogeneity and constraints on
+how much information we can obtain from a patient take
+the combined efforts of thousands of scientists. Mathematics plays its own role in this effort, providing
+a common language through rigour and methods development \cite{},
+and frameworks for the interpretation of data \cite{}.
+
+\subsection{Mathematical models of tumour evolution}
+The specifics of tumour evolution are complex as, while deterministic equations may capture the evolutionary
+dynamics of a cohort of tumours, the individual tumour's evolutionary history is stochastic
+\cite{werner_deterministic_2013}. This only adds to the issue of how the surrounding tissue \cite{west_normal_2021}
+and the tumour's own spatial organisation will affect its progression \cite{noble_spatial_2022}. Therefore,
+existing models of tumour evolution have had to incorporate both general, large-scale processes and
+sometimes molecular level events to be able to claim progress towards personalised cancer care informed
+by quantitative models \cite{yin_review_2019}. \par
+As mentioned earlier, the applications of mathematics in oncology are diverse. Thus, our focus over the course
+of this PhD has been on modelling tumour evolution and progression from its early stages up to and excluding
+treatment. This makes the problem more of an exercise in populatin dynamics than strict oncology, as underlying
+assumptions of such models tend to focus less on the microenvironment impact and more on how mutations accumulate
+and spread in the tumour. A good example of one such model is the Big Bang model of tumour growth \cite{sottoriva_big_2015}.
+Informed by multi-site sequencing, the authors' hypothesis was that colorectal cancer evolves neutrally after an initial
+period of rapid expansion and selection. Much like cosmic microwave background radiation is unevenly distributed across the
+observable universe, they observed an asymmetrical distribution of mutations across the tumour spheroid.
+This inspired a spatial branching process model based on gland fission, with each tumour gland approximated to
+rapid fixation in the event of a driver mutation, which showed good agreement with the data. A follow-up paper \cite{williams_identification_2016}
+ignited a debate on neutral evolution in exponentially growing tumours within the community
+\cite{tarabichi_neutral_2018, mcdonald_currently_2018, heide_reply_2018, bozic_measuring_2019}.
+However, theoretical considerations of the two-level model compared to the neutral model did, in fact,
+show that it is possible to distinguish the two based on mutation frequency spectra \cite{tung_signatures_2021}.
 
 
 \section{Trees and their applications}
@@ -85,25 +126,6 @@ outdegrees are permitted.\par
     \label{fig:robustness}
 \end{figure}
 \clearpage
-
-
-\section{Mathematical oncology}
-\textbf{TO DO:} Better references in the introduction subsection. Write the modelling subsection
-\subsection{Introduction}
-Cancer emergence and progression is an evolutionary process \cite{nowell_clonal_1976, merlo_cancer_2006}.
-This statement is now widely accepted, and the applications of quantitative methods found in evolutionary
-biology in cancer research are numerous \cite{rockne_2019_2019, yin_review_2019, kourou_applied_2021}.
-The, now well established, area of mathematical oncology is informed by clinicians, computer scientists,
-mathematicians of all flavours, and biologists alike \cite{bull_hallmarks_2022}, which has led to a rapid
-development of more specific avenues of research spanning from the initiation of the disease
-\cite{paterson_mathematical_2020} to the optimisation of therapy protocols
-\cite{west_survey_2023}. This is a perfect reflection of the complexity
-of the disease itself, as its rapid evolution and severe constraints on information gathering necessitate
-the combined efforts of thousands of scientists. Mathematics plays its own role in this effort, providing
-a common language through rigour and methods development \cite{},
-and frameworks for the interpretation of data \cite{}.
-
-\subsection{Modelling cancer evolution}
 
 
 \section{Agent-based modelling in oncology}
