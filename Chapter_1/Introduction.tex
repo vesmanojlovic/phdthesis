@@ -4,23 +4,21 @@ Despite advances in cancer research, the survival rates for many cancers remain 
 systems \cite{noauthor_financial_nodate}. The disease's heterogeneity, both within and between patients, is a major obstacle to effective treatment. Understanding the
 underlying evolutionary processes driving this heterogeneity is crucial to developing new treatments and improving patient outcomes.
 While having a comprehensive mathematical theory of cancer evolution may not be feasible, concrete mathematical models can provide valuable insights into the
-disease's dynamics. To this end, we consider different approaches to modelling cancer evolution via driver mutations, which includes the use of phylogenetic
+disease's dynamics. To this end, we consider different approaches to modelling cancer evolution, which includes the use of phylogenetic
 trees and agent-based models. Further, we employ methylation data to verify the accuracy of our models using Approximate Bayesian Computation (ABC).\par
-Trees as a mathematical object have found use in a variety of fields, of which biology is our main focus. However, while writing this thesis, we have found
+Trees as a mathematical object have found use in a variety of fields, of which biology is our main focus. However, we have found
 interesting links to methods in computer science via information theory.
 In chapter \ref{chapter:trees}, we expand upon three points. First, we further establish $J^1$ as a
-universal index of tree balance by identifying funamental connections to classical results in
-computer science, related to Huffman coding and self-balancing tree data structures. Second, we derive
-upper bounds on the error of the expected value approximations for the Yule process and the uniform models.
-For the Yule process, we prove that the approximation rapidly convergest to the true expectation in the
-large tree limit. Finally, we investigate the minimal values of $J^1$ in important special cases,
-obtaining a counter-intuitive result in the large tree limit.\par
+universal index of tree balance through connections with data structures in computer science. Second, we derive
+upper bounds on the error of the expected value approximations for the Yule process and the uniform model.
+Finally, we investigate the minimal values of $J^1$ in important special cases,
+with special emphasis on the large tree limit. \par
 In chapter \ref{chapter:trajectories}, we employ the index $J^1$, along with two other tree shape indices, to
-test to what degree one can differentiate between different evolutionary regimes in cancer by only relying at
+test to what degree one can differentiate between different evolutionary regimes in cancer by only relying
 tree shape indices. These results are compared to a new, more comprehensive system of tree shape indices \cite{noble_new_2023}
 which further generalised the concepts of diversity, evenness and richness. These results lay the groundwork for
 future analysis of cancer tree data.\par
-In chapter \ref{chapter:methdemon}, we introduce a proprietary model for simulating a specific type of molecular data, methylation arrays, obtained from
+In chapter \ref{chapter:methdemon}, we introduce a tailor-made model for simulating a specific type of molecular data, methylation arrays, obtained from
 multi-site sequencing of colorectal cancer. We show that the model is able to recapitulate the patterns observed in the
 data and that it can be used to infer the evolutionary history of the tumour. We further explore how the model can be expanded
 for more general use due to its modular design. We also demonstrate an approximate Bayesian computation workflow for inferring
@@ -84,7 +82,7 @@ or the structure of a program's syntax \cite{knuth_semantics_1968}, an approach 
 share with linguists \cite{chomsky_syntactic_1957}. The concept of search trees, dating back to the mid 20th century,
 revolutionised the field of computer science with applications in information retrieval in the form of
 binary search trees and self-balancing trees \cite{nievergelt_binary_1972, knuth_art_1997}. In biology,
-the first appearance of trees dates back to the 19th century, when Charles Darwin used them to represent the evolutionary
+the first appearance of trees dates back to the 19th century (actually - pedigrees and family trees, make this more specific), when Charles Darwin used them to represent the evolutionary
 relationships between species. Phylogenetic trees have over time become a key tool in analysing the
 lineages of species, viral mutations, and cancer evolution. By investigating quantitative summaries of different properties
 of tree shapes, we can gain insights into the underlying processes driving the evolution of species \cite{mooers_inferring_1997}
@@ -92,13 +90,13 @@ or cancer \cite{scott_inferring_2018, noble_spatial_2022}. However, most of the 
 using methods which are not necessarily rooted in sound mathematical theory, but are rather based on heuristics \cite{omeara_evolutionary_2012}.
 Specifically, measures of tree balance suffer from a lack of a common framework, with at least $19$ different metrics available
 in literature \cite{fischer_tree_2021}, and few of them being directly comparable. Also, due to the divergent terminology and
-interest in the use of trees as a tool, there is scarce literature on the transfer of knowe=ledge between the fields of computer science
-and biology, with certain results being rediscovered nigh on half a century later, as discussed in section \ref{sec:trees_intro}.
+interest in the use of trees as a tool, there is scarce literature on the transfer of knowledge between the fields of computer science
+and biology, with certain results being rediscovered nigh on half a century later, as discussed in section \ref{sec:trees_compsci}.
 
 \subsection{Quantifying tree balance}
 In a recent paper \cite{lemant_robust_2022}, Lemant and Noble proposed a new robust, universal index, $J^1$, for quantifying the
 balance of rooted trees with arbitrary node degree and size distributions. This index is based on
-Shannon entropy and favours even distributions of node sizes. We showed that $J^1$ is robust, in the sense
+Shannon entropy and favours even distributions of node sizes. We (ambiguous pronous, need to be very specific on what who's done, attribute appropriately) showed that $J^1$ is robust, in the sense
 that it is insensitive to small changes in node sizes and to the removal of small nodes (figure \ref{fig:robustness}B, C).
 We further showed that this index unites and generalises two of the most
 popular prior approaches to quantifying tree balance in biology, the Colless index and the Sackin index.
@@ -144,7 +142,7 @@ attempts to include everything from epigenetic mutations to the effects of the i
 too computationally expensive to be useful for modelling a tumour of reasonable size. This is an organic demonstration
 of many a researcher's favourite saying \textit{all models are wrong, but some are useful, and some are more useful
 than others}. In parsing through the literature and developing a new model of our own, we have also been influenced
-by an alternative wording of this, that is \textit{the best model is its own worst enemy}, by Philip Maini. Our
+by an alternative wording of this, that is \textit{the best model is its own worst enemy}, by Philip Maini (cite talk and event, specify who Philip Maini is). Our
 interpretation is that a good model should address the questions it was designed to answer, but also open up new
 ones which require further investigation, improvements, and research. For example, one can use our demon-warlock
 framework \cite{bak_warlock_2023} to simulate the evolution of a tumour in space and draw conclusions on how
@@ -165,7 +163,7 @@ each grid cell represents a deme, that is a spatially homogeneous population of 
 belongs to a genotype, a unique identifier based on the cell's mutations, and a driver genotype, which differentiates
 itself from the genotype by not taking into account passenger mutations. Cell migrations in the tumour have multiple
 modes, including invasion of tissue and other demes, and deme fission. The latter allows for the simulation of
-tumours with a glandular structure, such as colorectal cancer. Events in the model are scheduled according to the
+tumours with a glandular structure, such as colorectal cancer (adenocarcinoma?). Events in the model are scheduled according to the
 Gillespie algorithm, with the event hierarchy shown in figure \ref{fig:demon_events}. As the model was written
 predominantly in plain C, it is highly efficient considering the complexity of the simulations it can run. An
 accompanying R package, \texttt{demonanalysis}, is available for the analysis and visualisation of the model's
@@ -205,7 +203,7 @@ clocks \cite{gabbutt_fluctuating_2022}. This is further discussed in section \re
 \subsection{Introduction}
 To verify whether a model predicts behaviour of the observed system, a common approach is comparing its
 output to measurements. The way this is done depends on the complexity of the model and the data. Here
-we discuss the general framework of likelihoo-free inference, and more specifically the use of Approximate
+we discuss the general framework of likelihood-free inference, and more specifically the use of Approximate
 Bayesian Computation (ABC). \par
 Models based on differential equations can be compared to data using likelihood-based methods. In the
 frequentist tradition, the likelihood function is used to estimate the parameters of the model under the
@@ -246,11 +244,11 @@ In the most general form of ABC, the algorithm proceeds as follows:
     parameters. Otherwise, reject them.
     \item Repeat steps 1-4 until a sufficient number of accepted parameters have been obtained.
 \end{enumerate}
-The distance threshold must be strictly positive, and is often chosen to be a small value. The choice of the distance
-function is crucial, as it determines how the simulated data is compared to the observed data. Alternatively, in the
+The distance threshold must be strictly positive, and is often chosen to be a small value. (The choice of the distance
+function is crucial, as it determines how the simulated data is compared to the observed data). Alternatively, in the
 case of high-dimensional data, the distance function can be replaced by a summary statistic, $S$, which is a function of the
-data, i.e. $d'(S(\hat D), S(D))$. The choice of summary statistics is also crucial, as it determines how the data is
-reduced before the comparison. \par
+data, i.e. $d'(S(\hat D), S(D))$. (The choice of summary statistics is also crucial, as it determines how the data is
+reduced before the comparison.) \par
 ABC does not come without its own set of challenges. As it relies on comparing relevant features of the simulated data to
 the observed data, the choice of summary statistic or distance metric is crucial, as it determines how the data is
 reduced before the comparison. Fortunately, there are methods for reducing dimensionality of the data which
@@ -259,7 +257,7 @@ The choice of the distance threshold is also essential, as it determines
 the acceptance rate of the algorithm. Setting the threshold too high or too low can lead to biased or inefficient
 estimates of the posterior distribution. However, this can be mitigated by using a dynamic threshold, which is
 adapted during the course of the algorithm \cite{prangle_adapting_2017}.
-Finally, the computational aspects of ABC must be mentioned, as the algorithm relies on repeated simulations of
+(Finally, the computational aspects of ABC must be mentioned,) as the algorithm relies on repeated simulations of
 potentially complex models. This can require a large amount of computational resources, raising questions about
 the method's scalability and practicality. An obvious way to circumvent this is to use a model which is as
 lightweight as possible. Even in the case of infinite compute available, one must be mindful of the fact that
@@ -274,7 +272,7 @@ from methylation data in chapter \ref{chapter:methylation}.
 
 
 \section{Fluctuating methylation clocks}
-The concept of a molecular clock is a hallmark of evolutionary biology. It is based on the idea that the
+The concept of a molecular clock is a (hallmark) of molecular evolutionary biology. It is based on the idea that the
 rate of evolution of a particular gene or set of genes is constant over time, and can be used to estimate
 the time of divergence between species or the time of a particular event in the evolutionary history of a
 species. The most famous example of a molecular clock is the mitochondrial DNA clock, which is used to
@@ -309,9 +307,9 @@ to reconstruct clonal dynamics of colorectal cancer.
 
 \subsection{Hypotheses}
 \begin{enumerate}
-    \item The $J^1$ index is a universal measure of tree balance, and can be used, in conjunction with other
+    \item The $J^1$ index (is a universal measure of tree balance, and) can be used, in conjunction with other
         tree shape indices, to differentiate between evolutionary modes in cancer.
-    \item Spatial agent-based models are a powerful tool for simulating the evolutionary dynamics of solid tumours.
+    \item (Spatial agent-based models are a powerful tool for simulating the evolutionary dynamics of solid tumours.) SABMs recapitulate molecular data observed in solid tumours (or sth like that)
     \item These methods are useful for inferring the evolutionary history of colorectal cancer based on multi-site
         methylation array sequencing.
 \end{enumerate}
