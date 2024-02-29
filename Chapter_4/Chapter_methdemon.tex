@@ -10,13 +10,13 @@ There are a few ways to address this issue. For example, rather than simulating 
 could take the approach of \cite{sottoriva_big_2015} and use demes (tumour glands) as the principal agent of our
 simulation. This would allow for a realistically-sized tumour to be generated as the number of glands would
 be around the right order of magnitude. A problem with this approach is that it loses resolution since a
-gland's population is assumed to be clonal, undergoing rapid fixation in the case of an emerging mutant. If we wanted to
-study evolutionary dynamics on a finer scale we would need to at least simulate the dynamics of cell
+gland's population is assumed to be clonal, undergoing rapid fixation in the case of an emerging mutant. If one wanted to
+study evolutionary dynamics on a finer scale it would be necessary to at least simulate the dynamics of cell
 lineages, if not individual cells, as performed earlier. \par
 In \cite{gabbutt_evolutionary_2023}, the authors employ a stochastic model for an expanding cell population
 to model the behaviour of fluctuating CpG sites in blood cancers. The model is capable of simulating the
 dynamics and the corresponding fluctuating methylation arrays of lymphoid malignancies at scale. However,
-this model is not spatially explicit, which is a feature we need to be able to discriminate between different
+this model is not spatially explicit, which is a feature that has to be distinguished between different
 glands in a solid tumour. In this chapter, I present a purpose-written agent-based model, \texttt{methdemon},
 which reduces the computational cost of simulating a tumour's growth and models the fluctuating
 methylation arrays in colorectal cancer.
@@ -36,7 +36,7 @@ from a healthy to malignant cell \cite{fearon_genetic_1990}. Once the malignancy
 forms hierarchical cell structures similar to those of normal tissue \cite{cernat_colorectal_2014}, organising
 into crypt-like glands. The tumour spreads by the process of gland fission, which happens when a gland's
 population grows large enough to split into two glands \cite{preston_bottom-up_2003}. \par
-Translated into the language of an agent-based model, we can write down our initial assumptions as follows:
+Translated into the language of an agent-based model, I can write down the initial assumptions as follows:
 \begin{enumerate}[(i)]
     \item \textbf{A single cell forms the first gland and initiates tumour growth.} This assumption skips
         over the process of tumorigenesis, during which a cell accumulates mutations and becomes
@@ -61,9 +61,10 @@ Translated into the language of an agent-based model, we can write down our init
 \end{enumerate}
 
 \subsection{Fluctuating methylation arrays}
-To my shock, much like many mathematicians before me, the availability of perfectly clean data containing detailed information
-about the population structure of a tumour is non-existent. This is mainly because it is impossible to obtain it with current
-technology. What one learns very quickly when working with biological data is to compromise. Specifically, when it comes to
+As mathematicians new to biology quickly learn, perfectly clean data containing detailed information
+about the population structure of a tumour is non-existent. In fact, most data is noisy and at best measures
+a decent proxy for the properties which can be described by a mathematical model.
+Therefore, one learns very quickly to improvise and adapt when working with biological data. Specifically, when it comes to
 cancer, a compromise has to be made between resolution and scale. Where single-cell data can provide a detailed view of the
 mutations accumulated in the genome, it is not feasible to obtain it for a whole tumour. On the other hand, bulk data
 gives a high-level view of the tumour's population structure, but a lot of the details get lost in the process. \par
@@ -76,20 +77,29 @@ methylation as a tracker of evolutionmade use of the whole array \cite{siegmund_
 However, more recent work has shown that just a small subset of CpG sites is enough to infer the evolutionary dynamics of a
 cell population \cite{gabbutt_fluctuating_2022, gabbutt_evolutionary_2023}. This is the set of fluctuating CpG (fCpG) loci,
 which is also the topics of chapter \ref{chapter:methylation}. \par
-On top of the assumptions outlined in section \ref{section:assumptions:general}, we include the following set for the modelling
+On top of the assumptions outlined in section \ref{section:assumptions:general}, I include the following set for the modelling
 of fluctuating methylation arrays:
 \begin{enumerate}[(i')]
     \item \textbf{Each cell has a corresponding fCpG array inherited from its parent cell.}
-    \item \textbf{Upon cell division, each methylated fCpG site has an equal and independent probability of being demethylated,
-        and vice-versa.} This assumption is based on the findings of \cite{gabbutt_fluctuating_2022, gabbutt_evolutionary_2023}.
+    \item \textbf{Upon cell division, each methylated fCpG site has an independent and equal probability of being demethylated,
+        and vice-versa.}
     \item \textbf{The rates of methylation and demethylation do not change over time.}
 \end{enumerate}
-
+These assumptions are based on the findings of \cite{gabbutt_fluctuating_2022, gabbutt_evolutionary_2023}.
 
 \section{Existing simulation workflows}\label{section:old_famework}
 
 With the assumptions outlined in the previous section, my initial approach was to employ a general agent-based model
-with small modifications, due to the specific data type but broad evolutionary questions.
+with small modifications, due to the specific data type but broad evolutionary questions. The model I considered was
+\texttt{demon}, with which I had already worked in chapter \ref{chapter:trajectories}. A naive approach to simulating
+methylation arrays is to use the model's passenger mutations as a proxy for epigenetic changes. This way, the model
+could be run as usual with modified passenger mutation rates, and the methylation arrays could be assigned to the
+cells post-hoc. The main issue with this approach is memory management, as the output files tend to be large and
+difficult to handle by the R compiler in the post-processing steps. By reconstructing the full passenger tree for each
+clone, and assigning each mutation a random change of fCpG state, it is technically possible to obtain a synthetic data
+for the system of interest. However, with simulations taking hours to run for a single tumour, and inefficient read
+and write speeds, I abandoned this approach in favour of developing a more efficient one.
+
 \textbf{TO DO: discuss the shortcomings of the old approach.}
 
 \begin{figure}[h]
@@ -105,35 +115,77 @@ with small modifications, due to the specific data type but broad evolutionary q
     \label{fig:old_workflow2}
 \end{figure}
 
-While informative on a high level, this approach had multiple issues. Firstly, the simulations were
-limited to a couple million cells which, after assigning across glands, resulted in a tumour too small
-to reasonably compare to real data. Secondly, previous work on fluctuating methylation arrays
-\cite{gabbutt_fluctuating_2022, gabbutt_evolutionary_2023} has shown that the methylation and demethylation
-rates are not necessarily equal, which is not a feature of the \texttt{demon} simulations, where we used
-passenger mutations as a proxy for epigenetic changes. However, these issues may not have been insurmountable
-with clever tweaks to code. The final nail in the coffin came with the size of output files, as they were often
-unwieldy and difficult to handle by the R compiler. This meant that we would have to alter our approach in a way
-which allows for a leaner output, while keeping the spatial aspect of the evolutionary dynamics of the tumour intact.
-For that purpose, we developed a new agent-based model, \texttt{methdemon}.
+
+\section{A one-dimensional ABM of fluctuating methylation arrays in colorectal cancer}\label{section:methdemon}
 
 
-\section{Simulating fluctuating methylation arrays}\label{section:methdemon}
 \subsection{Overview}
 \begin{itemize}
     \item go over the simulation's inner workings
+    \item sensitivity analysis
     \item provide estimates of running efficiency and memory requirements
     \item discuss possible upgrades and their potential computational costs
 \end{itemize}
-\subsection{Examples}
-Provide example outputs (and their visualisations), parameter tables and a citation/link to the github repo.
 
-\section{Fluctuating methylation arrays through the lens of ABC}\label{section:methabc}
+For the specific case of multi-site sequencing of methylation arrays in colorectal cancer, I wrote
+a C++ agent-based model, \texttt{methdemon}. The model is one-dimensional in space, as it does not
+keep track of the exact spatial positions of the glands it simulates, only of the ``side" of the
+tumour the gland is on --- left or right. The model assumes each cell in the simulation has an
+infinite proliferative potential, and that the rate of driver mutations is constant. Further, gland
+fissions can only occur once a gland has reached its carrying capacity, and all but the first fission
+assume that the daughter glands will be on the same side of the tumour. The maximum number of glands
+allowed by the model is $8$, which is the number of sampled glands per tumour in the data used in
+chapter \ref{chapter:methylation}. \par
+The model is scheduled according to the Gillespie algorithm \cite{gillespie_exact_1977}, with the
+unit of time being the expected time for a cell to divide. All parameters are given in units of per
+cell per cell division. The event hierarchy is structured the same as in \texttt{demon}, with the
+addition of methylation events having a probability to happen at each fCpG site at each cell division.
+
+\subsection{Sensitivity analysis}
+\begin{itemize}
+    \item list and explain the parameters used in the model (can ignore the ones not yet used)
+    \item briefly explain the snakemake workflow used to run the model a bunch of times
+    \item discuss the results of the sensitivity analysis for the parameters:
+    \begin{itemize}
+        \item carrying capacity - lower carrying capacity means higher probability of neutral
+            fixation
+        \item fission rate - higher fission rate means earlier divergence of glands and more
+            time spent in independent turnover so very different arrays at the end of the
+            simulation; conversely, lower fission rates lead to a more recent split and thus
+            more closely related arrays
+        \item mutation rate - higher mutation rates lead to more emerging mutants and possibly
+            more diverse arrays but too high of a mutation rate leads to clonal interference
+            and may even be similar to the neutral case in terms of array diversity
+        \item selective advantage - neutral to weak selection means more diverse arrays in the
+            small deme limit, but strong selection means quick fixation of the mutant and less
+            diversity on the array level
+        \item epimutation rates - too slow switching means less diversity, too fast means
+            complete decoherence and regeression to a normal distribution around $0.5$
+    \end{itemize}
+\end{itemize}
+
+\subsection{Efficiency and memory requirements}
+Apart from standard C++ libraries, the model makes use of the \texttt{boost} library for random number
+generation and reading in parameters from a config file.
+\begin{itemize}
+    \item time complexity
+    \item memory usage
+    \item output files
+\end{itemize}
+
+
+\section{ABC workflow for inferring \texttt{methdemon} parameters}\label{section:methabc}
+
 \subsection{Overview}
 \begin{itemize}
     \item go over the \texttt{pyabc} package briefly (cite)
-    \item explain the ABC workflow
+    \item explain the ABC workflow and parameters used
     \item discuss computational costs and efficiency
     \item discuss whether this is the best approach (can we write down a likelihood for the problem?)
 \end{itemize}
+
 \subsection{Examples}
-Provide example applications of the workflow to \texttt{methdemon} outputs - fit smaller simulations to a big one for example.
+\textbf{TO DO:} Example fit of parameters to a synthetic dataset.
+
+
+\section{Discussion}
