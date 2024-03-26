@@ -1,5 +1,6 @@
-\chapter{Agent-based workflow for inferring evolutionary parameters from
-molecular data using approximate Bayesian computation}\label{chapter:methdemon}
+\chapter{Agent-based model of fluctuating methylation arrays in growing
+fragmented cancer cell populations}
+\label{chapter:methdemon}
 
 
 \section{Introduction}
@@ -34,7 +35,7 @@ As mathematicians new to biology quickly learn, perfectly clean data containing
 detailed information about the population structure of a tumour is
 non-existent. In fact, most data is noisy and at best measures a decent proxy
 for the properties which can be described by a mathematical model. Therefore,
-one learns very quickly to improvise and adapt when working with biological
+one learns very quickly to adapt their thinking when working with biological
 data. Specifically, when it comes to cancer, a compromise has to be made
 between resolution and scale. Where single-cell data can provide a detailed
 view of the mutations accumulated in the genome, it is not feasible to obtain
@@ -77,16 +78,17 @@ with the assumptions outlined in the previous section, my initial approach was
 to employ a general agent-based model with small modifications, to simulate the
 behaviour of fCpG loci in cancer. The first model I considered was
 \texttt{demon}, with which I had already worked in chapter
-\ref{chapter:trajectories}, as its light weight and reasonable wall times had
-shown promise. A naive approach to simulating methylation arrays is to use the
-model's passenger mutations as a proxy for epigenetic changes. This way, the
-model could be run as usual with modified passenger mutation rates, and
-methylation arrays could be assigned to the cells post-hoc. The main issue with
-this approach is memory management, as the output files tend to be large and
-thus difficult to handle in the post-processing steps. This meant that applying
-any sort of inference workflow would take a long time, making the approach
-impractical. This stands for other SABMs as well, due to the amount of data
-produced when simulating a whole tumour's growth.
+\ref{chapter:trajectories}, as its light weight and reasonable wall times
+(total execution time) had shown promise. A naive approach to simulating
+methylation arrays is to use the model's passenger mutations as a proxy for
+epigenetic changes. This way, the model could be run as usual with modified
+passenger mutation rates, and methylation arrays could be assigned to the cells
+post-hoc. The main issue with this approach is memory management, as the output
+files tend to be large and thus difficult to handle in the post-processing
+steps. This meant that applying any sort of inference workflow would take a
+long time, making the approach impractical. This stands for other SABMs as
+well, due to the amount of data produced when simulating a whole tumour's
+growth.
 
 \section{An ABM of fluctuating methylation arrays in
 cancer}\label{section:methdemon}
@@ -150,44 +152,57 @@ model's github repository \cite{methdemon_repo}.
     \frac{N_i}{N} = \frac{(2pt)^i}{i!}e^{-2pt},
 \end{equation}
 i.e. the Poisson distribution with mean $2pt$, as derived in
-\cite{kharlamov_generation}. This condition governs how fissions are handled in
-the model. As a real tumour can consist of millions of glands, the model narrows
-the focus to the subset of demes sequenced at the end of growth. Fissions which
-produce untracked demes, pseudo-fissions in the model, are the main way of
-accumulating fission events in a deme. Each pseudo-fission simply discards half
-of the deme's population, stochastically rounded. Real fissions are implemented
-by assigning a probability to each fission event of being tracked, equal to
+\cite{kharlamov_generation_1969}. This condition governs how fissions are
+handled in the model. As a real tumour can consist of millions of glands, the
+model narrows the focus to the subset of demes sequenced at the end of growth.
+Fissions which produce untracked demes, untracked fissions from here, are the
+main way of accumulating fission events in a deme. Each untracked fission
+simply discards half of the deme's population, stochastically rounded. Tracked
+fissions are implemented by assigning a probability to each fission event of
+being tracked (figure \ref{fig:fission_explainer}), equal to
 \begin{equation}
     \phi = \frac{p}{\mathbb{E}[\text{fissions per deme}]/2}.
 \end{equation}
-By using a discrete random distribution, I ensure that the expected number of
-fissions before a true fission event in a deme is about half of the mean total
-number of fissions. This means, on average, that the deme undergoing the first
-true fission is the only deme in the tumour, but also it is unlikely that the
-simulation ends with only one deme. Ignoring pseudo-fissions, this is
-equivalent to having a fission rate of $p\times\phi$. Pseudo-fissions are
-important, however, not just for the purpose of tracking the mean number of
-fission events, but also for population dynamics of the demes. Depending on the
-deme carrying capacity, that is the maximum number of cells in a deme, and
-mutation and epimutation rates, a fission can impact the population structure
-of a deme in different ways. Let $K$ be the carrying capacity of a deme, $\mu$
-the driver mutation rate, $\gamma$ the epimutation rate, and $L$ the number of
-fCpG sites per cell (assuming equal methylation and demethylation rates for
-simplicity). Upon fission, the population of the deme is divided into two, and
-there need to be $K/2$ cell division events before the deme is back to its
-carrying capacity. The expected number of mutations is the simply
-$K/2\times\mu$, and the expected number of epimutations is
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Chapter_4/figures/example_branching.pdf}
+    \caption{A toy example of how fissions are handled in the model. The red
+    branches represent tracked fissions, and the grey branches are hypothetical
+    untracked fissions occurring under a regular branching process.}
+    \label{fig:fission_explainer}
+\end{figure}
+By using this discrete uniform distribution, I ensure that the expected number
+of fissions before a tracked fission event in a deme is about half of the mean
+total number of fissions. Were the individual probabilities equal to
+$1/\mathbb{E}[\text{fissions per deme}]$, the expected number of fission events
+before a tracked fission would be equal to $\mathbb{E}[\text{fissions per
+deme}]$. This would, on average, lead to a lot of simulations with the mean
+number of fissions considerably above the target value. Ignoring untracked
+fissions, this is equivalent to having a fission rate of $p\times\phi$.
+Untracked fissions are important, however, not just for the purpose of tracking
+the mean number of fission events, but also for population dynamics of the
+demes. Depending on the deme carrying capacity, that is the maximum number of
+cells in a deme, and mutation and epimutation rates, a fission can impact the
+population structure of a deme in different ways. Let $K$ be the carrying
+capacity of a deme, $\mu$ the driver mutation rate, $\gamma$ the epimutation
+rate, and $L$ the number of fCpG sites per cell (assuming equal methylation and
+demethylation rates for simplicity). Upon fission, the population of the deme
+is divided into two, and there need to be $K/2$ cell division events before the
+deme is back to its carrying capacity. The expected number of mutations is then
+simply $K/2\times\mu$, and the expected number of epimutations is
 $K/2\times\gamma\times L$. Depending on the rates, these numbers can be quite
 different. Realistically, the number of driver mutations during repopulation of
-a deme is likely negligible. While epimutations are more likely, fCpG arrays
+a deme is likely negligible. While epimutations are more probable, fCpG arrays
 are inherited with a high degree of fidelity, and the fCpG distribution in a
-deme post-fission is likely to be similar to just before. However, consider now
-the neutral case. When a deme is at carrying capacity, its dynamics are
-equivalent to a Moran process, meaning the probability of neutral fixation for
-a mutant population of $m$ in a deme of carrying capacity $K$ is equalt to
-$m/K$, ignoring fissions. However, as cells grow into empty space post-fission
-until carrying capcity is reached, fissions increase the probability of neutral
-fixation at smaller deme sizes.
+deme post-fission will resemble the state just before. When a deme is at
+carrying capacity, its dynamics are equivalent to a Moran process, meaning the
+probability of neutral fixation for a mutant population of $m$ in a deme of
+carrying capacity $K$ is equal to $m/K$, ignoring fissions. However, as cells
+grow into empty space post-fission until carrying capcity is reached, fissions
+increase the probability of neutral fixation at smaller deme sizes as they will
+offset some of the effects of genetic drift which is more pronounced at smaller
+population sizes.
 
 \subsection{Stopping conditions}
 When simulating the whole tumour, imposing a stopping condition based on the
@@ -230,19 +245,23 @@ To check whether the model's behaviour is consistent with the expectations, I
 wrote a \texttt{snakemake} workflow to test many combinations of the parameters
 from table \ref{table:methdemon_params}. The code is available at the github
 repository for the workflow, \texttt{walter} \cite{walter}. A summary of the
-results is shown in figures \ref{fig:sensitivity_analysis_1} and
-\ref{fig:sensitivity_analysis_2}.
+results is shown in figures \ref{fig:sensitivity_analysis_1}, and
+\ref{fig:inter-slow}, \ref{fig:inter-med}, and \ref{fig:inter-fast}. Further
+details are included in the appendix.
 
 \subsubsection{Carrying capacity}
 By carrying capacity, I mean the maximum number of cells with proliferative
 potential in a gland. This is effectively equivalent to the maximum number of
-stem cells, or lineages, which mainain the gland's population. I considered
-three different carrying capacities: $10$, $100$, and $1000$. A real tumour
-gland contains about $10^5$ cells, but I assume that not all of them are able
-to divide indefinitely, rather following a similar structure to real colonic
-crypts \cite{cernat_colorectal_2014}. The results follow intuition: higher
-carrying capacity leads to less likelihood of neutral fixation but also more
-diversity in the presence of selection.
+lineages allowed in the gland. A more likely situation is that some of the
+simulated cells are closely related. The could be considered as cancer stem,
+i.e. cells with infinite proliferative potential which maintain the population
+of a cancer gland. I considered three different carrying capacities: $10$,
+$100$, and $1000$. A real tumour gland contains about $10^5$ cells, but the
+current understanding of how colorectal cancer evolves suggests that not all of
+them are able to divide indefinitely, rather following a similar hierarchical
+structure to real colonic crypts \cite{cernat_colorectal_2014}. The results
+follow intuition: higher carrying capacity leads to less likelihood of neutral
+fixation but also more diversity in the presence of selection.
 
 \subsubsection{Fission rate}
 The fission rate in this model is tracked per cell, with a gland's fission rate
@@ -270,9 +289,9 @@ $0.1$, and $1$. For larger deme sizes, the presence of selection seems to lead
 to more desynchronised arrays than the neutral case, as neutral fixation is
 less likely. However, at very strong selection, array diversity again decreases
 as the mutant quickly fixes in the population. Higher mutation rates lead to
-more diverse arrays, but too high of a mutation rate leads to clonal
-interference and may even be similar to the neutral case in terms of array
-diversity.
+more diverse arrays, but an overly high mutation rate leads to the emergence of
+many mutants, effectively voiding the effect of selection in some cases due to
+clonal interference.
 
 \subsubsection{Epimutation rates}
 The epimutation rates are the probabilities of a fCpG site changing state upon
@@ -302,16 +321,48 @@ distribution around $0.5$.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{Chapter_4/figures/sens_fig_2.pdf}
-    \caption{}
-    \label{fig:sensitivity_analysis_2}
+    \includegraphics[width=\textwidth]{Chapter_4/figures/inter-gland-sens/slow-plot.png}
+    \caption{Slower fission rates lead to more different fCpG arrays across the
+    sides of the simulated tumour. \textbf{diagonal:} Histograms of each
+    gland's fCpG array at the end of the simulation. \textbf{above diagonal:}
+    Pairwise scatter plots of the glands' fCpG arrays. \textbf{below diagonal:}
+    Pairwise $2$D histograms of the scatter plots showing the density of
+    points.}
+    \label{fig:inter-slow}
 \end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_4/figures/inter-gland-sens/med-plot.png}
+    \caption{Increasing the fission rate leads ot more closely related fCpG
+    arrays.}
+    \label{fig:inter-med}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_4/figures/inter-gland-sens/fast-plot.png}
+    \caption{Too high a fission rate leads to much less time spent in
+    independent turnover, and thus the most closely related fCpG arrays.}
+    \label{fig:inter-fast}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_4/figures/inter-gland-sens/comp-plot.png}
+    \caption{High driver mutation rate and strong selection can ``compensate" for
+    fast fission rates, leading to slightly more diverse fCpG arrays. While not
+    necessarily a realistic scenario in a real tumour, this example shows how
+    different parts of parameter space can lead to similar results.}
+    \label{fig:inter-comp}
+\end{figure}
+\clearpage
 
 \subsection{Efficiency and memory requirements}
 Apart from standard C++ libraries, the model makes use of the \texttt{boost}
 library for random number generation and reading in parameters from a config
 file.
-\subsubsection{Time complexity}
+\subsubsection{Time complexity}\label{section:time_complexity}
 The model's time complexity is dominated by the fCpG array updates, both in
 individual calls and demes. Each fCpG site has an independent probability of
 flipping upon division. This means that, if a cell has $L$ fCpG loci, each time
@@ -395,9 +446,10 @@ itself.
 \subsection{Distance functions}
 In the case of the \texttt{methdemon} model, the relevant output data is a set
 of average fCpG arrays, one for each deme, at the end of the simulation. As the
-fCpG sites fluctuate independently and stochastically, comparing the absolute
-values of the arrays is not meaningful. Instead, my focus is on the way arrays
-will differ from each other. There are two parts to this approach.
+fCpG sites fluctuate independently and stochastically, considering the absolute
+value of individual fCpG loci is not meaningful. Instead, my focus is on the
+way arrays differ from each other at the end of growth. There are two parts to
+this approach.
 
 \subsubsection{Inter-gland distance matrix}
 To reduce the dimensionality of a single tumour's output, I have defined the
@@ -411,19 +463,19 @@ arrays of the demes.
     \end{equation}
     where $L$ is the number of fCpG sites in the array.
 \end{definition}
-The idea behind this distance matrix is to emphasise larget differences between
+The idea behind this distance matrix is to emphasise larger differences between
 sites, and reduce the impact of small differences. This is done to mitigate the
 impact of the noise when comparing the arrays. To compare two distance matrices,
 I use the Frobenius norm of their difference.
 \begin{definition}
     The distance between two inter-gland distance matrices is defined as
     \begin{equation}
-        \delta(D_1, D_2) = \lVert D_1 - D_2 \rVert_F/\sqrt(2) =
-        \left(\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \lVert a_{ij}
-        \rVert^2\right)^{\frac{1}{2}},
+        \delta(D_1, D_2) = \lVert D_1 - D_2 \rVert_F/\sqrt{2} =
+        \left(\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N
+        a_{ij}^2\right)^{\frac{1}{2}},
     \end{equation}
     where $a_{ij}$ is the element of the difference matrix $D_1-D_2$ at the
-    $i$-th row and $j$-th column. The factor of $\sqrt(2)$ is included to
+    $i$-th row and $j$-th column. The factor of $\sqrt{2}$ is included to
     account for the fact that the matrix is symmetric, and therefore each
     pairwise distance is counted twice.
 \end{definition}
@@ -435,9 +487,19 @@ means that the fCpG distribution in a deme can be skewed in different ways. To
 make sure that the model is capable of capturing the right relationship between
 methylation and demethylation rates, I also compare individual demes' fCpG
 distributions using the Wasserstein distance (or the Kantorovich-Rubinstein
-metric) \cite{kantorovich_mathematical_1960}. In the context of comparing two
-probability distributions, the Wasserstein distance is defined as the minimum
-cost of turning one distribution into the other.
+metric) \cite{kantorovich_mathematical_1960}:
+\begin{definition}
+    The Kantorovich-Rubinstein or Wasserstein distance between two probability
+    distributions $P$ and $Q$ is defined as
+    \begin{equation}
+        W(P, Q) = \inf_{\gamma\in\Pi(P, Q)}\int_{\mathbb{R}^2}d(x, y)\gamma(x,
+        y)dxdy,
+    \end{equation}
+    where $\Pi(P, Q)$ is the set of all joint distributions with marginals $P$
+    and $Q$, and $d(x, y)$ is the distance between $x$ and $y$.
+\end{definition}
+Intuitively, the Wasserstein distance is the minimum cost of transforming one
+distribution into another.
 
 \subsection{Example inference}
 To demonstrate the utility of the \texttt{methdemon} model and the ABC workflow,
@@ -491,8 +553,8 @@ deme fCpG distributions, with the difference between glands being more pronounce
 close to the sweet-spot of the rates. \par
 The posterior distributions of the other three parameters are less informative,
 as they have remained broad. This could be the case for a few reasons. Firstly,
-the data itself could be uninformative, meaning that the model is not capable of
-capturing the relationship between the input parameters and the output data.
+the data itself could be uninformative, meaning that the model is not capable
+of capturing the relationship between the input parameters and the output data.
 Despite prior testing showing that the outputs are sensitive to the input
 parameters, this is a complex model and it is possible that the relationship
 between the parameters and the output data is not straightforward. For example,
@@ -501,18 +563,19 @@ moderate mutation rate could produce similar outputs to a fast-growing tumour
 with strong selection and a high mutation rate. This is not a problem with the
 model, but a feature of the tumour's growth dynamics. The priors in this test
 were chosen to be broad, covering both realistic and unrealistic behaviour of
-cancer. In reality, a lot of tumours grow under weak selection or effectively
-neutral dynamics. Secondly, the distance between observed and simulated data
-could be uninformative. The choice of summary statistics was a natural one, but
-it is possible that weaker signatures in the data are not captured by the
-distance metrics. This is a common problem in ABC, and is usually addressed by
-refining the rejection step, in addition to a more informative prior. Finally,
-having multiple possible parameter combinations which produce similar outputs
-could lead to a broad posterior distribution. This is an issue commonly debated
-in the literature, as selection is difficult to quantify in real tumour data.
-None the less, the results of the example inference are useful in that they show
-the ability of ABC to narrow down at least parts of the parameter space even in
-the case of broad priors in a complex model.
+cancer. According to mathematical models, weak selection or effectively neutral
+dynamics fit the growth of many tumours \cite{williams_identification_2016}.
+Secondly, the distance between observed and simulated data could be
+uninformative. The choice of summary statistics was a natural one, but it is
+possible that weaker signatures in the data are not captured by the distance
+metrics. This is a common problem in ABC, and is usually addressed by refining
+the rejection step, in addition to a more informative prior. Finally, having
+multiple possible parameter combinations which produce similar outputs could
+lead to a broad posterior distribution. This is an issue commonly debated in
+the literature, as selection is difficult to quantify in real tumour data. None
+the less, the results of the example inference are useful in that they show the
+ability of ABC to narrow down at least parts of the parameter space even in the
+case of broad priors in a complex model.
 
 \section{Discussion}
 In this chapter, I have presented a new agent-based model, \texttt{methdemon},

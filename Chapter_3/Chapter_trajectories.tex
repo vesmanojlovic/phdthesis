@@ -216,11 +216,15 @@ following
     \end{equation}
 \end{proof}
 
-This case may be interesting mathematically, but is not useful for practical
-purposes as it is highly unlikely that sequencing data would yield a perfectly
-symmetric leafy tree. Loosening the constraints on the tree shape and leaf
-sizes, I have also found the special case of perfectly balanced caterpillar
-trees.
+This case may be interesting mathematically, but is not too relevant for
+practical purposes as it is highly unlikely that sequencing data would yield a
+perfectly symmetric leafy tree. As the space of trees is so large, there is
+little point in performing a grid search, especially when arbitrary node sizes
+are considered. In testing, there have been no cases of trees with the same
+values of indices, but different topologies. This is a good sign, as it means
+that the indices are able to distinguish between different trees. However, the
+question remains whether there is a set of indices which can differentiate
+between any two trees.
 
 \section{Computational methods}
 

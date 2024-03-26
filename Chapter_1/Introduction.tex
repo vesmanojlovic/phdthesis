@@ -1,33 +1,50 @@
 \chapter{Introduction}\label{chapter:introduction}
-Cancer remains one of the most formidable challenges in the realm of health and medicine, causing a quarter of all deaths in the UK \cite{noauthor_cancer_2015}.
-Despite advances in cancer research, the survival rates for many cancers remain low, with the disease being an increasing burden on healthcare
-systems \cite{noauthor_financial_nodate}. The disease's heterogeneity, both within and between patients, is a major obstacle to effective treatment. Understanding the
-underlying evolutionary processes driving this heterogeneity is crucial to developing new treatments and improving patient outcomes.
-While having a comprehensive mathematical theory of cancer evolution may not be feasible, concrete mathematical models can provide valuable insights into the
-disease's dynamics. To this end, I consider different approaches to modelling cancer evolution, which includes the use of phylogenetic
-trees and agent-based models. Further, I employ methylation data to verify the accuracy of the models using Approximate Bayesian Computation (ABC).\par
-Trees as a mathematical object have found use in a variety of fields, of which biology is my main focus. However, I have found
-interesting links to methods in computer science via information theory.
-In chapter \ref{chapter:trees}, I expand upon three points. First, I further establish $J^1$ as a
-universal index of tree balance through connections with data structures in computer science. Second, I derive
-upper bounds on the error of the expected value approximations for the Yule process and the uniform model.
-Finally, I investigate the minimal values of $J^1$ in important special cases,
-with special emphasis on the large tree limit. \par
-In chapter \ref{chapter:trajectories}, I employ the index $J^1$, along with two other tree shape indices, to
-test to what degree one can differentiate between different evolutionary regimes in cancer by only relying
-tree shape indices. These results are compared to a new, more comprehensive system of tree shape indices \cite{noble_new_2023}
-which further generalised the concepts of diversity, evenness and richness. These results lay the groundwork for
-future analysis of cancer tree data.\par
-In chapter \ref{chapter:methdemon}, I introduce a tailor-made model for simulating a specific type of molecular data, methylation arrays, obtained from
-multi-site sequencing of colorectal cancer. I show that the model is able to recapitulate the patterns observed in the
-data and that it can be used to infer the evolutionary history of the tumour. I further explore how the model can be expanded
-for more general use due to its modular design. I also demonstrate an approximate Bayesian computation workflow for inferring
-the parameters of the model from data, and discuss the choice of summary statistics and the performance of the ABC algorithm.\par
-In chapter \ref{chapter:methylation}, I use the new agent-based modelling framework to infer the evolutionary history of
-$10$ colorectal cancer samples. Additionally, using tree shape indices, I compare trees of the inferred branching process in the data to the trees
-generated in the simulation. This provides an additional tool for validating the model and the inference process. I also
-explore the potential of using the model for predicting the future evolution of tumours, and discuss the limitations of the
-workflow for this specific use case.\par
+Cancer remains one of the most formidable challenges in the realm of health and
+medicine, causing a quarter of all deaths in the UK
+\cite{noauthor_cancer_2015}. Despite advances in cancer research, the survival
+rates for many cancers remain low, with the disease being an increasing burden
+on healthcare systems \cite{noauthor_financial_nodate}. The disease's
+heterogeneity, both within and between patients, is a major obstacle to
+effective treatment. Understanding the underlying evolutionary processes
+driving this heterogeneity is crucial to developing new treatments and
+improving patient outcomes. While having a comprehensive mathematical theory of
+cancer evolution may not be feasible, concrete mathematical models can provide
+valuable insights into the disease's dynamics. To this end, I consider
+different approaches to modelling cancer evolution, which includes the use of
+phylogenetic trees and agent-based models. Further, I employ methylation data
+to verify the accuracy of the models using Approximate Bayesian Computation
+(ABC).\par
+Trees as a mathematical object have found use in a variety of fields, of which
+biology is my main focus. However, I have found interesting links to methods in
+computer science via information theory. In chapter \ref{chapter:trees}, I
+expand upon three points. First, I further establish $J^1$ as a universal index
+of tree balance through connections with data structures in computer science.
+Second, I derive upper bounds on the error of the expected value approximations
+for the Yule process and the uniform model. Finally, I investigate the minimal
+values of $J^1$ in important special cases, with special emphasis on the large
+tree limit. \par
+In chapter \ref{chapter:trajectories}, I employ the index $J^1$, along with two
+other tree shape indices, to test to what degree one can differentiate between
+different evolutionary regimes in cancer by only relying tree shape indices.
+These results are compared to a new, more comprehensive system of tree shape
+indices \cite{noble_new_2023} which further generalised the concepts of
+diversity, evenness and richness. These results lay the groundwork for future
+analysis of cancer tree data.\par
+In chapter \ref{chapter:methdemon}, I introduce a tailor-made model for
+simulating a specific type of molecular data, methylation arrays, obtained from
+multi-site sequencing of colorectal cancer. I show that the model is able to
+recapitulate the patterns observed in the data and that it can be used to infer
+the evolutionary history of the tumour. I further explore how the model can be
+expanded for more general use due to its modular design. I also demonstrate an
+approximate Bayesian computation workflow for inferring the parameters of the
+model from data, and discuss the choice of summary statistics and the
+performance of the ABC algorithm.\par
+In chapter \ref{chapter:methylation}, I verify the utility of the model on the
+example of colorectal cancer methylation data. I discuss the results of the
+inference and compare the inferred gland divergence trees to ones generated by
+the model. I further discuss the implications of the results for the
+understanding of colorectal cancer evolution and the potential for future
+research. \par
 
 
 \section{Mathematical oncology}
