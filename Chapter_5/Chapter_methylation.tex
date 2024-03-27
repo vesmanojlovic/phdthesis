@@ -68,7 +68,11 @@ A notable feature of the data is that some samples show a clear bias towards
 either hyper- or hypomethylation. This was also the case for fCpG arrays
 filtered using only the samples provided by Dr Shibata. This suggests that the
 progenitor cell's methylation state is not necessarily random, but could be
-affected by internal or external factors.
+affected by internal or external factors. Furthermore, I developed the model
+under the assumption that methylation and demethylation rates are constant and
+equal across all cells and fCpG loci. While this may be reasonable on average,
+there might be mutations which affect these rates, leading to the observed
+distributions of fCpG loci states.
 
 \subsection{Spatial proximity predicts similarity between fCpG arrays}
 With the assumed hierarchical structure of the tumour in mind, it should make
@@ -144,110 +148,219 @@ structure of the tumour, this is an effectively neutral model, as selection
 acts within glands but not between them, leading to progressive diversification
 of the population, as discussed in chapter \ref{chapter:trajectories} and
 \cite{noble_spatial_2022}.\par
-As a first test, I ran the model with weak selection, $s=0.1$. The resulting
-outputs are shown in figures \ref{fig:methdemon_weak_selection} and
-\ref{fig:methdemon_weak_dist}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/}
-    \caption{Output fCpG arrays from the \texttt{methdemon} model with weak
-    selection.}
+    \includegraphics[width=\textwidth]{Chapter_5/figures/10000plot.png}
+    \caption{}
     \label{fig:methdemon_weak_selection}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/}
+    \includegraphics[width=\textwidth]{Chapter_5/figures/10000dist.png}
     \caption{Inter-gland distances for the output fCpG arrays from the
     \texttt{methdemon} model with weak selection.}
     \label{fig:methdemon_weak_dist}
 \end{figure}
 
-The simulated tumour grows under the monoclonal origin assumption. As neutral
-stochastic markers, the fCpG arrays are expected to diverge randomly over time
-but remain correlated unless a lineage with a different array starts to make up
-a significant portion of the gland's population. Weak selection does not lead
-to the establishment of such lineages in the model with large deme carrying
-capacity. When increasing the selective advantage to $s=0.3$, polyclonality is
-induced within glands, as shown in figures \ref{fig:methdemon_strong_selection}
-and \ref{fig:methdemon_strong_dist}. However, strong selection can easily
-become a runaway process, since more proliferation and turnover leads to more
-mutations, which leads to more accumulated advantage, and so on. This could be
-considered a limitation of the \texttt{methdemon} model, as some choices of
-parameters can often lead to unrealistic outcomes. However, I think that it is
-an indicator that perhaps not all cells in a gland are equal, and that the deme
-carrying capacity in the model should instead be considered as an effective
-population size, or the maximum number of lineages in a gland. Fortuitously,
-this also directly reduces the amount of time it takes to simulate a single
-tumour, as explained in section \ref{section:time_complexity}, which is a
-significant boon when performing many simulations during inference.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/methdemon_strong_selection.png}
-    \caption{Output fCpG arrays from the \texttt{methdemon} model with strong
-    selection.}
-    \label{fig:methdemon_strong_selection}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/methdemon_strong_dist.png}
-    \caption{Inter-gland distances for the output fCpG arrays from the
-    \texttt{methdemon} model with strong selection.}
-    \label{fig:methdemon_strong_dist}
-\end{figure}
-
+As a first test, I ran the model with weak selection, $s=0.1$. The resulting
+outputs are shown in figures \ref{fig:methdemon_weak_selection} and
+\ref{fig:methdemon_weak_dist}. There are a few notable features about the
+output fCpG arrays and the distance matrix. The most obvious is that the peaks
+associated with homozygous methylation and demethylation states have moved
+towards the middle. This is to be expected, as we are treating all $10000$ cells
+in a deme as being able to divide ad infinitum, leading to a lot of stochastic
+noise. This is a consequence of the time spent in turnover, and is adjusted by
+increasing the fission rate. However, the distance matrix shows that the glands
+are still very similar to each other, especially when compared to the data. This
+is likely due to the fact that there is only a small probability of a partial or
+full sweep of a lineage within a gland. The similarity is a consequence of the
+large deme carrying capacity, which allows for a lot of stochastic noise to
+accumulate over time but lowers the probability of fixation in the weak
+selection regime. Increasing the selection coefficient to $s=0.3$ leads to more
+divergence between the glands, since emerging lineages are more likely to fully
+or partially sweep the gland's population and establish more distinct fCpG
+arrays between glands. However, as discussed in chapter \ref{chapter:methdemon},
+strong selection can quickly become problematic in an ABM like this due to the
+accumulation of advantageous drivers. An example of strong selection at deme
+size $10000$ is in appendix \ref{appendix:inference}. \par
 Considering that the number of stem cells in a normal crypt is on the order of
 $10$ \cite{gehart_tales_2019, gabbutt_fluctuating_2022}, with the total number
-of cells in a crypt being on the order of $1000$, I tested the model with a
-deme carrying capacity of $100$ i.e. about $1\%$ of the total cell population
-in the gland. In this case, the model behaves as expected, with the fCpG arrays
-diverging over time even with no or weak selection, as shown in figures
+of cells in a crypt being on the order of $1000$, I next tested the model with
+a deme carrying capacity of $100$ i.e. about $1\%$ of the total cell population
+in the gland. The currently available data supports this percentage as a
+reasonable estimate of the proportion of cancer stem cells (CSCs) in colorectal
+cancer \cite{obrien_human_2007, munro_cancer_2018}. In this case, the model's
+outputs are as expected, with the fCpG arrays diverging over time even with no
+or weak selection. Examples are shown in figures
 \ref{fig:methdemon_weak_selection_small} and
 \ref{fig:methdemon_weak_dist_small}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/methdemon_weak_selection_small.png}
+    \includegraphics[width=\textwidth]{Chapter_5/figures/100plot.png}
     \caption{Output fCpG arrays from the \texttt{methdemon} model with weak
-    selection and small deme carrying capacity.}
+    selection and deme carrying capacity $100$ reflect the data better than
+    larger deme carrying capacity.}
     \label{fig:methdemon_weak_selection_small}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/methdemon_weak_dist_small.png}
-    \caption{Inter-gland distances for the output fCpG arrays from the
-    \texttt{methdemon} model with weak selection and small deme carrying
-    capacity.}
+    \includegraphics[width=\textwidth]{Chapter_5/figures/100dist.png}
+    \caption{Inter-gland distance matrix corresponding to the run from figure
+    \ref{fig:methdemon_weak_selection_small}.}
     \label{fig:methdemon_weak_dist_small}
 \end{figure}
+\clearpage
 
 \subsection{Parameter inference from colorectal cancer data}
-The next step in the analysis is to try and infer the parameters of the
-\texttt{methdemon} model from the data provided by Dr Shibata. For this, I used
-the ABC workflow developed in section \ref{section:methabc}.
+\subsubsection{Regular model}
+Having established \texttt{methdemon}'s ability to output data which resembles
+observations, I next attempted to fit the model to the colorectal cancer data.
+For this, I used the ABC workflow described in chapter \ref{chapter:methdemon}.
+Considering the results of the previous section, I set the deme carrying
+capacity to $100$ for all inference runs. I made this choice as there is no
+evidence to suggest different numbers of stem cells across tumours or even
+glands within a tumour. Furthermore, having the deme carrying capacity as a free
+parameter would slow down the inference process significantly.
+In the first instance, I ran the inference with parameter ranges given in table
+\ref{tab:inf_ranges}. The results of the inference are shown in figure
+\ref{fig:inference_1}, with more details in appendix \ref{appendix:inference}.
 
-\subsection{Gland phylogenetic trees}
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Parameter & Prior \\
+\hline
+methylation rate & $U(0, 0.1)$ \\
+demethylation rate & $U(0, 0.1)$ \\
+fission rate & $U(10^{-4}, 10^{-2})$ \\
+driver mutation rate & $U(0, 10^{-2})$ \\
+selective advantage & $U(0, 0.2)$ \\
+\hline
+\end{tabular}
+\caption{Parameter priors for the first inference run.}
+\label{tab:inf_ranges}
+\end{table}
 
+The first inference run did produce some results, but the posterior
+distributions of some parameters remained broad. There are a few possible
+reasons for this. Firstly, I intentianally used overly broad priors to see how
+well the ABC workflow would delineate the parameter space. This choice makes the
+inference process more dificult, as the prior distributions are not informative
+and the parameter space is large. However, it allows for future runs with more
+informative priors. The second reason may just be that the model is not able to
+recover all of the parameters in its current form. Selective advantage and
+driver mutation rate in particular seem to be difficult to infer for the model.
+This could be due to the signature of selection being too weak in the model or
+data (or both). It could also be down to the distance functions in the ABC
+rejection step not being able to capture the differences between the arrays
+well enough. Either way, the results prompted further testing with the important
+change of log-transforming the parameters. This change allows for more efficient
+exploration of the parameter space, as parameters are sampled on the same scale
+and steps between generations will cover more of the space.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_5/figures/inference_raw/inference_1.pdf}
+    \caption{Using absolute parameter values in the inference process leads to
+    less efficient inference. \textbf{A} --- posterior distributions of fCpG
+    fluctuation rates have narrowed down rapidly, but other parameters'
+    posteriors remain broad. \textbf{B} --- box plots of the posteriors show
+    that the model is not able to resolve the effects of selection from the
+    data, and leaves a lot of uncertainty in the fission rates.}
+    \label{fig:inference_1}
+\end{figure}
+\clearpage
+
+\subsubsection{Log-transformed model}
+The second inference run was done with similar parameter ranges as the first.
+The log-transformed parameter ranges are give in table \ref{tab:inf_ranges_log}
+and the results of the inference are shown in figure \ref{fig:inference_2}, with
+more details in appendix \ref{appendix:inference}. All log transformations were
+done with base $10$.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Parameter & Prior \\
+\hline
+log methylation rate & $U(-4, -2)$ \\
+log demethylation rate & $U(-4, -2)$\\
+log fission rate & $U(-3.3, -1)$\\
+log driver mutation rate & $U(-5, -2)$\\
+selective advantage & $U(0, 0.2)$\\
+\hline
+\end{tabular}
+\caption{Log-transformed priors for the second inference run.}
+\label{tab:inf_ranges_log}
+\end{table}
+
+The results of the second inference run are more promising than the first, with
+the fission rate posterior distribution being considerably narrower. However,
+selection and driver mutation rate are still difficult to narrow down. This
+further supports the idea that the model is not able to detect weak selection
+at the gland level.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_5/figures/inference_2.pdf}
+    \caption{STILL RUNNING ON THE CLUSTER.}
+    \label{fig:inference_2}
+\end{figure}
+\clearpage
+
+\subsection{Fast- and slow-growing tumours}
+The data provided by Dr Shibata contains samples from different patients, with
+each tumour being potentially at a different stage of growth. From exploratory
+analysis, it seems that some tumours are growing faster than others, if we work
+under the assumption that gland fission is the only mechanism of growth. This
+hypothesis is supported by the inference results, as samples with higher values
+in the inter-gland distance matrix tend to grow slower, and ones where gland
+fCpG arrays are more similar have grown faster. The inferred median fission
+rates are shown in table \ref{tab:fission_rates}.
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+Tumour & Median fission rate \\
+\hline
+\end{tabular}
+\caption{Median fission rates for each tumour.}
+\label{tab:fission_rates}
+\end{table}
 
 \section{Discussion}
-\begin{itemize}
-    \item $1$D model recaps FMC patterns in CRC
-    \item colorectal cancer fcpg data can be explained by effectively neutral
-        evolutionary regimes
-    \item phylogenetic tree analysis
-    \item further work - likelihood-based inference, large scale modelling of
-        colorectal cancer
-    \item initial conditions - does a fully random initial array make sense in
-        the context of patterns in data? some tumours do indeed look like they
-        simply have unequal meth and demeth rates, but others look like they
-        started hypo- or hypermethylated.
-    \item noise (if I don't manage to do it in the next few days) - how much
-        would the model be affected by noise
-\end{itemize}
+% \begin{itemize}
+%     \item $1$D model recaps FMC patterns in CRC
+%     \item colorectal cancer fcpg data can be explained by effectively neutral
+%         evolutionary regimes
+%     \item further work - likelihood-based inference, large scale modelling of
+%         colorectal cancer
+%     \item initial conditions - does a fully random initial array make sense in
+%         the context of patterns in data? some tumours do indeed look like they
+%         simply have unequal meth and demeth rates, but others look like they
+%         started hypo- or hypermethylated.
+% \end{itemize}
+
+In this chapter, I tested the \texttt{methdemon} model on colorectal cancer
+methylation data using approximate Bayesian computation. The model was able to
+recapitulate the patterns observed in the data, and the inferred parameters lay
+within reasonable ranges. However, the model struggled to infer the selection
+coefficient and the driver mutation rate. This could be due to the signature of
+selection being too weak in the model or data, or the distance functions in the
+ABC rejection step not being fine-grained enough to detect the differences
+between evolutionary modes. Having said that, the results do support an
+effectively neutral evolutionary mode of colorectal cancer growth, with the
+effects of selection constrained to within glands. Furthermore, it seems clear
+that multi-site sequencing of methylation arrays from solid tumours can be used
+to draw inferences about the evolutionary dynamics of the tumour, and warrants
+further investigation with a more sophisticated model.
+
 
 % \section{Background on colorectal cancer --- model assumptions}
 

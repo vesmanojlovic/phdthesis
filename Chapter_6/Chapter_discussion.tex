@@ -1,1 +1,54 @@
 \chapter{Discussion}\label{chapter:discussion}
+
+\section{Summary}
+
+\section{Combining ABM with deterministic models}
+\begin{itemize}
+    \item ABM allows for study of cell-level dynamics, making it invaluable for
+    examining the early stages of cancer evolution, but is not practical at
+    whole-tumour scale
+    \item cancer, broadly, follows certain deterministic growth laws, but the
+    equations fall apart early on or even when just observing individual
+    patients
+    \item combining the two approaches could allow for a more accurate
+    multi-scale model, such as \texttt{methdemon} which leverages coarse-grained
+    approximations globally, and ABM locally
+\end{itemize}
+
+\section{Hybrid inference approach}
+ABM is a powerful tool for studying the evolutionary dynamics of cancer, but the
+stochastic nature of small-scale events can make it difficult to obtain results
+which are closely aligned with the data, and \texttt{methdemon} is no exception.
+Prior work in fCpG modelling was done using a likelihood-based approach
+\cite{gabbutt_fluctuating_2022, gabbutt_evolutionary_2023}, and has shown
+promising results. Due to the complexity of colorectal cancer, an exclusively
+likelihood-based approach may not be feasible, but a hybrid model which
+leverages likelihood-based inference locally for detecting potentially small
+effects of selection, with ABC on the global scale could be a good compromise.
+The main hurdle in this approach is reconciling fissions with the steady-state
+turnover process.
+
+\section{Gland phylogenies}
+Another piece of the colon cancer fCpG puzzle is the reconstruction of gland
+phylogenetic trees. In \cite{gabbutt_evolutionary_2023}, the authors used a
+custom BEAST pipeline, a Bayesian phylogenetic inference tool
+\cite{bouckaert_beast_2019}, to infer clone phylogenies from blood cancer data.
+The main differences between the two data sets include the fact that the blood
+cancer data is non-spatial, and therefore possible for meaningful sequencing at
+multiple points in time. In the case of colorectal cancer, it is not possible
+to obtain multiple samples from the same gland over time. Further, the spatial
+nature of the data means that sequencing it in the first place may not be
+possible before the tumour has been removed. This means that the clock rate of
+the gland phylogenies is unknown. However, sequencing multiple glands does
+allow for accurate reconstruction of tree topologies, with the clock rate being
+a nuisance parameter. Having discussed the potential for tree shape indices
+being used in evolutionary mode inference, the next logical step would be
+testing whether they point to signs of global selective pressures in the data.
+Because of the way \texttt{methdemon} is written, phylogenies are easily
+constructed as a byproduct of the simulation, making it easy to test
+effectively neutral growth as a null model. Resources permitting, it would be
+interesting to use a larger-scale spatial model to test different ways of gland
+organisation in space, which could result in different modes of evolution, and
+thus tree shapes.
+
+\section{Conclusion}
