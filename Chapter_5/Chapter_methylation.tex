@@ -10,20 +10,21 @@
 % \end{itemize}
 
 \section{Introduction}
-A mathematical model is only as good as its ability to describe its system of
-interest. Therefore, in this chapter, I will test how well the
-\texttt{methdemon} model describes methylation data sampled from colorectal
-cancer (CRC). CRC is the third most common cancer worldwide, with over $40000$
-new cases diagnosed in the UK each year on average
-\cite{cancer_research_uk_bowel_2021}. The disease is characterised by the
-accumulation of genetic and epigenetic mutations in colonic cells
-\cite{fleming_colorectal_2012}. The most common type of CRC is adenocarcinoma,
-which arises from the epithelial cells lining the colon, covering the majority
-of cases. The tumour forms hierarchical cell structures similar to those of
-normal tissue, organising into crypt-like glands
+The main inspiration behind \texttt{methdemon} is colorectal cancer or, more
+specifically, multi-site sequenced colorectal cancer methylation data. CRC is
+the third most common cancer worldwide, with over $40000$ new cases diagnosed
+in the UK each year on average \cite{cancer_research_uk_bowel_2021}. The
+disease is characterised by the accumulation of genetic and epigenetic
+mutations in colonic cells \cite{fleming_colorectal_2012}. The most common type
+of CRC is adenocarcinoma, which arises from the epithelial cells lining the
+colon, covering the majority of cases. The tumour forms hierarchical cell
+structures similar to those of normal tissue, organising into crypt-like glands
 \cite{ponz_de_leon_pathology_2001}. The tumour spreads by the process of gland
 fission \cite{preston_bottom-up_nodate}, which is similar to the branching
-processes seen in normal crypts \cite{almet_multicellular_2018}.
+processes seen in normal crypts \cite{almet_multicellular_2018}. In this
+chapter, I will use the inference workflow introduced in chapter
+\ref{chapter:methdemon} to infer evolutionary properties of colorectal cancer
+from methylation data.
 
 \section{Data collection}
 The data used in this study were provided by Dr Darryl Shibata from the Keck
@@ -64,15 +65,6 @@ with additional figures in appendix \ref{appendix:fCpG_loci}.
     \label{fig:fCpG_loci_M}
 \end{figure}
 
-A notable feature of the data is that some samples show a clear bias towards
-either hyper- or hypomethylation. This was also the case for fCpG arrays
-filtered using only the samples provided by Dr Shibata. This suggests that the
-progenitor cell's methylation state is not necessarily random, but could be
-affected by internal or external factors. Furthermore, I developed the model
-under the assumption that methylation and demethylation rates are constant and
-equal across all cells and fCpG loci. While this may be reasonable on average,
-there might be mutations which affect these rates, leading to the observed
-distributions of fCpG loci states.
 
 \subsection{Spatial proximity predicts similarity between fCpG arrays}
 With the assumed hierarchical structure of the tumour in mind, it should make
@@ -384,17 +376,26 @@ the observed data well.
 %         started hypo- or hypermethylated.
 % \end{itemize}
 
-In this chapter, I tested the \texttt{methdemon} model on colorectal cancer
-methylation data using approximate Bayesian computation. The model was able to
-recapitulate the patterns observed in the data, and the inferred parameters lay
-within reasonable ranges. However, the model struggled to infer the selection
-coefficient and the driver mutation rate. This could be due to the signature of
-selection being too weak in the model or data, or the distance functions in the
-ABC rejection step not being fine-grained enough to detect the differences
-between evolutionary modes. Having said that, the results do support an
-effectively neutral evolutionary mode of colorectal cancer growth, with the
-effects of selection constrained to within glands. Furthermore, it seems clear
-that multi-site sequencing of methylation arrays from solid tumours can be used
-to draw inferences about the evolutionary dynamics of the tumour, and warrants
-further investigation with a more sophisticated model.
-
+In this chapter, I modelled colorectal cancer methylation data using
+\texttt{methdemon} and the associated ABC workflow. A notable feature of the
+data is that some samples show a clear bias towards either hyper- or
+hypomethylation after filtering with the help of TCGA data. This was also the
+case for fCpG arrays filtered using only the samples provided by Dr Shibata.
+This suggests that the progenitor cell's methylation state is not necessarily
+random, but could be affected by internal or external factors. Furthermore, I
+developed the model under the assumption that methylation and demethylation
+rates are constant and equal across all cells and fCpG loci. While this may be
+reasonable on average, there might be mutations which affect these rates,
+leading to the observed distributions of fCpG loci states. Despite biases in
+some of the data, the model was able to recapitulate the patterns observed in
+the data, and the inferred parameters lay within reasonable ranges. However,
+the model struggled to infer the selection coefficient and the driver mutation
+rate. This could be due to the signature of selection being too weak in the
+model or data, or the distance functions in the ABC rejection step not being
+fine-grained enough to detect the differences between evolutionary modes.
+Having said that, the results do support an effectively neutral evolutionary
+mode of colorectal cancer growth, with the effects of selection constrained to
+within glands. Furthermore, it seems clear that multi-site sequencing of
+methylation arrays from solid tumours can be used to draw inferences about the
+evolutionary dynamics of the tumour, and warrants further investigation with a
+more sophisticated model.

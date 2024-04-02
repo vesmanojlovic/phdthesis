@@ -1,6 +1,57 @@
 \chapter{Discussion}\label{chapter:discussion}
 
 \section{Summary}
+Modelling cancer evolution is difficult. Like with any data-driven approach,
+straying too far into general laws may lead to underfitting of
+patient-specific data. Focussing too much on the individual, however, makes
+overfitting the main issue. As novel sequencing techniques, or at least data
+collected using them, become more available, there is an increased emphasis on
+multi-pronged approaches \cite{heide_assessment_2021, others}. In my view, a
+similar conundrum extends one level of abstraction above this, as focussing
+solely on data may lead to missing the proverbial forest. Much like branches of
+mathematics grew out of necessity to quantify physical phenomena, so has
+mathematical theory informed experiments decades later. I believe a similar
+approach is essential in mathematical oncology as well, with robust mathematical
+frameworks translating into the laboratory or even clinical trials. A good
+example would be adaptive therapy, which has the potential to revolutionise
+patient care.\par
+In chapter \ref{chapter:trees}, I investigated properties of the universal tree
+balance index $J^1$. Originally introduced to analyse cancer phylogenies, I show
+that the roots of the idea for such a metric go surprisingly deep, with
+pioneering works in computer science developing an effectively identical
+formula. The expected value of the index under even the simplest tree generation
+processes was too complex for me to calculate analytically, so I relied on the
+relationship derived in the original $J^1$ paper \cite{lemant_robust_2022} which
+connects it with the Sackin index to obtain an accurate approximation. Another
+challenge came from deriving tree families which minimise the index. While I
+proved that there exists a family of trees on which the value of $J^1$ is lower
+than on the caterpillar tree, traditionally the tree that minimises balance
+indices, I could only conjecture that this family indeed minimises the index
+across all trees on a given number of leaves. \par
+Balance is only one property of many trees posses. This meant that the next
+logical step was to consider the values of a set of indices during a tree
+generating process. Inspired by \cite{noble_spatial_2022}, I used a modified set
+of evolutionary indices on the outputs of an agent-based model to test how well
+one can distinguish different evolutionary trajectories in the space described
+by the indices. These results I compared to a new set of tree shape indices
+\cite{noble_new_2023}, which generalise $J^1$ further on trees with defined
+branch lengths. NOTE: FINISH THIS. \par
+In chapter \ref{chapter:methdemon}, I narrowed down my consideration of the
+modes of tumour evolution to the specific case of effectively neutral evolution,
+which manifests itself via progressive differentiation. The model I developed in
+this chapter restricts the effects of selection to patches of cells, with the
+patches themselves not interacting or interacting neutrally. I demonstrated that
+ABC could be employed to recover parameters of the model with varying degrees of
+accuracy. \par
+Having established a workflow inspired by a concrete data set, in chapter
+\ref{chapter:methylation} I recovered aspects of evolutionary dynamics of
+colorectal cancer using its methylation array data. Building on prior work on
+fluctuating methylation clocks, I modelled multi-site bulk sequences of tumour
+glands. By considering the differences between spatially close and distant
+glands, as well as individual gland fCpG arrays, I was able to approximate the
+epimutation and gland fission rates relative to cancer stem cell division rates.
+By inferring the rate of tumour growth, it may be possible to more accurately
+estimate the age of individual tumours in future studies.
 
 \section{Combining ABM with deterministic models}
 \begin{itemize}
@@ -30,25 +81,24 @@ turnover process.
 
 \section{Gland phylogenies}
 Another piece of the colon cancer fCpG puzzle is the reconstruction of gland
-phylogenetic trees. In \cite{gabbutt_evolutionary_2023}, the authors used a
-custom BEAST pipeline, a Bayesian phylogenetic inference tool
-\cite{bouckaert_beast_2019}, to infer clone phylogenies from blood cancer data.
-The main differences between the two data sets include the fact that the blood
-cancer data is non-spatial, and therefore possible for meaningful sequencing at
-multiple points in time. In the case of colorectal cancer, it is not possible
-to obtain multiple samples from the same gland over time. Further, the spatial
-nature of the data means that sequencing it in the first place may not be
-possible before the tumour has been removed. This means that the clock rate of
-the gland phylogenies is unknown. However, sequencing multiple glands does
-allow for accurate reconstruction of tree topologies, with the clock rate being
-a nuisance parameter. Having discussed the potential for tree shape indices
-being used in evolutionary mode inference, the next logical step would be
-testing whether they point to signs of global selective pressures in the data.
-Because of the way \texttt{methdemon} is written, phylogenies are easily
-constructed as a byproduct of the simulation, making it easy to test
-effectively neutral growth as a null model. Resources permitting, it would be
-interesting to use a larger-scale spatial model to test different ways of gland
-organisation in space, which could result in different modes of evolution, and
-thus tree shapes.
+phylogenetic trees. In \cite{gabbutt_evolutionary_2023}, the authors used a custom BEAST pipeline,
+a Bayesian phylogenetic inference tool \cite{bouckaert_beast_2019}, to infer
+clone phylogenies from blood cancer data. The main differences between the two
+data sets include the fact that the blood cancer data is non-spatial, and
+therefore possible for meaningful sequencing at multiple points in time. In the
+case of colorectal cancer, it is not possible to obtain multiple samples from
+the same gland over time. Further, the spatial nature of the data means that
+sequencing it in the first place may not be possible before the tumour has been
+removed. This means that the clock rate of the gland phylogenies is unknown.
+However, sequencing multiple glands does allow for accurate reconstruction of
+tree topologies, with the clock rate being a nuisance parameter. Having
+discussed the potential for tree shape indices being used in evolutionary mode
+inference, the next logical step would be testing whether they point to signs of
+global selective pressures in the data. Because of the way \texttt{methdemon} is
+written, phylogenies are easily constructed as a byproduct of the simulation,
+making it easy to test effectively neutral growth as a null model. Resources
+permitting, it would be interesting to use a larger-scale spatial model to test
+different ways of gland organisation in space, which could result in different
+modes of evolution, and thus tree shapes.
 
 \section{Conclusion}
