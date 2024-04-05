@@ -2,32 +2,35 @@
 
 \section{Summary}
 Modelling cancer evolution is difficult. Like with any data-driven approach,
-straying too far into general laws may lead to underfitting of
-patient-specific data. Focussing too much on the individual, however, makes
-overfitting the main issue. As novel sequencing techniques, or at least data
-collected using them, become more available, there is an increased emphasis on
-multi-pronged approaches \cite{heide_assessment_2021, others}. In my view, a
-similar conundrum extends one level of abstraction above this, as focussing
-solely on data may lead to missing the proverbial forest. Much like branches of
-mathematics grew out of necessity to quantify physical phenomena, so has
-mathematical theory informed experiments decades later. I believe a similar
-approach is essential in mathematical oncology as well, with robust mathematical
-frameworks translating into the laboratory or even clinical trials. A good
-example would be adaptive therapy, which has the potential to revolutionise
-patient care.\par
+straying too far into general laws may lead to underfitting of patient-specific
+data. Focussing too much on the individual, however, makes overfitting the main
+issue. As novel sequencing techniques, or at least public data sets which use
+them, have become more available, there is an increased emphasis on
+multi-pronged approaches \cite{heide_co-evolution_2022,
+househam_phenotypic_2022}. In my view, a similar conundrum extends one level of
+abstraction above this, as focussing on data too much may lead to missing the
+proverbial forest. Much like some branches of mathematics grew out of necessity
+to quantify physical phenomena, so has mathematical theory informed experiments
+decades after development. I believe a similar approach is essential in
+mathematical oncology as well, with robust mathematical frameworks translating
+into the laboratory or even clinical trials. A good example would be adaptive
+therapy, which has the potential to revolutionise patient care and is based on
+optimising drug scheduling \cite{west_survey_2023}.\par
+
 In chapter \ref{chapter:trees}, I investigated properties of the universal tree
-balance index $J^1$. Originally introduced to analyse cancer phylogenies, I show
-that the roots of the idea for such a metric go surprisingly deep, with
-pioneering works in computer science developing an effectively identical
-formula. The expected value of the index under even the simplest tree generation
-processes was too complex for me to calculate analytically, so I relied on the
-relationship derived in the original $J^1$ paper \cite{lemant_robust_2022} which
-connects it with the Sackin index to obtain an accurate approximation. Another
-challenge came from deriving tree families which minimise the index. While I
-proved that there exists a family of trees on which the value of $J^1$ is lower
-than on the caterpillar tree, traditionally the tree that minimises balance
-indices, I could only conjecture that this family indeed minimises the index
-across all trees on a given number of leaves. \par
+balance index $J^1$. Originally introduced to analyse cancer phylogenies, I
+show that the roots of the idea for such a metric go surprisingly deep, with
+pioneering works in computer science defining an effectively identical formula.
+The expected value of the index under even the simplest tree generation
+processes was too complex to calculate analytically, so I relied on the
+relationship derived in the original $J^1$ paper \cite{lemant_robust_2022}
+which connects it with the Sackin index to obtain an accurate approximation.
+Another challenge came from deriving tree families which minimise the index.
+While I proved that there exists a family of trees on which the value of $J^1$
+is lower than on the caterpillar tree, traditionally the tree that minimises
+balance indices, I could only conjecture that this family indeed minimises the
+index across all trees on a given number of leaves. \par
+
 Balance is only one property of many trees posses. This meant that the next
 logical step was to consider the values of a set of indices during a tree
 generating process. Inspired by \cite{noble_spatial_2022}, I used a modified set
@@ -35,7 +38,10 @@ of evolutionary indices on the outputs of an agent-based model to test how well
 one can distinguish different evolutionary trajectories in the space described
 by the indices. These results I compared to a new set of tree shape indices
 \cite{noble_new_2023}, which generalise $J^1$ further on trees with defined
-branch lengths. NOTE: FINISH THIS. \par
+branch lengths. While these indices have not produced different results from the
+smaller set, the fact that they still show a clear separation between different
+evolutionary modes is promising. \par
+
 In chapter \ref{chapter:methdemon}, I narrowed down my consideration of the
 modes of tumour evolution to the specific case of effectively neutral evolution,
 which manifests itself via progressive differentiation. The model I developed in
@@ -43,6 +49,7 @@ this chapter restricts the effects of selection to patches of cells, with the
 patches themselves not interacting or interacting neutrally. I demonstrated that
 ABC could be employed to recover parameters of the model with varying degrees of
 accuracy. \par
+
 Having established a workflow inspired by a concrete data set, in chapter
 \ref{chapter:methylation} I recovered aspects of evolutionary dynamics of
 colorectal cancer using its methylation array data. Building on prior work on
@@ -53,20 +60,7 @@ epimutation and gland fission rates relative to cancer stem cell division rates.
 By inferring the rate of tumour growth, it may be possible to more accurately
 estimate the age of individual tumours in future studies.
 
-\section{Combining ABM with deterministic models}
-\begin{itemize}
-    \item ABM allows for study of cell-level dynamics, making it invaluable for
-    examining the early stages of cancer evolution, but is not practical at
-    whole-tumour scale
-    \item cancer, broadly, follows certain deterministic growth laws, but the
-    equations fall apart early on or even when just observing individual
-    patients
-    \item combining the two approaches could allow for a more accurate
-    multi-scale model, such as \texttt{methdemon} which leverages coarse-grained
-    approximations globally, and ABM locally
-\end{itemize}
-
-\section{Hybrid inference approach}
+\section{Hybrid modelling and inference}
 ABM is a powerful tool for studying the evolutionary dynamics of cancer, but the
 stochastic nature of small-scale events can make it difficult to obtain results
 which are closely aligned with the data, and \texttt{methdemon} is no exception.
@@ -77,28 +71,53 @@ likelihood-based approach may not be feasible, but a hybrid model which
 leverages likelihood-based inference locally for detecting potentially small
 effects of selection, with ABC on the global scale could be a good compromise.
 The main hurdle in this approach is reconciling fissions with the steady-state
-turnover process.
+turnover process. An approach I am currently exploring is combining tau-leaping
+for intra-gland dynamics and Gillespie's algorithm for gland fissions.
 
 \section{Gland phylogenies}
 Another piece of the colon cancer fCpG puzzle is the reconstruction of gland
-phylogenetic trees. In \cite{gabbutt_evolutionary_2023}, the authors used a custom BEAST pipeline,
-a Bayesian phylogenetic inference tool \cite{bouckaert_beast_2019}, to infer
-clone phylogenies from blood cancer data. The main differences between the two
-data sets include the fact that the blood cancer data is non-spatial, and
-therefore possible for meaningful sequencing at multiple points in time. In the
-case of colorectal cancer, it is not possible to obtain multiple samples from
-the same gland over time. Further, the spatial nature of the data means that
-sequencing it in the first place may not be possible before the tumour has been
-removed. This means that the clock rate of the gland phylogenies is unknown.
-However, sequencing multiple glands does allow for accurate reconstruction of
-tree topologies, with the clock rate being a nuisance parameter. Having
-discussed the potential for tree shape indices being used in evolutionary mode
-inference, the next logical step would be testing whether they point to signs of
-global selective pressures in the data. Because of the way \texttt{methdemon} is
-written, phylogenies are easily constructed as a byproduct of the simulation,
-making it easy to test effectively neutral growth as a null model. Resources
-permitting, it would be interesting to use a larger-scale spatial model to test
-different ways of gland organisation in space, which could result in different
-modes of evolution, and thus tree shapes.
+phylogenetic trees. In \cite{gabbutt_evolutionary_2023}, the authors used a
+custom BEAST pipeline, a Bayesian phylogenetic inference tool
+\cite{bouckaert_beast_2019}, to infer clone phylogenies from blood cancer data.
+The main differences between the two data sets include the fact that the blood
+cancer data is non-spatial, and therefore possible for meaningful sequencing at
+multiple points in time. In the case of colorectal cancer, it is not possible
+to obtain multiple samples from the same gland over time. Further, the spatial
+nature of the data means that sequencing it in the first place may not be
+possible before the tumour has been removed. This means that the clock rate of
+the gland phylogenies is unknown. However, sequencing multiple glands does
+allow for accurate reconstruction of tree topologies, with the clock rate being
+a nuisance parameter. Having discussed the potential for tree shape indices
+being used in evolutionary mode inference, the next logical step would be
+testing whether they point to signs of global selective pressures in the data.
+Because of the way \texttt{methdemon} is written, phylogenies are easily
+constructed as a byproduct of the simulation, making it easy to test
+effectively neutral growth as a null model. Resources permitting, it would be
+informative to use a larger-scale spatial model to test different ways of gland
+organisation in space, which could result in different modes of evolution, and
+thus tree shapes.
 
 \section{Conclusion}
+In this thesis, I have taken a multi-faceted approach to modelling cancer
+evolution. Chapters \ref{chapter:trees} and \ref{chapter:trajectories} go down
+the path of tree shape indices, which are emerging as a powerful tool for
+analysing driver phylogenies, as well as trees more generally. Condensing the
+information contained in a tree into an array of indices allows for a meaningful
+comparison of trees, which could easily be integrated in popular statistical
+packages for tree inference. On the other hand, chapters \ref{chapter:methdemon}
+and \ref{chapter:methylation} explore evolution of colorectal cancer using
+agent-based modelling and approximate Bayesian computation. There is a rich
+literature on the topic of colorectal cancer ranging from tumourigenesis to
+metastasis, but this is the first time that the evolutionary dynamics of the
+disease have been modelled based on fluctuating methylation clocks. As discussed
+in chapter \ref{chapter:methylation}, the model is based on a certain set of
+assumptions, which may at times be too restrictive. Despite this, the model
+has been capable of recovering evolutionary properties of the disease, and seems
+to reliably estimate how fast the tumour has grown. \par
+The research presented in this thesis, based on mathematical and computational
+modelling of evolutionary dynamics of cancer, contributes to the better
+understanding of the ways in which cancer can evolve. From differentiating
+evolutionary trajectories to leveraging the mode of evolution of a tumour in
+developing a model to describe it, the work presented here offers ample scope
+for applying and extending these methods in future work.
+

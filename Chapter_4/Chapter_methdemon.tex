@@ -51,14 +51,15 @@ time goes on. Current techniques allow for the sequencing of some $850,000$ CpG
 sites which, while a small fraction of the genome, is still enough to proide
 valuable insight into the underlying dynamics of the cell population. Initial
 studies on methylation as a tracker of evolution made use of the whole array
-\cite{siegmund_modeling_2008, sottoriva_integrating_2010}. However, more recent
-work has shown that just a small subset of CpG sites is enough to infer the
-evolutionary dynamics of a cell population \cite{gabbutt_fluctuating_2022,
+\cite{siegmund_modeling_2008, lechevallier_integrating_2010}. However, more
+recent work has shown that just a small subset of CpG sites is enough to infer
+the evolutionary dynamics of a cell population \cite{gabbutt_fluctuating_2022,
 gabbutt_evolutionary_2023}. This is the set of fluctuating CpG (fCpG) loci,
-which is also the topics of chapter \ref{chapter:methylation}. \par
-As fCpG loci seem to be a neutral marker of cell population dynamics, I will
-define the following set of assumptions for modelling their behaviour:
-\begin{enumerate}[(i')]
+which is also the topics of chapter \ref{chapter:methylation}. \par As fCpG
+loci seem to be a neutral marker of cell population dynamics, I will define the
+following set of assumptions for modelling their behaviour:
+
+\begin{enumerate}[(i)]
     \item \textbf{Each cell has a corresponding fCpG array inherited from its
         parent cell.}
     \item \textbf{Upon cell division, each methylated fCpG site has an
@@ -67,6 +68,7 @@ define the following set of assumptions for modelling their behaviour:
     \item \textbf{The rates of methylation and demethylation do not change over
         time.}
 \end{enumerate}
+
 These assumptions are based on the findings of \cite{gabbutt_fluctuating_2022,
 gabbutt_evolutionary_2023}.
 
@@ -115,7 +117,7 @@ parent and daughter cells have the same probability of acquiring a driver
 mutation, and each cell's fCpG array is updated according to the rules outlined
 in the previous section. A list of relevant model parameters is given in table
 \ref{table:methdemon_params}, with source code and examples available in the
-model's github repository \cite{methdemon_repo}.
+model's github repository \cite{manojlovic_vesmanojlovicmethdemon_2023}.
 \begin{table}[h]
     \centering
     \begin{tabularx}{\textwidth}{|c|X|c|}
@@ -166,7 +168,7 @@ being tracked (figure \ref{fig:fission_explainer}), equal to
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.85\textwidth]{Chapter_4/figures/example_branching.pdf}
+    \includegraphics[width=\textwidth]{Chapter_4/figures/example_branching.pdf}
     \caption{A toy example of how fissions are handled in the model. The red
     branches represent tracked fissions, and the grey branches are hypothetical
     untracked fissions occurring under a regular branching process.}
@@ -244,10 +246,11 @@ as real tumours are not expected to grow indefinitely.
 To check whether the model's behaviour is consistent with the expectations, I
 wrote a \texttt{snakemake} workflow to test many combinations of the parameters
 from table \ref{table:methdemon_params}. The code is available at the github
-repository for the workflow, \texttt{walter} \cite{walter}. A summary of the
-results is shown in figures \ref{fig:sensitivity_analysis_1}, and
-\ref{fig:inter-slow}, \ref{fig:inter-med}, and \ref{fig:inter-fast}. Further
-details are included in the appendix.
+repository for the workflow, \texttt{walter}
+\cite{manojlovic_vesmanojlovicwalter_2024}. A summary of the results is shown
+in figures \ref{fig:sensitivity_analysis_1}, and \ref{fig:inter-slow},
+\ref{fig:inter-med}, and \ref{fig:inter-fast}. Further details are included in
+the appendix.
 
 \subsubsection{Carrying capacity}
 By carrying capacity, I mean the maximum number of cells with proliferative
@@ -414,7 +417,7 @@ section.
 For black-box simulations, likelihood-free inference is the most popular method
 of parameter estimation. Of these, ABC is preferred by most judging by its
 representation in the literature \cite{tavare_inferring_1997,
-sottoriva_integrating_2010, sottoriva_big_2015, wang_calibration_2024,
+lechevallier_integrating_2010, sottoriva_big_2015, wang_calibration_2024,
 bondi_approximate_2023}. In its most basic form, ABC is a rejection algorithm
 which draws parameter values from a prior distribution, simulates data using a
 given model, and compares the simulated data to the observed data. If the
@@ -511,7 +514,7 @@ distribution of the parameters are shown in table \ref{table:example_inference}.
     \centering
     \begin{tabularx}{\textwidth}{|X|c|c|c|}
         \hline
-        Parameter & Ground truth & Prior & Posterior \\ \hline
+        Parameter & Ground truth & Prior & Posterior (mean$\pm$std dev) \\ \hline
         Demethylation rate & $0.0018$ & $U[0, 0.5]$ & $0.0091 \pm 0.0046$ \\
         \hline
         Methylation rate & $0.0022$ & $U[0, 0.5]$ & $0.010 \pm 0.005$ \\ \hline
@@ -528,10 +531,8 @@ distribution of the parameters are shown in table \ref{table:example_inference}.
 The inference was performed over $3$ generations using $200$ particles per
 generation, with a dynamic tolerance threshold calculated using the
 \texttt{SilkOptimalEpsilon} method in the \texttt{pyabc} package. The prior
-distribution of the parameters was chosen to be uniform and broad.
-Visualisation of the synthetic data is included in the appendix (figure
-\ref{fig:synthetic_data_app}). The results of the inference are shown in figure
-\ref{fig:example_inference}.
+distribution of the parameters was chosen to be uniform and broad. The results
+of the inference are shown in figure \ref{fig:example_inference}.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_4/figures/example_inference.png}
@@ -588,4 +589,6 @@ parameters to varying degrees. I have also presented and tested an ABC workflow
 for inferring the parameters of the model from observed data. The workflow is
 capable of narrowing down the parameter space, and the results of an example
 inference show important features which need to be addressed when using the
-workflow on real data.
+workflow on real data. However, the inference workflow can be hindered by the
+choice of overly broad priors. Therefore, a more informative prior distribution
+should be chosen when considering real data.

@@ -10,10 +10,10 @@
 % \end{itemize}
 
 \section{Introduction}
-The main inspiration behind \texttt{methdemon} is colorectal cancer or, more
-specifically, multi-site sequenced colorectal cancer methylation data. CRC is
-the third most common cancer worldwide, with over $40000$ new cases diagnosed
-in the UK each year on average \cite{cancer_research_uk_bowel_2021}. The
+The main motivation for the development of \texttt{methdemon} is to infer
+evolutionary properties of colorectal cancer (CRC) from methylation data. CRC
+is the third most common cancer worldwide, with over $40000$ new cases
+diagnosed in the UK each year on average \cite{noauthor_bowel_2015}. The
 disease is characterised by the accumulation of genetic and epigenetic
 mutations in colonic cells \cite{fleming_colorectal_2012}. The most common type
 of CRC is adenocarcinoma, which arises from the epithelial cells lining the
@@ -51,18 +51,18 @@ and identified $1258$ fCpG loci. For comparison, I ran a similar analysis only
 on the data provided by Dr Shibata and identified a set of some $950$ loci. Of
 these, only $120$ were common to both sets. The discrepancy is likely due to
 the small sample size of the data provided by Dr Shibata. The fCpG loci
-identified in one of the samples are shown in figure \ref{fig:fCpG_loci_M},
-with additional figures in appendix \ref{appendix:fCpG_loci}.
+identified in one of the samples are shown in figure \ref{fig:fCpG_loci_S},
+with additional figures in appendix \ref{app:inference}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/fCpG_loci_M.png}
+    \includegraphics[width=\textwidth]{Chapter_5/figures/fCpG_loci_S.png}
     \caption{Glands from the same side (A, B) of the tumour have more similar
     fCpG arrays than glands from different sides. \textbf{diagonal} ---
     histograms of fCpG arrays for each gland; \textbf{above diagonal} ---
     scatter plots of correlations between glands; \textbf{below diagonal} ---
     $2$D histograms of the above-diagonal plots, showing the density of points.}
-    \label{fig:fCpG_loci_M}
+    \label{fig:fCpG_loci_S}
 \end{figure}
 
 
@@ -74,15 +74,15 @@ have spent less time evolving independently and should have more similar fCpG
 arrays. To test this hypothesis, I calculated the inter-gland distance matrix
 for each tumour sample. The resulting matrices show a clear correlation between
 side and distance values. The distance matrix for one of the samples is shown
-in figure \ref{fig:gland_dist_M} for tumour M, and in appendix
-\ref{appendix:gland_distances} for the other samples.
+in figure \ref{fig:gland_dist_S} for tumour S, and in appendix
+\ref{app:inference} for the other samples.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/gland_dist_M.png}
-    \caption{The inter-gland distance matrix for tumour M shows that spatial
+    \includegraphics[width=\textwidth]{Chapter_5/figures/gland_dist_S.png}
+    \caption{The inter-gland distance matrix for tumour S shows that spatial
     proximity is corelated to similarity between fCpG arrays.}
-    \label{fig:gland_dist_M}
+    \label{fig:gland_dist_S}
 \end{figure}
 
 \subsection{Development of the \texttt{methdemon} model}
@@ -176,7 +176,7 @@ or partially sweep the gland's population and establish more distinct fCpG
 arrays between glands. However, as discussed in chapter \ref{chapter:methdemon},
 strong selection can quickly become problematic in an ABM like this due to the
 accumulation of advantageous drivers. An example of strong selection at deme
-size $10000$ is in appendix \ref{appendix:inference}. \par
+size $10000$ is in appendix \ref{app:inference}. \par
 Considering that the number of stem cells in a normal crypt is on the order of
 $10$ \cite{gehart_tales_2019, gabbutt_fluctuating_2022}, with the total number
 of cells in a crypt being on the order of $1000$, I next tested the model with
@@ -219,7 +219,7 @@ glands within a tumour. Furthermore, having the deme carrying capacity as a free
 parameter would slow down the inference process significantly.
 In the first instance, I ran the inference with parameter ranges given in table
 \ref{tab:inf_ranges}. The results of the inference are shown in figure
-\ref{fig:inference_1}, with more details in appendix \ref{appendix:inference}.
+\ref{fig:inference_1}, with more details in appendix \ref{app:inference}.
 
 \begin{table}[ht]
 \centering
@@ -272,7 +272,7 @@ and steps between generations will cover more of the space.
 The second inference run was done with similar parameter ranges as the first.
 The log-transformed parameter ranges are give in table \ref{tab:inf_ranges_log}
 and the results of the inference are shown in figure \ref{fig:inference_2}, with
-more details in appendix \ref{appendix:inference}. All log transformations were
+more details in appendix \ref{app:inference}. All log transformations were
 done with base $10$.
 
 \begin{table}[ht]
@@ -300,7 +300,7 @@ at the gland level.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{Chapter_5/figures/inference_raw/inference_2.pdf}
+    \includegraphics[width=\textwidth]{Chapter_5/figures/inference_raw/inference_S.pdf}
     \caption{Log-transformed parameters lead to more efficient traversal of
     parameter space. \textbf{A} --- posterior distributions of fCpG fluctuation
     rates have narrowed similar to before, but now the fission rate's posterior
@@ -327,16 +327,20 @@ rates are shown in table \ref{tab:fission_rates}.
     \hline
     Tumour & Inferred median fission rate $[\text{cell}^{-1}\text{cell div}^{-1}]$ & $L_2$ half-norm & Tumour size [cm] & Stage \\
     \hline
+    E & $0.0025$ & 0.481 & 6.1 & I \\
+    \hline
     I & $0.017$ & 0.176 & 3.6 & III \\
     \hline
     J & $0.003444$ & 0.421 & 5 & III \\
     \hline
     S & $0.007$ & 0.295 & 6 & n/a \\
     \hline
+    X & $0.0032$ & 0.338 & 2.5 & n/a \\
+    \hline
     \end{tabularx}
     \caption{Inferred median fission rates for different tumours and their
-    sizes. \textbf{NOTE:} Still running a few more samples on the cluster, will
-    update the table with more results when they are done.}
+    sizes. The $L_2$ half-norm of a tumour's inter-gland distance matrix appears
+    to be inversely correlated with the inferred fission rate.}
     \label{tab:fission_rates}
 \end{table}
 
@@ -352,7 +356,7 @@ the fission rate and $N(t)$ the number of glands in the tumour at time $t$. Then
 As the tumour grows from a single gland, the time $\tau$ to reach a certain
 size $N_\tau$ is
 \begin{equation}
-    \tau = \frac{1}{\phi}\log N.
+    \tau = \frac{1}{\phi}\log N_\tau.
 \end{equation}
 The literature does not provide clear estimates for cancer stem cell division
 rates, but I think a reasonable estimate would be from about $1$ per month to
@@ -387,15 +391,22 @@ developed the model under the assumption that methylation and demethylation
 rates are constant and equal across all cells and fCpG loci. While this may be
 reasonable on average, there might be mutations which affect these rates,
 leading to the observed distributions of fCpG loci states. Despite biases in
-some of the data, the model was able to recapitulate the patterns observed in
-the data, and the inferred parameters lay within reasonable ranges. However,
-the model struggled to infer the selection coefficient and the driver mutation
-rate. This could be due to the signature of selection being too weak in the
-model or data, or the distance functions in the ABC rejection step not being
-fine-grained enough to detect the differences between evolutionary modes.
-Having said that, the results do support an effectively neutral evolutionary
-mode of colorectal cancer growth, with the effects of selection constrained to
-within glands. Furthermore, it seems clear that multi-site sequencing of
-methylation arrays from solid tumours can be used to draw inferences about the
-evolutionary dynamics of the tumour, and warrants further investigation with a
-more sophisticated model.
+the data, the model was able to recapitulate the patterns observed in the data,
+and the inferred parameters lay within reasonable ranges. I think it is clear
+that the methylation and demethylation rates are inferred based on the
+Wasserstein distance between individual glands in the data and the model
+output, and the fission rates from the overall similarity between the
+inter-gland distance matrices. Additionally, the $L_2$ half-norm of the
+inter-gland distance matrix is inversely correlated with the inferred fission
+rate. This is consistent with the idea that faster-growing tumours have had less
+time for the glands' arrays to diverge.
+However, the model struggled to infer the selection coefficient and the
+driver mutation rate. This could be due to the signature of selection being too
+weak in the model or data, or the distance functions in the ABC rejection step
+not being fine-grained enough to detect the differences between evolutionary
+modes. Having said that, the results do support an effectively neutral
+evolutionary mode of colorectal cancer growth, with the effects of selection
+constrained to within glands. Furthermore, it seems clear that multi-site
+sequencing of methylation arrays from solid tumours can be used to draw
+inferences about the evolutionary dynamics of the tumour, and warrants further
+investigation with a more sophisticated model.

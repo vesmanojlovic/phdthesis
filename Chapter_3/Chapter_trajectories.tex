@@ -269,7 +269,7 @@ of mathematical analysis of the model using, for example, diffusion
 approximations. Finally, all associated code is free and open source (cite
 github repos once finished), which allows reproducibility using identical
 parameters and random seeds. Parameter values for different batches can be found
-in the appendix (ref).
+in appendix \ref{app:trajs}.
 
 
 \section{Results}
@@ -319,9 +319,9 @@ in all cases, the longitudinal and node evenness indices were highly correlated
 across runs (figure \ref{fig:evenness_redundant}). Furthermore, the richness
 indices were also correlated with the diversity indices, which is not
 surprising as the diversity indices are a generalisation of the richness
-indices. I will narrow down the discussion of the set of indices to just the
+indices. I will narrow down the the set of indices to just the
 diversity indices and one of the evenness indices in this section, with the
-full set of trajectories included in the appendix.\par
+full set of trajectories included in appendix \ref{app:trajs}.\par
 
 \begin{figure}[h!]
     \centering
@@ -361,16 +361,6 @@ between runs.
 \clearpage
 
 \section{Discussion}
-% \begin{itemize}
-%     \item clear differences between different tumour trajectories, but also
-%         decent amount of variance depending on parameters --- which ones are
-%         realistic? (need to be inferred from real data)
-%     \item what are the limitations of the approach? --- clear starting point is
-%         data availability, but also general inter-patient variation of tumour
-%         progression
-%     \item next steps --- further refining of the methods, sourcing and applying
-%         to more data (Kim's work in progress)
-% \end{itemize}
 In this chapter I examined two sets of tree shape indices for tracking the mode
 of tumour evoution on the example of agent-based simulations. The results
 suggest that the indices are able to distinguish between different modes of
@@ -378,22 +368,32 @@ evolution depending on parameter choice, but that further work is needed to
 establish ranges of parameter values which are useful. While a moderate
 mutation rate and weak selection seem to be a good starting point, applying the
 indices to real data should be the next step in order to validate the approach.
-Furthermore, the new set of indices introduced in \cite{noble_new_2023} seems
-to be more informative due to its inclusion of branch lengths, but also
+Furthermore, the new set of indices introduced in \cite{noble_new_2023} is more
+informative due to its inclusion of branch lengths, but also
 contains some redundancy as pairs of indices can display high correlation
-across runs. This redundancy may not necessarily be present during individual
+across runs. This redundancy may not necessarily be present in all individual
 simulations, but averaging even a few dozen runs shows that pairs of indices
 encode similar information. Despite the averaging, there is still a
 considerable amount of noise in the derived trajectories, and larger-scale
 simulations are needed to produce cleaner results.\par
+As the new index set is, as the name suggests, new, there are still some
+technical wrinkles to iron out. Namely, large trees with many nodes and branches
+can take a long time to calculate, as the indices from the set are more complex
+than the old ones. Additionally, there is a precision issue which arises when
+some of the smallest nodes are included in the tree. This is easily resolved by
+employing a similar approach as in \ref{fig:robustness}, which effectively
+simulates sampling error. Finally, the R package itself does not directly
+support the data structure used in the modelling workflow. The conversion, which
+was purpose-written for this work, may also contribute to the aforementioned
+technical difficulties. \par
 Having focussed on numerical summaries of the ABM outputs, I also believe that
 there may be a way to heuristically derive approximate general properties of a
 tumour's evolutionary trajectory. This could be done by deriving equations for
 the simplest evolutionary trajectories, such as progressive selective sweeps
 which follow a cycloid in the $n,D$-plane in the $3$-dimensional index space.
-Additionally, as my main focus in this chapter has been the generation, processing,
-and visualisation of synthetic cancer data, there is a good scope for the
-application of more novel statistical learning methods to the data, such as
-evolutionary simulation \cite{herald_autonomous_2022}, or deep learning methods
-developed for fitting ABMs to data \cite{cess_fitting_2023}.
+Additionally, as my main focus in this chapter has been the generation,
+processing, and visualisation of synthetic cancer data, there is a good scope
+for the application of more novel statistical learning methods to the data,
+such as evolutionary simulation \cite{herald_autonomous_2022}, or deep learning
+methods developed for fitting ABMs to data \cite{cess_fitting_2023}.
 

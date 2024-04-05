@@ -1,3 +1,83 @@
-\chapter{Appendix B}
+\chapter{Parameter inference}\label{app:inference}
 
-The Appendix B is included in the back matter of the thesis. No \textit{\textbackslash\hspace{-0.5mm}appendix} command is used. This produces that the appendix input in the table of contents is not labelled, neither with arabic numbers nor capital letters. The only text that will appear in the appendix title is that written in the \textit{\textbackslash\hspace{-0.5mm}chapter}$\{\}$ command brackets. In this cases this is 'Appendix B'.
+\begin{table}[h]
+\centering
+    \begin{tabularx}{0.85\textwidth}{|c|X|X|}
+\hline
+    Tumour & Median methylation rate & Median demethylation rate \\
+\hline
+    E & 0.0021 & 0.002  \\
+    I & 0.005  & 0.0009 \\
+    J & 0.0012 & 0.0018 \\
+    S & 0.001  & 0.0033 \\
+    X & 0.0008 & 0.0025 \\
+\hline
+\label{tab:inferred_epimutation_rates}
+\end{tabularx}
+\caption{Inferred epimutation rates for the tumour samples modelled in this
+    thesis.}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/fCpG_loci_E.png}
+\caption{Visualisation of fCpG arrays for patient E.}
+\label{fig:vis_E}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/inference_E.pdf}
+\caption{Inference of the parameters for patient E.}
+\label{fig:inference_E}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/fCpG_loci_I.png}
+\caption{Visualisation of fCpG arrays for patient I.}
+\label{fig:vis_I}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/inference_I.pdf}
+\caption{Inference of the parameters for patient I.}
+\label{fig:inference_I}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/fCpG_loci_J.png}
+\caption{Visualisation of fCpG arrays for patient J.}
+\label{fig:vis_J}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/inference_J.pdf}
+\caption{Inference of the parameters for patient J.}
+\label{fig:inference_J}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/fCpG_loci_X.png}
+\caption{Visualisation of fCpG arrays for patient X.}
+\label{fig:vis_X}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/inference_X.pdf}
+\caption{Inference of the parameters for patient X.}
+\label{fig:inference_X}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{Chapter_5/figures/gland_dists.pdf}
+\caption{Inter-gland distance matrices for the above tumours. Clockwise from
+    top left: E, I, X, J.}
+\label{fig:gland_dists}
+\end{figure}

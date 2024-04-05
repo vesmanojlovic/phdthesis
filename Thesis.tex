@@ -1,8 +1,6 @@
 %% PhD Thesis Template for City University London.
 %% Ciro Moreno Ramírez
 %% July 2015
-
-
 %%Document type: book
 %%
 %%Paper size:	A4	(compulsory)
@@ -36,9 +34,9 @@
 %User's packages
 \include{Packages}
 
+
 %User's functions
 \include{Userfunctions}
-
 
 
 % --- Document --- %
@@ -48,9 +46,6 @@
 %\includeonly{Frontmatter/Titlepage}
 
 \begin{document}
-
-
-
 
 %% Front matter ------------------------------
 \frontmatter
@@ -85,15 +80,11 @@
 %Abstract
 \include{Frontmatter/Abstract}
 
-
-
-
 %% Main matter ------------------------------
 \mainmatter
 
 %Chapters
 \include{Chapter_1/Introduction}
-
 \include{Chapter_2/Trees_Chapter}
 \include{Chapter_3/Chapter_trajectories}
 \include{Chapter_4/Chapter_methdemon}
@@ -103,18 +94,14 @@
 %Appendices
 \appendix
 \include{Appendix_A/Appendix_A}
-
-
-
+\include{Appendix_B/Appendix_B}
 
 %% Back matter ------------------------------
 \backmatter
 
-%Appendices
-\include{Appendix_B/Appendix_B}
-
 %Contributions
 \include{Contributions}
+
 %'multibib' package is used to generate the Contribution chapter as an extra bibliography chapter. When using multibib package on Windows it may fail. The solution is to run manually the following compilations:
 %pdflatex Thesis.tex
 %bibtex Thesis.tex
