@@ -293,16 +293,20 @@ their findindgs.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.85\textwidth]{Chapter_3/figures/1e0501.pdf}
-    \caption{A ``reasonable" default set of parameters --- mutation rate is set
-    to $10^{-5}$ per cell division, selective advantage to $0.1$.}
+    \caption{Evolutionary trajectories in $3$-dimensional index space for four
+    different spatial configurations of tumour progression (gland fission,
+    invasive glandular, non-spatial, and boundary growth). Parameters: mutation
+    rate $\mu = 10^{-5}$, selective advantage $s = 0.1$.}
     \label{fig:1e05_01}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.85\textwidth]{Chapter_3/figures/1e04005.pdf}
-    \caption{Higher mutation rate ($10^{-4}$ per cell division) and lower
-    selective advantage ($0.05$) show distinct final states. }
+    \caption{Evolutionary trajectories in $3$-dimensional index space for four
+    different spatial configurations of tumour progression (gland fission,
+    invasive glandular, non-spatial, and boundary growth). Parameters: mutation
+    rate $\mu = 10^{-4}$, selective advantage $s = 0.05$.}
     \label{fig:1e04_005}
 \end{figure}
 \clearpage
@@ -326,10 +330,10 @@ full set of trajectories included in appendix \ref{app:trajs}.\par
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Chapter_3/figures/redundancy.pdf}
-    \caption{Evenness indices show high correlation across runs. Mutation rate ($\mu$) and
-    selective advantage ($s$) values:\\
-    \textbf{A} --- $\mu = 10^{-5}$, $s = 0.1$; \textbf{B} --- $\mu = 10^{-4}$, $s = 0.05$;
-    \textbf{C} --- $\mu = 10^{-6}$, $s = 0.2$.}
+    \caption{Evenness trajectories for different spatial configurations and
+    sets of parameters. Mutation rate ($\mu$) and selective advantage ($s$)
+    values:\\ \textbf{A} --- $\mu = 10^{-5}$, $s = 0.1$; \textbf{B} --- $\mu =
+    10^{-4}$, $s = 0.05$; \textbf{C} --- $\mu = 10^{-6}$, $s = 0.2$.}
     \label{fig:evenness_redundant}
 \end{figure}
 \clearpage
@@ -342,20 +346,25 @@ generalised version of the old one. The main difference between the new and old
 trajectories is the amount of noise present in the new set, even when the
 outputs are averaged over multiple runs. This is likely due, in part, to the
 inclusion of branch lengths in the new set of indices, which may vary greatly
-between runs.
+between runs. The trajectories for the same data sets as above are shown in
+figures \ref{fig:1e05_01new} and \ref{fig:1e04_005new}.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Chapter_3/figures/1e0501new.pdf}
-    \caption{Averaged trajectories in the diversity index space for the
-    ``reasonable" set of parameters.}
+    \caption{Evolutionary trajectories in the new index space for four
+    different spatial configurations of tumour progression (gland fission,
+    invasive glandular, non-spatial, and boundary growth). Parameters: mutation
+    rate $\mu = 10^{-5}$, selective advantage $s = 0.1$.}
     \label{fig:1e05_01new}
 \end{figure}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Chapter_3/figures/1e04005new.pdf}
-    \caption{Averaged trajectories in the diversity index space for the
-    ``reasonable" set of parameters.}
+    \caption{Evolutionary trajectories in the new index space for four
+    different spatial configurations of tumour progression (gland fission,
+    invasive glandular, non-spatial, and boundary growth). Parameters: mutation
+    rate $\mu = 10^{-4}$, selective advantage $s = 0.05$.}
     \label{fig:1e04_005new}
 \end{figure}
 \clearpage
@@ -386,6 +395,17 @@ simulates sampling error. Finally, the R package itself does not directly
 support the data structure used in the modelling workflow. The conversion, which
 was purpose-written for this work, may also contribute to the aforementioned
 technical difficulties. \par
+
+The main contribution of this chapter is the exploration of different sets of
+indices, not just over time, but in relation to each other. The first time a
+similar approach was used was in \cite{noble_spatial_2022}, and here I expanded
+the analysis to include more dimensions of the space. Additionally, in the
+context of the new index set, I was able to expand the discussion to include
+larger trees than previously analysed with the indices \cite{noble_new_2023}.
+Recently, there has been work considering a similar approach for the
+classification of evolutionary processes in biogeography, which further supports
+the utility of the indices \cite{freitas_patch_2024}. \par
+
 Having focussed on numerical summaries of the ABM outputs, I also believe that
 there may be a way to heuristically derive approximate general properties of a
 tumour's evolutionary trajectory. This could be done by deriving equations for

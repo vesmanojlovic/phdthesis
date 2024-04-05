@@ -57,11 +57,11 @@ with additional figures in appendix \ref{app:inference}.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/fCpG_loci_S.png}
-    \caption{Glands from the same side (A, B) of the tumour have more similar
-    fCpG arrays than glands from different sides. \textbf{diagonal} ---
-    histograms of fCpG arrays for each gland; \textbf{above diagonal} ---
-    scatter plots of correlations between glands; \textbf{below diagonal} ---
-    $2$D histograms of the above-diagonal plots, showing the density of points.}
+    \caption{Visualisation of the set of fCpGs for tumour samples from patient
+    S. \textbf{diagonal} --- histograms of fCpG arrays for each gland;
+    \textbf{above diagonal} --- scatter plots of correlations between glands;
+    \textbf{below diagonal} --- $2$D histograms of the above-diagonal plots,
+    showing the density of points.}
     \label{fig:fCpG_loci_S}
 \end{figure}
 
@@ -80,8 +80,9 @@ in figure \ref{fig:gland_dist_S} for tumour S, and in appendix
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/gland_dist_S.png}
-    \caption{The inter-gland distance matrix for tumour S shows that spatial
-    proximity is corelated to similarity between fCpG arrays.}
+    \caption{The inter-gland distance matrix for tumour S. The distance values
+    are, broadly speaking, higher between distant glands than ones from the same
+    side of the tumour (A or B).}
     \label{fig:gland_dist_S}
 \end{figure}
 
@@ -144,15 +145,16 @@ of the population, as discussed in chapter \ref{chapter:trajectories} and
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/10000plot.png}
-    \caption{}
+    \caption{Visualisation of the output fCpG arrays from the \texttt{methdemon}
+    model with weak selection ($s=0.1$) and deme carrying capacity $10000$.}
     \label{fig:methdemon_weak_selection}
 \end{figure}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/10000dist.png}
-    \caption{Inter-gland distances for the output fCpG arrays from the
-    \texttt{methdemon} model with weak selection.}
+    \caption{Inter-gland distance matrix for the output fCpG arrays from the
+    \texttt{methdemon} model with weak selection ($s=0.1$).}
     \label{fig:methdemon_weak_dist}
 \end{figure}
 
@@ -193,8 +195,9 @@ or weak selection. Examples are shown in figures
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/100plot.png}
     \caption{Output fCpG arrays from the \texttt{methdemon} model with weak
-    selection and deme carrying capacity $100$ reflect the data better than
-    larger deme carrying capacity.}
+    selection ($s=0.1$) and deme carrying capacity $100$. The outputs of runs
+    with a lower deme carrying capacity reflect the data better than larger
+    deme carrying capacity.}
     \label{fig:methdemon_weak_selection_small}
 \end{figure}
 
@@ -258,12 +261,13 @@ and steps between generations will cover more of the space.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/inference_raw/inference_1.pdf}
-    \caption{Using absolute parameter values in the inference process leads to
-    less efficient inference. \textbf{A} --- posterior distributions of fCpG
-    fluctuation rates have narrowed down rapidly, but other parameters'
-    posteriors remain broad. \textbf{B} --- box plots of the posteriors show
-    that the model is not able to resolve the effects of selection from the
-    data, and leaves a lot of uncertainty in the fission rates.}
+    \caption{Inference outputs from the first run, performed by sampling
+    parameters from uniform priors on the original scale. \textbf{A} ---
+    posterior distributions of fCpG fluctuation rates have narrowed down
+    rapidly, but other parameters' posteriors remain broad. \textbf{B} --- box
+    plots of the posteriors show that the model is not able to resolve the
+    effects of selection from the data, and leaves a lot of uncertainty in the
+    fission rates.}
     \label{fig:inference_1}
 \end{figure}
 \clearpage
@@ -301,12 +305,12 @@ at the gland level.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/inference_raw/inference_S.pdf}
-    \caption{Log-transformed parameters lead to more efficient traversal of
-    parameter space. \textbf{A} --- posterior distributions of fCpG fluctuation
-    rates have narrowed similar to before, but now the fission rate's posterior
-    is also narrower than before. Mutation rate and selective advantage are
-    still not inferred by the model. \textbf{B} --- box plots of the
-    posteriors.}
+    \caption{Inference outputs from the alternative run, performed by sampling
+    parameters from uniform priors on the log-transformed scale. \textbf{A} ---
+    posterior distributions of fCpG fluctuation rates have narrowed similar to
+    before, but now the fission rate's posterior is also narrower than before.
+    Mutation rate and selective advantage are still not inferred by the model.
+    \textbf{B} --- box plots of the posteriors.}
     \label{fig:inference_2}
 \end{figure}
 \clearpage
@@ -319,7 +323,9 @@ under the assumption that gland fission is the only mechanism of growth. This
 hypothesis is supported by the inference results, as samples with higher values
 in the inter-gland distance matrix tend to grow slower, and ones where gland
 fCpG arrays are more similar have grown faster. The inferred median fission
-rates are shown in table \ref{tab:fission_rates}.
+rates are shown in table \ref{tab:fission_rates}. The inferred epimutation
+rates are included in appendix \ref{app:inference}, in table
+\ref{tab:inferred_epimutation_rates}.
 
 \begin{table}[ht]
     \centering
