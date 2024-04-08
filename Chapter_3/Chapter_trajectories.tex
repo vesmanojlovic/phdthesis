@@ -7,7 +7,7 @@ A trajectory is a path described by any object (or indeed point) in some space
 according to some parameter, usually time.  Intuitively then, an evolutionary
 trajectory refers to the changes that a lineage or population undergoes over
 time --- the series of genetic, morphological, and behavioral transformations
-that occur as organisms evolve and diversify. We are interested in the
+that occur as organisms evolve and diversify. I am interested in the
 evolutionary trajectory of cancers but reliably obtaining time-series data is,
 at the time of writing, not feasible at a larger scale. This stems from multiple
 issues. Firstly, at time of diagnosis, solid tumours have likely already been
@@ -25,7 +25,7 @@ informed treatment strategy. This begs the question --- how can we distinguish
 between different ways tumours evolve? Is it necessary to wade through sequences
 of genetic data to do so or is it possible to abstract the key properties of a
 tumour's evolutionary trajectory into a few numerical summaries? \par In this
-chapter, we will examine the utility of two different sets of evolutionary
+chapter, I will examine the utility of two different sets of evolutionary
 indices for tracking the evolution of tumours on the example of agent-based
 simulations.
 
@@ -48,22 +48,22 @@ noble_spatial_2022}. That is, the way in which a tumour evolves (figure
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.85\textwidth]{Chapter_3/figures/modes.jpeg}
-    \caption{Four different modes of tumour evolution. \\ Picture adapted from
+    \caption{Four different modes of tumour evolution. Picture adapted from
     \cite{davis_tumor_2017} under a CC BY 4.0 license.}
     \label{fig:modes}
 \end{figure}
 
 \subsection{Why even bother with indices?}
 Before introducing the sets of indices used to analyse properties of trees, let
-us consider a simpler question --- can we map the set of all possible trees to
-the set of real numbers? For this purpose we should decide how to define the set
-of trees. The number of nodes in a tree is a natural number, $n\in\mathbb{N}$,
-as is the number of possible tree topologies for a given $n$. We denote with
-$T(n)$ the set of enumerated tree topologies \cite{nakano_tree_2016}. Each node
-then has a corresponding size, giving us an $n$-tuple of real numbers
-$(\alpha_1, \dots, \alpha_n)\in\mathbb{R}^n$, and each edge (branch) has a
-corresponding length or $(l_i, \dots, l_{(n-1)})\in\mathbb{R}^{(n-1)}$. This
-means we would need a family of maps
+us consider a simpler question --- is it possible map the set of all possible
+trees to the set of real numbers? For this purpose I had to decide how to
+define the set of trees. The number of nodes in a tree is a natural number,
+$n\in\mathbb{N}$, as is the number of possible tree topologies for a given $n$.
+We denote with $T(n)$ the set of enumerated tree topologies
+\cite{nakano_tree_2016}. Each node then has a corresponding size, giving us an
+$n$-tuple of real numbers $(\alpha_1, \dots, \alpha_n)\in\mathbb{R}^n$, and
+each edge (branch) has a corresponding length or $(l_i, \dots,
+l_{(n-1)})\in\mathbb{R}^{(n-1)}$. This means we would need a family of maps
 
 \begin{equation}
     f_n: A(n) \times \mathbb{R}^n \times \mathbb{R}^{n-1} \rightarrow R.
@@ -104,7 +104,7 @@ $J^1$ index is based on the Shannon entropy.
 \subsubsection{Mean number of drivers per cell --- distance from the root}
 Each speciation event in phylogenetics or driver mutation in cancer evolution is
 associated with a change in the corresponding tree's topology. To capture the
-average number of these events, we use the mean number of drivers per cell. This
+average number of these events, I use the mean number of drivers per cell. This
 is defined as the average of distances from all nodes to the root (with the root
 distance from itself defined as $1$) weighted by the frequencies of the
 subclones,
@@ -235,18 +235,18 @@ frameworks to more stripped-down and abstract ones. Since each model should be
 ``as simple as possible but no simpler", the appropriate framework for our
 purposes must satisfy certain requirements --- flexibility, efficiency, and
 reproducibility. The first requirement is deceptively specific. As the main
-inspiration behind this work stems from cancer evolution, we want our
+inspiration behind this work stems from cancer evolution, I wanted the
 simulations to have parameters for controlling aspects of the cell population's
 physical properties which would in turn imply a different way in which it
 evolves. This would, for example, include spatial arrangement of cells, mutation
 rates, migration rates, and selective advantage. Furthermore, while the goal is
-to simulate large populations of cells, we also need a large number of
-simulations over which we can infer more general deterministic properties.
+to simulate large populations of cells, I also need a large number of
+simulations over which more general deterministic properties can be deduced.
 Stochastic effects could make vastly different evolutionary modes look more
 similar than expected in theory. Finally, reproducibility allows us to share
 parameters of our models for verification by peers, and possible further
-investigation.\\
-The agent-based modelling framework we decided to use is \texttt{warlock}
+investigation.\par
+The agent-based modelling framework I decided to use is \texttt{warlock}
 \cite{bak_warlock_2023}, a \texttt{snakemake} wrapper written for \texttt{demon}
 \cite{noble_demon_2020}. It satisfies the requirements above, with a few
 associated comments. Firstly, it is a flexible agent-based model of tumour
@@ -266,9 +266,13 @@ procedure for simulation cell events is based on the Gillespie algorithm
 cell type, event type, and finally cell genotype. This approach sacrifices
 micro-scale interactions between cells to benefit efficiency and the feasibility
 of mathematical analysis of the model using, for example, diffusion
-approximations. Finally, all associated code is free and open source (cite
-github repos once finished), which allows reproducibility using identical
-parameters and random seeds. Parameter values for different batches can be found
+approximations. Finally, all associated code is free and open source
+\cite{noble_demon_2020, vesmanojlovic_trajectories,
+kimverity_kimverityruiindices_2023}, which allows reproducibility using
+identical parameters and random seeds. Parameter values for different batches
+can be found in appendix \ref{app:trajs}. Each batch of simulations, that is a
+distinct set of parameters, was run over $50$ replicates distinguished by
+random seeds. Plots including individual and average trajectories are included
 in appendix \ref{app:trajs}.
 
 
@@ -278,7 +282,7 @@ in appendix \ref{app:trajs}.
 
 As shown in \cite{noble_spatial_2022}, using three indices to track the
 evolutionary trajectory of a tumour can be quite informative. Depending on the
-choice of parameters, the chosen spatial configurations occupy distinc sections
+choice of parameters, the chosen spatial configurations occupy distinct sections
 of the index space (such as figure \ref{fig:1e05_01}). This is a good sign, in
 the ``reasonable" parts of parameter space. However, the question here would be
 --- what are ``reasonable" parameters? The answer to this is not
@@ -295,8 +299,9 @@ their findindgs.
     \includegraphics[width=0.85\textwidth]{Chapter_3/figures/1e0501.pdf}
     \caption{Evolutionary trajectories in $3$-dimensional index space for four
     different spatial configurations of tumour progression (gland fission,
-    invasive glandular, non-spatial, and boundary growth). Parameters: mutation
-    rate $\mu = 10^{-5}$, selective advantage $s = 0.1$.}
+    invasive glandular, non-spatial, and boundary growth) averaged over $50$
+    replicates each. Parameters: mutation rate $\mu = 10^{-5}$, selective
+    advantage $s = 0.1$.}
     \label{fig:1e05_01}
 \end{figure}
 
@@ -305,35 +310,37 @@ their findindgs.
     \includegraphics[width=0.85\textwidth]{Chapter_3/figures/1e04005.pdf}
     \caption{Evolutionary trajectories in $3$-dimensional index space for four
     different spatial configurations of tumour progression (gland fission,
-    invasive glandular, non-spatial, and boundary growth). Parameters: mutation
-    rate $\mu = 10^{-4}$, selective advantage $s = 0.05$.}
+    invasive glandular, non-spatial, and boundary growth) averaged over $50$
+    replicates each. Parameters: mutation rate $\mu = 10^{-4}$, selective
+    advantage $s = 0.05$.}
     \label{fig:1e04_005}
 \end{figure}
 \clearpage
 
 \subsection{Trajectories in the new index space}
-As the $3$-dimensional index space is not generalised for trees with defined
-branch lengths, I decided to re-run the analysis on the same set of simulations
-using a recently introduced system of indices \cite{noble_new_2023}. Using an
-early version of the R package for calculating the indices
-\cite{kimverity_kimverityruiindices_2023}, I was able to construct the average
-trajectories in this new larger index space. However, bigger is not always
-better, and there are some redundancies in the new set of indices. For example,
-in all cases, the longitudinal and node evenness indices were highly correlated
-across runs (figure \ref{fig:evenness_redundant}). Furthermore, the richness
-indices were also correlated with the diversity indices, which is not
+As the $3$-dimensional index space does not distinguish between topologically
+identical trees with different branch lengths, I decided to re-run the analysis
+on the same set of simulations using a recently introduced system of indices
+\cite{noble_new_2023}. Using an early version of the R package for calculating
+the indices \cite{kimverity_kimverityruiindices_2023}, I was able to construct
+the average trajectories in this new larger index space. However, bigger is not
+always better, and there are some redundancies in the new set of indices. For
+example, in all cases, the longitudinal and node evenness indices were highly
+correlated across runs (figure \ref{fig:evenness_redundant}). Furthermore, the
+richness indices were also correlated with the diversity indices, which is not
 surprising as the diversity indices are a generalisation of the richness
-indices. I will narrow down the the set of indices to just the
-diversity indices and one of the evenness indices in this section, with the
-full set of trajectories included in appendix \ref{app:trajs}.\par
+indices. I will narrow down the the set of indices to just the diversity
+indices and one of the evenness indices in this section, with the full set of
+trajectories included in appendix \ref{app:trajs}.\par
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Chapter_3/figures/redundancy.pdf}
     \caption{Evenness trajectories for different spatial configurations and
-    sets of parameters. Mutation rate ($\mu$) and selective advantage ($s$)
-    values:\\ \textbf{A} --- $\mu = 10^{-5}$, $s = 0.1$; \textbf{B} --- $\mu =
-    10^{-4}$, $s = 0.05$; \textbf{C} --- $\mu = 10^{-6}$, $s = 0.2$.}
+    sets of parameters averaged over $50$ replicates each. Mutation rate
+    ($\mu$) and selective advantage ($s$) values:\\ \textbf{A} --- $\mu =
+    10^{-5}$, $s = 0.1$; \textbf{B} --- $\mu = 10^{-4}$, $s = 0.05$; \textbf{C}
+    --- $\mu = 10^{-6}$, $s = 0.2$.}
     \label{fig:evenness_redundant}
 \end{figure}
 \clearpage
@@ -354,8 +361,9 @@ figures \ref{fig:1e05_01new} and \ref{fig:1e04_005new}.
     \includegraphics[width=\textwidth]{Chapter_3/figures/1e0501new.pdf}
     \caption{Evolutionary trajectories in the new index space for four
     different spatial configurations of tumour progression (gland fission,
-    invasive glandular, non-spatial, and boundary growth). Parameters: mutation
-    rate $\mu = 10^{-5}$, selective advantage $s = 0.1$.}
+    invasive glandular, non-spatial, and boundary growth) averaged over $50$
+    replicates each. Parameters: mutation rate $\mu = 10^{-5}$, selective
+    advantage $s = 0.1$.}
     \label{fig:1e05_01new}
 \end{figure}
 \begin{figure}[h!]
@@ -363,8 +371,9 @@ figures \ref{fig:1e05_01new} and \ref{fig:1e04_005new}.
     \includegraphics[width=\textwidth]{Chapter_3/figures/1e04005new.pdf}
     \caption{Evolutionary trajectories in the new index space for four
     different spatial configurations of tumour progression (gland fission,
-    invasive glandular, non-spatial, and boundary growth). Parameters: mutation
-    rate $\mu = 10^{-4}$, selective advantage $s = 0.05$.}
+    invasive glandular, non-spatial, and boundary growth) averaged over $50$
+    replicates each. Parameters: mutation rate $\mu = 10^{-4}$, selective
+    advantage $s = 0.05$.}
     \label{fig:1e04_005new}
 \end{figure}
 \clearpage
