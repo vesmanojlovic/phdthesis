@@ -1,4 +1,4 @@
-\chapter{Tracking cancer evolution \textit{in silico} via evolutionary
+\chapter{Tracking modes of cancer evolution \textit{in silico} via tree shape
 indices}\label{chapter:trajectories}
 
 
@@ -24,34 +24,18 @@ based on the data that is available at time of sequencing would allow for a more
 informed treatment strategy. This begs the question --- how can we distinguish
 between different ways tumours evolve? Is it necessary to wade through sequences
 of genetic data to do so or is it possible to abstract the key properties of a
-tumour's evolutionary trajectory into a few numerical summaries? \par In this
-chapter, I will examine the utility of two different sets of evolutionary
+tumour's evolutionary trajectory into a few numerical summaries? \par
+In this chapter, I will examine the utility of two different sets of tree shape
 indices for tracking the evolution of tumours on the example of agent-based
-simulations.
+simulations. By comparing the trajectories of these indices over time and with
+respect to each other, I aim to determine whether different modes of tumour
+evolution indeed occupy distinct regions of the index space. As this is a novel
+approach to condensing the information contained in cancer phylogenetic trees,
+inspired by \cite{noble_spatial_2022}, it raises the question of how much data
+is needed to reliably reproduce the results in the lab or even in the clinic.
 
 
 \section{Preliminaries}
-
-\subsection{Modes of evolution}
-Over the years, there have been a number of different definitions of what a mode
-of evolution is. Initially, it was introduced as the term which covers the way
-or manner in which a species evolves \cite{eiseley_tempo_1945}. Depending on the
-piece of literature, it could also refer to the model used in the study of a
-population's evolutionary trajectory \cite{yotoko_does_2011}, or the mechanism
-which drives the evolution such as genetic drift \cite{glassman_cancer_1996,
-wolf_genome_2013}. This ambiguity of terminology is present in cancer research
-as well. In this thesis, I will use the term mode of evolution as originally
-defined by \cite{eiseley_tempo_1945}, and used by \cite{davis_tumor_2017,
-noble_spatial_2022}. That is, the way in which a tumour evolves (figure
-\ref{fig:modes}).
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.85\textwidth]{Chapter_3/figures/modes.jpeg}
-    \caption{Four different modes of tumour evolution. Picture adapted from
-    \cite{davis_tumor_2017} under a CC BY 4.0 license.}
-    \label{fig:modes}
-\end{figure}
 
 \subsection{Why even bother with indices?}
 Before introducing the sets of indices used to analyse properties of trees, let
@@ -275,8 +259,63 @@ distinct set of parameters, was run over $50$ replicates distinguished by
 random seeds. Plots including individual and average trajectories are included
 in appendix \ref{app:trajs}.
 
+\subsection{Spatial configurations}
+The simulations were run for four different spatial configurations of tumour
+evolution. Due to the difference in parameters, the aim was to have each run
+reach the target final population of $10^6$ cells in between $500$ and $1000$
+cell cycle events or generations. The spatial configurations were as follows:
+\begin{itemize}
+    \item \textbf{Gland fission} --- the first tumour cell forms the first deme
+        which, once it reaches a certain size (carrying capacity), splits into
+        two daughter demes. This process continues until the final population is
+        reached.
+    \item \textbf{Invasive glandular} --- the first tumour cell forms the first
+        deme but, as contrasted with gland fission, the daughter demes are
+        formed by individual cells migrating away from the parent deme, rather
+        than fission. This process continues until the final population is
+        reached.
+    \item \textbf{Non-spatial} --- no spatial structure is imposed on the
+        tumour, and cells are well-mixed. This is the simplest spatial model.
+    \item \textbf{Boundary growth} --- the simulation tracks individual cells in
+        space, but cells are only allowed to divide if they are not fully
+        surrounded by other cells.
+\end{itemize}
 
 \section{Results}
+
+\begin{table}[h!]
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Index & Description & Range \\
+        \hline
+        \hline
+        $n(T)$ & Mean number of drivers per cell --- effective tree depth &
+        $[1, N]$ \\
+        \hline
+        $D(T)$ & Shannon diversity --- effective number of types & $[1, N]$ \\
+        \hline
+        $J^1(T)$ & Balance index --- node distribution in the tree & $[0, 1]$
+        \\
+        \hline
+        $\leftindex[I]^q{D}_L(T)$ & effective number of leaves & $[1, N]$ \\
+        \hline
+        $\leftindex[I]^q{D}_N(T)$ & average effective node outdegree & $[1, N]$
+        \\
+        \hline
+        $\leftindex[I]^q{D}_S(T)$ & effective number of branches, accounting for
+        branch sizes& $[1, N]$ \\
+        \hline
+        $\leftindex[I]^q{J}_L(T)$ & evenness of branch sizes & $[0, 1]$ \\
+        \hline
+        $\leftindex[I]^q{J}_N(T)$ & evenness of node size distribution & $[0, 1]$ \\
+        \hline
+        $\leftindex[I]^q{J}_S(T)$ & evenness of all branch sizes & $[0, 1]$ \\
+        \hline
+    \end{tabular}
+    \caption{Summary of indices used in this section. $N$ is the number of nodes
+    in tree $T$.}
+    \label{tab:results}
+\end{table}
 
 \subsection{Trajectories in $3$-dimensional index space}
 
@@ -292,28 +331,44 @@ cancer. For example, high mutation rates even with low selective advantage
 could lead to a tumour expected to follow a roughly branching trajectory to
 resemble neutral growth (figure \ref{fig:1e04_005}). While I used a different
 diversity metric from \cite{noble_spatial_2022}, the results are consistent with
-their findindgs.
+their findindgs. The trajectories in figures \ref{fig:1e05_01} and \ref{fig:1e04_005},
+while averaged over $50$ replicates each, still have a considerable amount of
+noise. This is due to the stochastic nature of the model, with the same set of
+parameters leading to evolutionary trajectories which can differ at certain
+points in time (figure \ref{fig:old_trajs}).
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.85\textwidth]{Chapter_3/figures/1e0501.pdf}
-    \caption{Evolutionary trajectories in $3$-dimensional index space for four
+    \caption{The average trajectories in $3$-dimensional index space for four
     different spatial configurations of tumour progression (gland fission,
-    invasive glandular, non-spatial, and boundary growth) averaged over $50$
-    replicates each. Parameters: mutation rate $\mu = 10^{-5}$, selective
-    advantage $s = 0.1$.}
+    invasive glandular, non-spatial, and boundary growth) are distinct and
+    their final states (circles) lie in separate regions of index space. This
+    example is averaged over $50$ replicates for each trajectory. Parameters:
+    mutation rate $\mu = 10^{-5}$, selective advantage $s = 0.1$.}
     \label{fig:1e05_01}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.85\textwidth]{Chapter_3/figures/1e04005.pdf}
-    \caption{Evolutionary trajectories in $3$-dimensional index space for four
-    different spatial configurations of tumour progression (gland fission,
-    invasive glandular, non-spatial, and boundary growth) averaged over $50$
-    replicates each. Parameters: mutation rate $\mu = 10^{-4}$, selective
+    \caption{The average trajectories for a slightly different set of
+    parameters from figure \ref{fig:1e05_01}. The trajectories and final states
+    are still distinct, with the final states lying in separate regions of
+    index space. Parameter values: mutation rate $\mu = 10^{-4}$, selective
     advantage $s = 0.05$.}
     \label{fig:1e04_005}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_3/figures/all_replicates.pdf}
+    \caption{Individual replicates' trajectories for the parameters used in
+    figure \ref{fig:1e05_01}. While the shapes of individual trajectories are
+    similar, as expected, there is still a lot of variation in the time at
+    which the tumour reaches the final population size, leading to noisy
+    average trajectories.}
+    \label{fig:old_trajs}
 \end{figure}
 \clearpage
 
@@ -336,88 +391,114 @@ trajectories included in appendix \ref{app:trajs}.\par
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Chapter_3/figures/redundancy.pdf}
-    \caption{Evenness trajectories for different spatial configurations and
-    sets of parameters averaged over $50$ replicates each. Mutation rate
-    ($\mu$) and selective advantage ($s$) values:\\ \textbf{A} --- $\mu =
-    10^{-5}$, $s = 0.1$; \textbf{B} --- $\mu = 10^{-4}$, $s = 0.05$; \textbf{C}
-    --- $\mu = 10^{-6}$, $s = 0.2$.}
+    \caption{Trajectories of different evenness indices encode almost identical
+    information. Shown above are evenness trajectories for different spatial
+    configurations and sets of parameters averaged over $50$ replicates each.
+    Mutation rate ($\mu$) and selective advantage ($s$) values:\\ \textbf{A}
+    --- $\mu = 10^{-5}$, $s = 0.1$; \textbf{B} --- $\mu = 10^{-4}$, $s = 0.05$;
+    \textbf{C} --- $\mu = 10^{-6}$, $s = 0.2$.}
     \label{fig:evenness_redundant}
 \end{figure}
 \clearpage
 
-During the analysis, I found that similar patterns emerged in the new index
-space as in the old one. Spatial configurations tended to separate into their
-own sections of the index space, with overlap present depending on the choice
-of parameters. This is not surprising, as the new set of indices is a
-generalised version of the old one. The main difference between the new and old
-trajectories is the amount of noise present in the new set, even when the
-outputs are averaged over multiple runs. This is likely due, in part, to the
-inclusion of branch lengths in the new set of indices, which may vary greatly
-between runs. The trajectories for the same data sets as above are shown in
-figures \ref{fig:1e05_01new} and \ref{fig:1e04_005new}.
+During the analysis, I found that patterns observed in the new index space are
+similar to those of the old set of indices. Spatial configurations tended to
+separate into their own sections of the index space, with overlap present
+depending on the choice of parameters. This is not surprising, as the new set
+of indices is a generalised version of the old one. The main difference between
+the new and old trajectories is the amount of noise present in the new set,
+even when the outputs are averaged over multiple runs. This is likely due, in
+part, to the inclusion of branch lengths in the new set of indices, which may
+vary greatly between runs. The trajectories for the same data sets as above are
+shown in figures \ref{fig:1e05_01new} and \ref{fig:1e04_005new}. An example of
+trajectories of each individual replicate is shown in figure \ref{fig:new_trajs1},
+with other spatial configurations' figures included in appendix \ref{app:trajs}.
+The reason for the noise in
+the new set of indices is the same as in the old, as the same data was used in
+the analysis --- there is a lot of variation in the time at which the tumour
+reaches the final population size.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Chapter_3/figures/1e0501new.pdf}
-    \caption{Evolutionary trajectories in the new index space for four
-    different spatial configurations of tumour progression (gland fission,
-    invasive glandular, non-spatial, and boundary growth) averaged over $50$
-    replicates each. Parameters: mutation rate $\mu = 10^{-5}$, selective
-    advantage $s = 0.1$.}
+    \caption{Introducing more dimensions to the index space does not change the
+    broad conclusions of the analysis. The average trajectories are distinct
+    between spatial configurations, with the final states lying in separate
+    regions of index space. Parameters: mutation rate $\mu = 10^{-5}$,
+    selective advantage $s = 0.1$.}
     \label{fig:1e05_01new}
 \end{figure}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Chapter_3/figures/1e04005new.pdf}
-    \caption{Evolutionary trajectories in the new index space for four
-    different spatial configurations of tumour progression (gland fission,
-    invasive glandular, non-spatial, and boundary growth) averaged over $50$
-    replicates each. Parameters: mutation rate $\mu = 10^{-4}$, selective
-    advantage $s = 0.05$.}
+    \caption{Changing the key parameters in the new index space has a similar
+    effect to the old one. The trajectories and final states are still
+    distinct, with the final states lying in separate regions of index space.
+    Parameters: mutation rate $\mu = 10^{-4}$, selective advantage $s = 0.05$.}
     \label{fig:1e04_005new}
 \end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Chapter_3/figures/new_trajs1.png}
+    \caption{Individual replicates' index trajectories of invasive glandular
+    expansion for the parameters used in figure \ref{fig:1e05_01new}. As
+    before, there is a lot of variation in the time at which the tumour reaches
+    the final population size, leading to noisy average trajectories.}
+    \label{fig:new_trajs1}
+\end{figure}
+
 \clearpage
 
 \section{Discussion}
 In this chapter I examined two sets of tree shape indices for tracking the mode
-of tumour evoution on the example of agent-based simulations. The results
+of tumour evolution on the example of agent-based simulations. The results
 suggest that the indices are able to distinguish between different modes of
 evolution depending on parameter choice, but that further work is needed to
 establish ranges of parameter values which are useful. While a moderate
 mutation rate and weak selection seem to be a good starting point, applying the
 indices to real data should be the next step in order to validate the approach.
 Furthermore, the new set of indices introduced in \cite{noble_new_2023} is more
-informative due to its inclusion of branch lengths, but also
-contains some redundancy as pairs of indices can display high correlation
-across runs. This redundancy may not necessarily be present in all individual
-simulations, but averaging even a few dozen runs shows that pairs of indices
-encode similar information. Despite the averaging, there is still a
-considerable amount of noise in the derived trajectories, and larger-scale
-simulations are needed to produce cleaner results. Additionally, I looked at the
-arithmetic mean trajectory for each parameter set which, in retrospect, may not
-have been the most informative summary of the data --- considering some form of
-median trajectory may have been more representative of the processes in the
-simulations. \par
-As the new index set is, as the name suggests, new, there are still some
-technical wrinkles to iron out. Namely, large trees with many nodes and branches
-can take a long time to calculate, as the indices from the set are more complex
-than the old ones. Additionally, there is a precision issue which arises when
-some of the smallest nodes are included in the tree. This is easily resolved by
-employing a similar approach as in \ref{fig:robustness}, which effectively
-simulates sampling error. Finally, the R package itself does not directly
-support the data structure used in the modelling workflow. The conversion, which
-was purpose-written for this work, may also contribute to the aforementioned
-technical difficulties. \par
+informative due to its inclusion of branch lengths, but also contains some
+redundancy as pairs of indices can display high correlation across runs. This
+redundancy may not necessarily be present in all individual simulations, but
+averaging even a few dozen runs shows that pairs of indices encode similar
+information. However, in individual runs, this behaviour is not always the
+case. For this reason, further work is needed to develop mathematically sound
+methods for the comparison of individually simulated trajectories. This would
+allow for data analysis focussed on what could be called ``typical" behaviour,
+rather than the average of a large number of replicates, which would further
+take advantage of the stochastic nature of the model. This would also address
+the stochasticity resulting from individual runs, as I propose developing
+ \par
+
+The new index set is, as the name suggests, new, and there are still some
+technical wrinkles to iron out. Namely, large trees with many nodes and
+branches can take a long time to calculate, as the indices from the set are
+more complex than the old ones. Additionally, there is a precision issue which
+arises when some of the smallest nodes are included in the tree. This is easily
+resolved by employing a similar approach as in \ref{fig:robustness}, which
+effectively simulates sampling error. Finally, the R package itself does not
+directly support the data structure used in the modelling workflow. The
+conversion, which was purpose-written for this work, may also contribute to the
+aforementioned technical difficulties. Standardising the data types in a future
+study would improve the efficiency of the analysis, and possibly reduce the
+amount of noise between simulated time points. \par
 
 The main contribution of this chapter is the exploration of different sets of
 indices, not just over time, but in relation to each other. The first time a
 similar approach was used was in \cite{noble_spatial_2022}, and here I expanded
-the analysis to include more dimensions of the space. Additionally, in the
-context of the new index set, I was able to expand the discussion to include
-larger trees than previously analysed with the indices \cite{noble_new_2023}.
+the analysis to a new set of indices. Additionally, in the context of the new
+index set, I was able to expand the discussion to include larger trees than
+previously analysed with the indices \cite{noble_new_2023}. This is important
+as the typical cancer phylogeny may not have thousands of nodes, but there are
+other applications of large trees which could benefit from this method.
 Recently, there has been work considering a similar approach for the
-classification of evolutionary processes in biogeography, which further supports
-the utility of the indices \cite{freitas_patch_2024}. \par
+classification of evolutionary processes in biogeography, which further
+supports the utility of the indices \cite{freitas_patch_2024}. Personally, I am
+most interested in how this approach would fare when applied to time series data
+of real cancer cell populations. Unfortunately, such data is rare and difficult,
+but not impossible \cite{salehi_clonal_2021}, to generate. \par
 
 Having focussed on numerical summaries of the ABM outputs, I also believe that
 there may be a way to heuristically derive approximate general properties of a
@@ -428,5 +509,3 @@ Additionally, as my main focus in this chapter has been the generation,
 processing, and visualisation of synthetic cancer data, there is a good scope
 for the application of more novel statistical learning methods to the data,
 such as evolutionary simulation \cite{herald_autonomous_2022}, or deep learning
-methods developed for fitting ABMs to data \cite{cess_fitting_2023}.
-

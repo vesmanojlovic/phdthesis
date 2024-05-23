@@ -1,30 +1,33 @@
 \chapter{Modelling colorectal cancer methylation data with \texttt{methdemon}}
 \label{chapter:methylation}
-% \large\textbf{OUTLINE}
-% \begin{itemize}
-%     \item Introduction - methylation modelling literature, data collection
-%     \item Results; sections: methdemon recapitulates FMC patterns in crc,
-%         evolutionary regimes which explain the data within methdemon,
-%         phylogenetic tree analysis
-%     \item Discussion
-% \end{itemize}
+
 
 \section{Introduction}
 The main motivation for the development of \texttt{methdemon} is to infer
 evolutionary properties of colorectal cancer (CRC) from methylation data. CRC
 is the third most common cancer worldwide, with over $40000$ new cases
-diagnosed in the UK each year on average \cite{noauthor_bowel_2015}. The
-disease is characterised by the accumulation of genetic and epigenetic
-mutations in colonic cells \cite{fleming_colorectal_2012}. The most common type
-of CRC is adenocarcinoma, which arises from the epithelial cells lining the
-colon, covering the majority of cases. The tumour forms hierarchical cell
-structures similar to those of normal tissue, organising into crypt-like glands
+diagnosed in the UK each year on average \cite{noauthor_bowel_2015}. The scale
+of this issue is not the only motivating factor, as insights into the
+evolutionary dynamics of colorectal cancer could lead to the better
+understanding of how other adenocarcinomas progress. CRC is characterised by the
+accumulation of genetic and epigenetic mutations in colonic cells
+\cite{fleming_colorectal_2012}. The most common type of CRC is adenocarcinoma,
+which arises from the epithelial cells lining the colon, covering the majority
+of cases. The tumour forms hierarchical cell structures similar to those of
+normal tissue, organising into crypt-like glands
 \cite{ponz_de_leon_pathology_2001}. The tumour spreads by the process of gland
 fission \cite{preston_bottom-up_nodate}, which is similar to the branching
-processes seen in normal crypts \cite{almet_multicellular_2018}. In this
-chapter, I will use the inference workflow introduced in chapter
+processes seen in normal crypts \cite{almet_multicellular_2018}. \par
+In this chapter, I will use the inference workflow introduced in chapter
 \ref{chapter:methdemon} to infer evolutionary properties of colorectal cancer
-from methylation data.
+from methylation data. My approach, similar to that of
+\cite{gabbutt_fluctuating_2022, gabbutt_evolutionary_2023}, is not the first
+investigation of whether methylation arrays can uncover evolutionary properties
+of colorectal cancer, as there have been efforts to infer strength of selection
+\cite{siegmund_high_2011} and the evolutionary history \cite{hong_using_2010} of
+the primary tumour. The model presented in chapter \ref{chapter:methdemon} is
+informed by the assumptions used in these works, as well as other recent models
+of colorectal cancer evolution and progression.
 
 \section{Data collection}
 The data used in this study were provided by Dr Darryl Shibata from the Keck
@@ -145,8 +148,13 @@ of the population, as discussed in chapter \ref{chapter:trajectories} and
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/10000plot.png}
-    \caption{Visualisation of the output fCpG arrays from the \texttt{methdemon}
-    model with weak selection ($s=0.1$) and deme carrying capacity $10000$.}
+    \caption{Visualisation of the output fCpG arrays from the
+    \texttt{methdemon} model with weak selection ($s=0.1$) and deme carrying
+    capacity $10000$. While The individual gland distributions are trimodal and
+    the inter-gland correlation plots show epigenetic switching between sides,
+    the distributions have narrowed down towards the mean ($0.5$) considerably.
+    This happens in the case when the epimutation rate outpaces the tumour
+    growth rate.}
     \label{fig:methdemon_weak_selection}
 \end{figure}
 
@@ -154,7 +162,10 @@ of the population, as discussed in chapter \ref{chapter:trajectories} and
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/10000dist.png}
     \caption{Inter-gland distance matrix for the output fCpG arrays from the
-    \texttt{methdemon} model with weak selection ($s=0.1$).}
+    \texttt{methdemon} model with weak selection ($s=0.1$). While the distance
+    values between glands on opposite sides of the tumour are still on average
+    higher than within one side, the numerical values are around an order of
+    magnitude off those observed in data.}
     \label{fig:methdemon_weak_dist}
 \end{figure}
 
@@ -205,7 +216,8 @@ or weak selection. Examples are shown in figures
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/100dist.png}
     \caption{Inter-gland distance matrix corresponding to the run from figure
-    \ref{fig:methdemon_weak_selection_small}.}
+    \ref{fig:methdemon_weak_selection_small}. The values in the distance matrix
+    are comparable to those seen in the molecular data sets.}
     \label{fig:methdemon_weak_dist_small}
 \end{figure}
 \clearpage
@@ -262,12 +274,14 @@ and steps between generations will cover more of the space.
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/inference_raw/inference_1.pdf}
     \caption{Inference outputs from the first run, performed by sampling
-    parameters from uniform priors on the original scale. \textbf{A} ---
-    posterior distributions of fCpG fluctuation rates have narrowed down
-    rapidly, but other parameters' posteriors remain broad. \textbf{B} --- box
-    plots of the posteriors show that the model is not able to resolve the
-    effects of selection from the data, and leaves a lot of uncertainty in the
-    fission rates.}
+    parameters from uniform priors on the original scale. While the epimutation
+    rates' posteriors narrow down considerably, other parameter distributions
+    remain broad - likely due to too coarse traversal of the parameter space.
+    \textbf{A} --- posterior distributions of fCpG fluctuation rates have
+    narrowed down rapidly, but other parameters' posteriors remain broad.
+    \textbf{B} --- box plots of the posteriors show that the model is not able
+    to resolve the effects of selection from the data, and leaves a lot of
+    uncertainty in the fission rates.}
     \label{fig:inference_1}
 \end{figure}
 \clearpage
@@ -306,10 +320,13 @@ at the gland level.
     \centering
     \includegraphics[width=\textwidth]{Chapter_5/figures/inference_raw/inference_S.pdf}
     \caption{Inference outputs from the alternative run, performed by sampling
-    parameters from uniform priors on the log-transformed scale. \textbf{A} ---
-    posterior distributions of fCpG fluctuation rates have narrowed similar to
-    before, but now the fission rate's posterior is also narrower than before.
-    Mutation rate and selective advantage are still not inferred by the model.
+    parameters from uniform priors on the log-transformed scale. The posterior
+    distribution of deme fission has now narrowed down in a similar way to the
+    epimutation rates, indicating a more efficient traversal of parameter space.
+    \textbf{A} --- posterior distributions of fCpG fluctuation rates have
+    narrowed similar to before, but now the fission rate's posterior is also
+    narrower than before. Mutation rate and selective advantage are still not
+    inferred by the model.
     \textbf{B} --- box plots of the posteriors.}
     \label{fig:inference_2}
 \end{figure}
@@ -374,18 +391,6 @@ that the orders of magnitude are correct, the model seems to be able to describe
 the observed data well.
 
 \section{Discussion}
-% \begin{itemize}
-%     \item $1$D model recaps FMC patterns in CRC
-%     \item colorectal cancer fcpg data can be explained by effectively neutral
-%         evolutionary regimes
-%     \item further work - likelihood-based inference, large scale modelling of
-%         colorectal cancer
-%     \item initial conditions - does a fully random initial array make sense in
-%         the context of patterns in data? some tumours do indeed look like they
-%         simply have unequal meth and demeth rates, but others look like they
-%         started hypo- or hypermethylated.
-% \end{itemize}
-
 In this chapter, I modelled colorectal cancer methylation data using
 \texttt{methdemon} and the associated ABC workflow. A notable feature of the
 data is that some samples show a clear bias towards either hyper- or
@@ -394,25 +399,34 @@ case for fCpG arrays filtered using only the samples provided by Dr Shibata.
 This suggests that the progenitor cell's methylation state is not necessarily
 random, but could be affected by internal or external factors. Furthermore, I
 developed the model under the assumption that methylation and demethylation
-rates are constant and equal across all cells and fCpG loci. While this may be
-reasonable on average, there might be mutations which affect these rates,
-leading to the observed distributions of fCpG loci states. Despite biases in
-the data, the model was able to recapitulate the patterns observed in the data,
-and the inferred parameters lay within reasonable ranges. I think it is clear
-that the methylation and demethylation rates are inferred based on the
+rates are constant and independent across all cells and fCpG loci. While this
+may be reasonable on average, there might be mutations which affect these
+rates, leading to the observed distributions of fCpG loci states. Despite
+biases in the data, the model was able to recapitulate the patterns observed in
+the data, and the inferred parameters lay within reasonable ranges. I think it
+is clear that the methylation and demethylation rates are inferred based on the
 Wasserstein distance between individual glands in the data and the model
 output, and the fission rates from the overall similarity between the
 inter-gland distance matrices. Additionally, the $L_2$ half-norm of the
 inter-gland distance matrix is inversely correlated with the inferred fission
-rate. This is consistent with the idea that faster-growing tumours have had less
-time for the glands' arrays to diverge.
-However, the model struggled to infer the selection coefficient and the
-driver mutation rate. This could be due to the signature of selection being too
-weak in the model or data, or the distance functions in the ABC rejection step
-not being fine-grained enough to detect the differences between evolutionary
-modes. Having said that, the results do support an effectively neutral
-evolutionary mode of colorectal cancer growth, with the effects of selection
-constrained to within glands. Furthermore, it seems clear that multi-site
-sequencing of methylation arrays from solid tumours can be used to draw
-inferences about the evolutionary dynamics of the tumour, and warrants further
-investigation with a more sophisticated model.
+rate. This is consistent with the idea that faster-growing tumours have had
+less time for the glands' arrays to diverge. \par
+However, the model struggled to infer the selection coefficient and the driver
+mutation rate. This could be due to the signature of selection being too weak
+in the model or data, or the distance functions in the ABC rejection step not
+being fine-grained enough to detect the differences between evolutionary modes.
+Having said that, the results do support an effectively neutral evolutionary
+mode of colorectal cancer growth, with the effects of selection constrained to
+within glands. Furthermore, it seems clear that multi-region sequencing of
+methylation arrays from solid tumours can be used to draw inferences about the
+evolutionary dynamics of the tumour, and warrants further research both in
+terms of obtaining more data and refining the model to address the evolutionary
+properties not recovered in this chapter. \par
+An additional point to consider is that, as the \texttt{methdemon} model is
+based on a branching process, it should be straightforward to recover trees from
+the model's output. In \cite{gabbutt_evolutionary_2023}, the authors used a tree
+reconstruction workflow to infer phylogenies from blood cancer data with high
+degrees of accuracy. This would be a useful extension of the current work as, in
+conjunction with the methods discussed in chapters \ref{chapter:trees} and
+\ref{chapter:trajectories}, it could provide a more complete picture of the mode
+of evolution of colorectal cancer.

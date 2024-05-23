@@ -9,7 +9,8 @@ model to investigate broad evolutionary patterns as related to spatial
 organisation. While the model was capable of simulating the dynamics of tumour
 growth, its utility is limited by the computational cost of simulating a large
 number of cells. This means that using the model's outputs in comparison to or
-to draw inference from real data is not feasible. \par
+to draw inference from real data is not feasible, as real tumours have billions
+of cells. \par
 There are a few ways to address this issue. For example, rather than simulating
 all clones in a tumour, one could take the approach of
 \cite{sottoriva_big_2015} and use demes (tumour glands) as the principal agent
@@ -20,8 +21,13 @@ population is assumed to be clonal, undergoing rapid fixation in the case of an
 emerging mutant. If one wanted to study evolutionary dynamics on a finer scale
 it would be necessary to at least simulate the dynamics of cell lineages, if
 not individual cells, as performed earlier. \par
-In \cite{gabbutt_evolutionary_2023}, the authors employ a stochastic model for
-an expanding cell population to model the behaviour of fluctuating CpG sites in
+The first effort to model clonal dynamics of cells based on fluctuating
+methylation clocks (FMCs) was made in \cite{gabbutt_fluctuating_2022}. Working
+with colon and small intestine samples, the authors found that somatic cell
+birth and death dynamics are measurable based on the FMCs, and began
+transferring this knowledge to the context of cancer. In
+\cite{gabbutt_evolutionary_2023}, the authors employ a stochastic model for an
+expanding cell population to model the behaviour of fluctuating CpG sites in
 blood cancers. The model is capable of simulating the dynamics and the
 corresponding fluctuating methylation arrays of lymphoid malignancies at scale.
 However, this model is not spatially explicit, which is a feature that has to
@@ -298,8 +304,14 @@ clonal interference.
 
 \subsubsection{Epimutation rates}
 The epimutation rates are the probabilities of a fCpG site changing state upon
-cell division. In testing, I considered epimutation rates of $10^{-5}$,
-$10^{-4}$, and $10^{-3}$. The results are consistent with the findings of
+cell division. These events may not necessarily be constrained to division
+events in reality. In fact, models developed in \cite{gabbutt_fluctuating_2022,
+gabbutt_evolutionary_2023} consider epimutation events independent from
+divisions. For the purpose of this model, I have chosen to keep the epimutation
+rates tied to cell division as it simplifies the assignment of parameters and
+maintains the temporal units of $\text{cell division}^{-1}$. \par
+In testing, I considered epimutation rates of $10^{-5}$, $10^{-4}$, and
+$10^{-3}$. The results are consistent with the findings of
 \cite{gabbutt_fluctuating_2022}, where too slow switching means less diversity,
 too fast means complete desynchronisation and regression to a normal
 distribution around $0.5$.
@@ -337,7 +349,7 @@ distribution around $0.5$.
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Chapter_4/figures/inter-gland-sens/med-plot.png}
-    \caption{Increasing the fission rate leads ot more closely related fCpG
+    \caption{Increasing the fission rate leads to more closely related fCpG
     arrays.}
     \label{fig:inter-med}
 \end{figure}
@@ -538,7 +550,9 @@ of the inference are shown in figure \ref{fig:example_inference}.
     \includegraphics[width=\textwidth]{Chapter_4/figures/example_inference.png}
     \caption{Results of the example inference of the \texttt{methdemon} model.
     The ground truth parameter values are shown as dotted vertical lines in the
-    plots on the diagonal.}
+    plots on the diagonal. Posterior distributions of the epigenetic mutation
+    rates narrow down close to the ground truth values, but other parameters'
+    posteriors remain broad.}
     \label{fig:example_inference}
 \end{figure}
 \clearpage
@@ -579,16 +593,21 @@ ability of ABC to narrow down at least parts of the parameter space even in the
 case of broad priors in a complex model.
 
 \section{Discussion}
-In this chapter, I have presented a new agent-based model, \texttt{methdemon},
+In this chapter, I presented a novel agent-based model, \texttt{methdemon},
 which is capable of simulating the growth of a tumour and the corresponding
 fluctuating methylation arrays. The model is developed with efficiency and
 dynamic memory management in mind, and is based on well-established models of
 tumour growth and evolution. The model is capable of simulating the growth of a
 tumour in a reasonable time, and the outputs are sensitive to the input
-parameters to varying degrees. I have also presented and tested an ABC workflow
-for inferring the parameters of the model from observed data. The workflow is
-capable of narrowing down the parameter space, and the results of an example
-inference show important features which need to be addressed when using the
-workflow on real data. However, the inference workflow can be hindered by the
-choice of overly broad priors. Therefore, a more informative prior distribution
+parameters to varying degrees. However, the simplifying assumptions made should
+be put to the test in future work, such as epimutations being possible only at
+cell division. An example of this could be using tau leaping instead of the
+Gillespie algorithm for event scheduling in the simulations, as its units of
+time are not necessarily tied to the cell cycle. \par
+I also developed and tested an ABC workflow for inferring the parameters of the
+model from observed data. The inference workflow is capable of narrowing down
+the parameter space, and the results of a toy model inference show important
+features which need to be addressed when expanding the discussion to real data.
+As is often the case with ABC, the inference workflow can be hindered by the
+choice of overly broad priors. Therefore, an informative prior distribution
 should be chosen when considering real data.
